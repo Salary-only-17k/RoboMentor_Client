@@ -1,8 +1,8 @@
 {
-  "name": "RoboMentorsClientView",
+  "name": "RoboMentorSDK",
   "version": "1.0.0",
-  "description": "RoboMentorsClientView",
-  "author": "www.RoboMentors.com",
+  "description": "RoboMentorSDK",
+  "author": "www.RoboMentor.cn",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",

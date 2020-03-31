@@ -96,6 +96,7 @@
                 dialogTools:false,
                 toolsIndex:0,
                 ButtonStatus:false,
+                SocketStatus:true,
                 serial:{
                     port:"",
                     rate:"",
@@ -105,6 +106,25 @@
                     ReturnContent:"",
                     ButtonStatus:false
                 }
+            }
+        },
+        inject:['MessagesEmpty'],
+        props:{
+            message:{
+                type:Object,
+                default:""
+            }
+        },
+        watch:{
+            message:{
+                handler() {
+                    if(Object.keys(this.message).length !== 0) {
+                        if (this.SocketStatus) {
+                            this.SocketCallback(this.message);
+                        }
+                    }
+                },
+                deep: true
             }
         },
         created(){
@@ -164,10 +184,15 @@
                         this.ButtonStatus = false;
                     });
                 }
+            },
+            SocketCallback(data){
+                if(data.message_type === "serial_log"){
+                    this.ReturnContent = data.serial_message.content;
+                }
             }
         },
         beforeDestroy(){
-
+            this.SocketStatus = false;
         }
     }
 </script>

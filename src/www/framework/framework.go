@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"www/framework/service/common"
 	"www/framework/service/request"
+	"www/framework/service/system"
 )
 
 type Config struct {
@@ -69,6 +70,8 @@ type responseRobot struct {
 var MentorConfig = &Config{}
 
 func Init(AppID string, AppSecret string) {
+
+	SystemService.System()
 
 	MentorConfig.RobotAuth.AppID = AppID
 

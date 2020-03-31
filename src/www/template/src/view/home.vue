@@ -1,7 +1,7 @@
 <template>
     <el-container>
         <el-main>
-            <div class="header">
+            <div class="header" v-if="Data">
                 <div class="header-hd">
                     <div class="hd-box">
                         <div class="hd-box-item">
@@ -52,12 +52,18 @@
 </template>
 
 <script>
+    const socket = new WebSocket("ws://"+window.location.host+"/message");
     export default {
         name: 'App',
         data() {
             return {
                 Data:false,
                 message:{}
+            }
+        },
+        provide(){
+            return{
+                MessagesEmpty:this.MessagesEmpty
             }
         },
         created(){
@@ -67,8 +73,20 @@
             Data_In(data){
                 if(!this.Data){
                     this.Data = data;
+                    this.onSocket();
                 }
-            }
+            },
+            onSocket(){
+                let that = this;
+                socket.onopen = function(){
+                    socket.onmessage = function (message){
+                        that.message = JSON.parse(message.data.toString());
+                    }
+                }
+            },
+            MessagesEmpty(){
+                this.message = {};
+            },
         },
         beforeDestroy(){
 

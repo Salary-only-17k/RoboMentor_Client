@@ -1,6 +1,6 @@
 <template>
     <el-container>
-        <div class="main">
+        <div class="main" v-if="Data">
             <div class="main-box">
                 <el-card class="empty-box-card">没有找到相关数据</el-card>
             </div>

@@ -25,8 +25,6 @@ func InitRouter() *gin.Engine {
 
 	r.GET("/common/home/index", CommonService.GetHomeIndex)
 
-	r.GET("/common/home/system/info", CommonService.GetSystemInfo)
-
 	r.GET("/common/home/tools", CommonService.GetHomeTools)
 
 	r.POST("/common/home/tools/serial", CommonService.SetHomeToolsSerial)

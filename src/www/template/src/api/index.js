@@ -65,14 +65,6 @@ export function GetHomeIndex() {
     });
 }
 
-export function GetSystemInfo() {
-    return HTTP({
-        url: 'common/home/system/info',
-        method: 'GET',
-        data: '',
-    });
-}
-
 export function GetHomeTools() {
     return HTTP({
         url: 'common/home/tools',

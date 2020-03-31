@@ -3,41 +3,16 @@ package CommonService
 import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
-	"github.com/shirou/gopsutil/cpu"
-	"github.com/shirou/gopsutil/mem"
 	"io/ioutil"
 	"strconv"
 	"time"
 	"www/framework/function/serial"
+	"www/framework/service/socket"
 )
-
-type responseGetSystemInfo struct {
-	Time    string 		`json:"time"`
-	Memory 	float64 	`json:"memory"`
-	Cpu 	[]float64 	`json:"cpu"`
-}
 
 func GetHomeIndex(c *gin.Context){
 
 	Success(c, 0, "ok", EmptyData{})
-	return
-}
-
-func GetSystemInfo(c *gin.Context){
-
-	returnData := responseGetSystemInfo{}
-
-	returnData.Time = time.Now().Format("15:04:05")
-
-	memory, _ := mem.VirtualMemory()
-
-	returnData.Memory = memory.UsedPercent
-
-	cpuInfo, _ := cpu.Percent(time.Second, false)
-
-	returnData.Cpu = cpuInfo
-
-	Success(c, 0, "ok", returnData)
 	return
 }
 
@@ -75,10 +50,23 @@ func SetHomeToolsSerial(c *gin.Context){
 
 	RateInt, _ := strconv.Atoi(jsonData.Rate)
 
-	sendStatus := serialFunction.SerialWrite(jsonData.Port, RateInt, time.Millisecond * 3, jsonData.Content)
+	sendStatus := serialFunction.SerialWrite(jsonData.Port, RateInt, jsonData.Content)
 	if sendStatus == false {
 		Error(c, 10000, "串口数据发送失败，请求重新尝试", EmptyData{})
 		return
+	}
+
+	if jsonData.Switch {
+
+		readContent := serialFunction.SerialRead(jsonData.Port, RateInt, 128, time.Millisecond * 500)
+
+		readData := SocketService.SocketMessage{}
+
+		readData.MessageType = "serial_log"
+		readData.SerialMessage.Port = jsonData.Port
+		readData.SerialMessage.Content = readContent
+
+		SocketService.Channel.Channel = readData
 	}
 
 	Success(c, 0, "ok", EmptyData{})

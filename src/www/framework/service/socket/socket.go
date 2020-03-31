@@ -1,9 +1,11 @@
 package SocketService
 
 import (
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/websocket"
 	"net/http"
+	"time"
 )
 
 var upGrader = websocket.Upgrader{
@@ -16,6 +18,8 @@ func Socket(c *gin.Context) {
 
 	GetSocket, _ := upGrader.Upgrade(c.Writer, c.Request, nil)
 
+	go SocketSend(GetSocket)
+
 	for {
 		_, message, err := GetSocket.ReadMessage()
 		if err != nil {
@@ -26,5 +30,25 @@ func Socket(c *gin.Context) {
 		if err != nil {
 			break
 		}
+	}
+}
+
+func SocketSend(GetSocket *websocket.Conn) {
+
+	for {
+
+		if Channel.Channel.MessageType != "" {
+
+			sendJson, _ :=json.Marshal(Channel.Channel)
+
+			err := GetSocket.WriteMessage(1, sendJson)
+			if err != nil {
+				continue
+			}
+
+			Channel.Channel = SocketMessage{}
+		}
+
+		time.Sleep(80 * time.Millisecond)
 	}
 }
