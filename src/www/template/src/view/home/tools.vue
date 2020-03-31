@@ -186,9 +186,8 @@
                 }
             },
             SocketCallback(data){
-                console.log(data);
                 if(data.message_type === "serial_log"){
-                    this.ReturnContent = data.serial_message.content;
+                    this.serial.ReturnContent = data.serial_message.content;
                 }
             }
         },
