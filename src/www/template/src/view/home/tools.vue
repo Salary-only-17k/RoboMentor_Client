@@ -77,7 +77,7 @@
                     <span class="el-input__span"><i class="iconfont icon-feedback_fill"></i>是否开启串口数据监听，开启后，可以实时获取串口发送回来的数据信息。</span>
                 </el-form-item>
                 <el-form-item label="" v-if="serial.Switch">
-                    <el-input type="textarea" v-model="serial.ReturnContent" placeholder="这里会实时显示串口发来的数据信息" autocomplete="off" rows="12" resize="none" style="width: 100%;resize: none;" disabled></el-input>
+                    <el-input type="textarea" v-model="serial.ReturnContent" placeholder="这里会实时显示串口发来的数据信息" autocomplete="off" rows="12" resize="none" style="width: 100%;resize: none;"></el-input>
                 </el-form-item>
             </el-form>
         </el-dialog>
