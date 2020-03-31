@@ -1,8 +1,10 @@
 package serialFunction
 
 import (
+	"fmt"
 	"github.com/tarm/goserial"
 	"log"
+	"strings"
 	"time"
 )
 
@@ -68,18 +70,22 @@ func SerialRead(Port string, Baud int, Buf int) string {
 	serialOpen, err := serial.OpenPort(serialConfig)
 	if err != nil {
 		stringData = ""
-		return stringData
 	}
 
 	readBuf := make([]byte, Buf)
 
-	serialRead, err := serialOpen.Read(readBuf)
-	if err != nil {
-		stringData = ""
-		return stringData
-	}
+	for {
+		serialRead, err := serialOpen.Read(readBuf)
+		if err != nil {
+			stringData = ""
+		}else{
+			stringData += fmt.Sprintf("%s", string(readBuf[:serialRead]))
+		}
 
-	stringData = string(readBuf[:serialRead])
+		if strings.LastIndex(stringData, "\r\n") > 0 {
+			break
+		}
+	}
 
 	return stringData
 }
