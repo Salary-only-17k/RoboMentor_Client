@@ -59,7 +59,7 @@ func SetHomeToolsSerial(c *gin.Context){
 
 	if jsonData.Switch {
 
-		readContent := serialFunction.SerialRead(jsonData.Port, RateInt, 128, time.Millisecond * 500)
+		readContent := serialFunction.SerialRead(jsonData.Port, RateInt, 0, time.Millisecond * 500)
 
 		log.Println("[info]", readContent)
 
