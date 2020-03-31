@@ -79,11 +79,11 @@ func SerialRead(Port string, Baud int, Buf int) string {
 		if err != nil {
 			stringData = ""
 		}else{
-			stringData += fmt.Sprintf("%s", string(readBuf[:serialRead]))
-		}
-
-		if strings.LastIndex(stringData, "\r\n") > 0 {
-			break
+			if strings.Index(stringData, "\r\n") > 0 {
+				break
+			}else{
+				stringData += fmt.Sprintf("%s", string(readBuf[:serialRead]))
+			}
 		}
 	}
 
