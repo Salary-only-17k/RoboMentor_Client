@@ -98,9 +98,9 @@
                 ButtonStatus:false,
                 SocketStatus:true,
                 serial:{
-                    port:"",
-                    rate:"",
-                    bits:"",
+                    port:"/dev/ttyACM0",
+                    rate:"115200",
+                    bits:"8",
                     content:"",
                     Switch:false,
                     ReturnContent:"",
@@ -160,7 +160,7 @@
                 done();
                 this.toolsIndex = 0;
                 this.ButtonStatus = false;
-                this.serial = {port:"", rate:"", bits:"", content:"", Switch:false, ReturnContent:"", ButtonStatus:false};
+                this.serial = {port:"/dev/ttyACM0", rate:"115200", bits:"8", content:"", Switch:false, ReturnContent:"", ButtonStatus:false};
             },
             onSubmitSerial(){
                 if(this.serial.port === "" || this.serial.rate === "" || this.serial.bits === "" || this.serial.content === ""){
