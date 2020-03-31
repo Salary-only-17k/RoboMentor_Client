@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
+	"log"
 	"strconv"
 	"time"
 	"www/framework/function/serial"
@@ -59,6 +60,8 @@ func SetHomeToolsSerial(c *gin.Context){
 	if jsonData.Switch {
 
 		readContent := serialFunction.SerialRead(jsonData.Port, RateInt, 128, time.Millisecond * 500)
+
+		log.Println("[info]", readContent)
 
 		readData := SocketService.SocketMessage{}
 
