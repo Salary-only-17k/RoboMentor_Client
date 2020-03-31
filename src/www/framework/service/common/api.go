@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"log"
 	"strconv"
-	"time"
 	"www/framework/function/serial"
 	"www/framework/service/socket"
 )
@@ -59,7 +58,7 @@ func SetHomeToolsSerial(c *gin.Context){
 
 	if jsonData.Switch {
 
-		readContent := serialFunction.SerialRead(jsonData.Port, RateInt, 0, time.Millisecond * 500)
+		readContent := serialFunction.SerialRead(jsonData.Port, RateInt, 10000)
 
 		log.Println("[info]", readContent)
 

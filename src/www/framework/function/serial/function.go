@@ -59,11 +59,11 @@ func SerialWrite(Port string, Baud int, Data string) bool {
 	return status
 }
 
-func SerialRead(Port string, Baud int, Buf int, ReadTimeout time.Duration) string {
+func SerialRead(Port string, Baud int, Buf int) string {
 
 	stringData := ""
 
-	serialConfig := &serial.Config{ Name: Port, Baud: Baud, ReadTimeout: ReadTimeout}
+	serialConfig := &serial.Config{ Name: Port, Baud: Baud, ReadTimeout: time.Millisecond * 500}
 
 	serialOpen, err := serial.OpenPort(serialConfig)
 	if err != nil {
