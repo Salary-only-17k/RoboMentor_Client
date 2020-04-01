@@ -18,7 +18,7 @@
                                 <a href="https://www.robomentor.cn/#/shop" target="_blank" class="home-run"><i class="iconfont icon-service_fill"></i> 硬件商城</a>
                             </div>
                             <div class="hd-tools-item">
-                                <a href="http://wiki.robomentor.cn/#/developer" target="_blank" class="home-run"><i class="iconfont icon-document_fill"></i> 开发者社区</a>
+                                <a href="http://www.robomentor.cn/#/developer" target="_blank" class="home-run"><i class="iconfont icon-document_fill"></i> 开发者社区</a>
                             </div>
                             <div class="hd-tools-item">
                                 <a href="http://wiki.robomentor.cn" target="_blank" class="home-run"><i class="iconfont icon-document_fill"></i> 开发文档</a>
