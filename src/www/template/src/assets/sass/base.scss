@@ -102,6 +102,10 @@ body {
   padding: 0;
 }
 
+.el-button{
+  font-size: 12px !important;
+}
+
 .empty-box-card{
   width: 100% !important;
   height: 400px !important;
@@ -128,6 +132,10 @@ body {
 
 .el-form-item__label{
   color: #555d71 !important;
+  font-size: 12px !important;
+}
+.el-form-item__content{
+  user-select:text !important;
   font-size: 12px !important;
 }
 .el-input__inner,.el-textarea__inner{

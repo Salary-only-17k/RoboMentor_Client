@@ -11,6 +11,27 @@
                     </div>
                 </el-card>
             </div>
+            <div class="main-footer">
+                <el-card class="footer-box-card">
+                    <div class="footer-item">
+                        <el-form ref="form" label-width="80px">
+                            <el-form-item label="系统信息">{{Data.goos}} {{Data.goarch}} {{Data.version}}</el-form-item>
+                            <el-form-item label="设备名">{{Data.host_name}}</el-form-item>
+                            <el-form-item label="版本信息">RoboMentor SDK {{Data.config.robot_version}}</el-form-item>
+                            <el-form-item label="运行目录">{{Data.config.robot_path}}</el-form-item>
+                            <el-form-item label="Mac地址">{{Data.config.robot_mac}}</el-form-item>
+                            <el-form-item label="Ip地址">{{Data.config.robot_ip}}</el-form-item>
+                            <el-form-item class="end" label="授权编号">{{Data.config.token}}</el-form-item>
+                        </el-form>
+                    </div>
+                    <div class="footer-item">
+                        <div class="wechat">
+                            <img src="../../assets/images/qrcode_for_gh_a2c92d370ff8_258.jpg">
+                        </div>
+                        <div class="wechat-tips">微信扫码 关注官方公众号</div>
+                    </div>
+                </el-card>
+            </div>
         </div>
     </el-container>
 </template>
@@ -152,10 +173,9 @@
 <style lang="scss" scoped>
     .main{
         width: 100%;
-        padding-top: 140px;
+        padding-top: 130px;
         .main-box{
             width: 1200px;
-            min-height: 600px;
             margin: 0 auto;
             .system-box-card{
                 width: 100%;
@@ -177,6 +197,74 @@
                             font-size: 14px;
                             color: #D6D7DA;
                         }
+                    }
+                }
+            }
+        }
+        .main-footer{
+            width: 1200px;
+            min-height: 200px;
+            margin: 0 auto;
+            .footer-box-card{
+                width: 100%;
+                background-color: #333843;
+                border: 0;
+                box-shadow: 0 2px 2px 0 rgba(0,0,0,.1);
+                margin-bottom: 30px;
+                font-size: 0;
+                .footer-item{
+                    width: 50%;
+                    display: inline-block;
+                    vertical-align: top;
+                    color: #D6D7DA;
+                    font-size: 12px;
+                    .el-form-item{
+                        position: relative;
+                        margin-bottom: 10px;
+                        .el-form-item__content{
+                            font-size: 12px;
+                        }
+                        &:after {
+                            width: 100%;
+                            content: " ";
+                            position: absolute;
+                            left: 80px;
+                            bottom: 0;
+                            right: 0;
+                            height: 1px;
+                            border-bottom: 1px solid rgba(0,0,0,.2);
+                            color: rgba(0,0,0,.1);
+                            transform-origin: 0 100%;
+                            transform: scaleY(.5);
+                        }
+                        &.end{
+                            user-select:text;
+                            margin-bottom: 0;
+                            &:after {
+                                width: 0;
+                            }
+                        }
+                    }
+                    .wechat{
+                        width: 160px;
+                        height: 220px;
+                        margin: 0 auto;
+                        padding-top: 60px;
+                        margin-bottom: 20px;
+                        img{
+                            width: 160px;
+                            height: 160px;
+                        }
+                    }
+                    .wechat-tips{
+                        width: 200px;
+                        height: 35px;
+                        text-align: center;
+                        line-height: 35px;
+                        font-size: 12px;
+                        margin: 0 auto;
+                        background-color: #30333d;
+                        border-radius: 17.5px;
                     }
                 }
             }

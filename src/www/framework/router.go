@@ -1,9 +1,9 @@
-package Router
+package RoboMentor
 
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"www/framework"
+	"www/application"
 	"www/framework/service/common"
 	"www/framework/service/socket"
 	"www/framework/service/template"
@@ -13,7 +13,7 @@ func InitRouter() *gin.Engine {
 
 	r := gin.New()
 
-	gin.SetMode(RoboMentor.MentorConfig.RobotService.Mode)
+	gin.SetMode("debug")
 
 	r.GET("/", TemplateService.Template)
 
@@ -23,11 +23,15 @@ func InitRouter() *gin.Engine {
 
 	r.GET("/common/check", CommonService.Ping)
 
-	r.GET("/common/home/index", CommonService.GetHomeIndex)
+	r.GET("/common/home/index", Api.GetHomeIndex)
 
-	r.GET("/common/home/tools", CommonService.GetHomeTools)
+	r.GET("/common/home/robot", Api.GetHomeRobot)
 
-	r.POST("/common/home/tools/serial", CommonService.SetHomeToolsSerial)
+	r.GET("/common/home/robot/submit", Api.SetHomeRobotSubmit)
+
+	r.GET("/common/home/tools", Api.GetHomeTools)
+
+	r.POST("/common/home/tools/serial/submit", Api.SetHomeToolsSerialSubmit)
 
 	return r
 }

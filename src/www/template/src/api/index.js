@@ -65,6 +65,22 @@ export function GetHomeIndex() {
     });
 }
 
+export function GetHomeRobot() {
+    return HTTP({
+        url: 'common/home/robot',
+        method: 'GET',
+        data: '',
+    });
+}
+
+export function SetHomeRobotSubmit(name,port,rate,bits) {
+    return HTTP({
+        url: 'common/home/robot/submit?name=' + name + "&port=" + port + "&rate=" + rate + "&bits=" + bits,
+        method: 'GET',
+        data: '',
+    });
+}
+
 export function GetHomeTools() {
     return HTTP({
         url: 'common/home/tools',
@@ -75,8 +91,9 @@ export function GetHomeTools() {
 
 export function SetHomeToolsSerial(data) {
     return HTTP({
-        url: 'common/home/tools/serial',
+        url: 'common/home/tools/serial/submit',
         method: 'POST',
         data: data,
     });
 }
+

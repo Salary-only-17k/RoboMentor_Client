@@ -29,7 +29,7 @@ func System() {
 
 			SocketService.Channel.Channel = systemData
 
-			time.Sleep(2000 * time.Millisecond)
+			time.Sleep(1920 * time.Millisecond)
 		}
 
 	}()

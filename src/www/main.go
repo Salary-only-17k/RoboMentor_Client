@@ -10,7 +10,9 @@ import (
 	"os/signal"
 	"time"
 	"www/framework"
-	"www/framework/router"
+	"www/framework/config"
+	"www/framework/service/message"
+	"www/framework/service/system"
 )
 
 func init() {
@@ -21,17 +23,23 @@ func init() {
 	flag.Parse()
 
 	if  *AppID == "" || *AppSecret == "" {
-		log.Println("\033[31m[Error]\033[0m", "RoboMentorClient AppID AppSecret Error")
+		log.Println("\033[31m[Error]\033[0m", "RoboMentorSDK AppID AppSecret Error")
 	}
 
-	RoboMentor.Init(*AppID, *AppSecret)
+	Config.Init(*AppID, *AppSecret)
+
+	MessageService.Messages(*AppID, *AppSecret)
+
+	SystemService.System()
+
+	RoboMentor.Init()
 }
 
 func main() {
 
-	log.Println("[info]", "RoboMentorClient Start")
+	log.Println("[info]", "RoboMentorSDK Start")
 
-	router := Router.InitRouter()
+	router := RoboMentor.InitRouter()
 
 	s := &http.Server{
 		Addr:           fmt.Sprintf(":%d", 8888),
@@ -45,7 +53,7 @@ func main() {
 		if err := s.ListenAndServe(); err != nil {}
 	}()
 
-	log.Println("[info]", "RoboMentorClient Start Success")
+	log.Println("[info]", "RoboMentorSDK Start Success")
 
 	quit := make(chan os.Signal)
 	signal.Notify(quit, os.Interrupt)
@@ -57,5 +65,5 @@ func main() {
 
 	if err := s.Shutdown(ctx); err != nil {}
 
-	log.Println("[info]", "RoboMentorClient Stop")
+	log.Println("[info]", "RoboMentorSDK Stop")
 }

@@ -13,16 +13,18 @@ type ResponseData struct {
 	Msg 	string 			`json:"msg"`
 }
 
-func DefaultGet(url string, params map[string]string) (*http.Response, error) {
-	return Get(url, params, nil)
+func DefaultGet(url string, params map[string]string, headers map[string]string) (*http.Response, error) {
+	return Get(url, params, headers)
 }
 
 func Get(url string, params map[string]string, headers map[string]string) (*http.Response, error) {
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		return nil, errors.New("new request is fail ")
+		return nil, errors.New("new request is fail")
 	}
+
+	req.Header.Set("Content-Type", "application/json")
 
 	q := req.URL.Query()
 	if params != nil {
@@ -43,8 +45,8 @@ func Get(url string, params map[string]string, headers map[string]string) (*http
 	return client.Do(req)
 }
 
-func DefaultPost(url string, body map[string]string) (*http.Response, error) {
-	return Post(url, body, nil, nil)
+func DefaultPost(url string, body map[string]string, params map[string]string, headers map[string]string) (*http.Response, error) {
+	return Post(url, body, params, headers)
 }
 
 func Post(url string, body map[string]string, params map[string]string, headers map[string]string) (*http.Response, error) {
@@ -64,7 +66,7 @@ func Post(url string, body map[string]string, params map[string]string, headers 
 		return nil, errors.New("new request is fail: %v \n")
 	}
 
-	req.Header.Set("Content-type", "application/json")
+	req.Header.Set("Content-Type", "application/json")
 
 	q := req.URL.Query()
 	if params != nil {

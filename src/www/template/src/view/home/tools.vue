@@ -58,12 +58,28 @@
         </div>
 
         <el-dialog :title="toolsTitle" :visible.sync="dialogTools" width="1000px" :before-close="HandleClose" :closeOnClickModal="false" :closeOnPressEscape="false">
+            <el-form ref="form" :model="serial" label-width="0px" v-if="toolsIndex === 2">
+                <el-form-item label="">
+                    <el-input type="textarea" v-model="Message.content" placeholder="请输入要发送的消息数据" autocomplete="off" rows="10" resize="none" style="width: 100%;resize: none;"></el-input>
+                    <span class="el-input__span"><i class="iconfont icon-feedback_fill"></i>根据自定义的消息通讯协议，填写要发送的数据。</span>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="danger" :loading="ButtonStatus" @click="onSubmitMessage">发送消息</el-button>
+                </el-form-item>
+                <el-form-item label="">
+                    <el-switch v-model="Message.Switch" active-color="#F56C6C" inactive-color="#30333d"></el-switch>
+                    <span class="el-input__span"><i class="iconfont icon-feedback_fill"></i>是否开启消息监听，开启后，可以实时获取机器人设备发来的消息数据。</span>
+                </el-form-item>
+                <el-form-item label="" v-if="Message.Switch">
+                    <el-input type="textarea" v-model="Message.ReturnContent" placeholder="这里会实时显示机器人设备发来的消息数据" autocomplete="off" rows="12" resize="none" style="width: 100%;resize: none;"></el-input>
+                </el-form-item>
+            </el-form>
             <el-form ref="form" :model="serial" label-width="0px" v-if="toolsIndex === 3">
                 <el-form-item label="">
                     <el-input v-model="serial.port" placeholder="请输入串口地址" autocomplete="off" style="width: 300px;"></el-input>
                     <el-input v-model="serial.rate" placeholder="波特率" autocomplete="off" style="width: 120px;"></el-input>
-                    <el-input v-model="serial.bits" placeholder="数据位" autocomplete="off" style="width: 100px;"></el-input>
-                    <span class="el-input__span"><i class="iconfont icon-feedback_fill"></i>硬件设备的串口地址、波特率、数据位，例如：/dev/tty.RoboMentors。</span>
+                    <el-input v-model="serial.bits" placeholder="数据位" autocomplete="off" style="width: 100px;" disabled></el-input>
+                    <span class="el-input__span"><i class="iconfont icon-feedback_fill"></i>硬件设备的串口地址、波特率、数据位，例如：/dev/ttyACM0。</span>
                 </el-form-item>
                 <el-form-item label="">
                     <el-input type="textarea" v-model="serial.content" placeholder="请输入要发送的串口数据" autocomplete="off" rows="10" resize="none" style="width: 100%;resize: none;"></el-input>
@@ -97,6 +113,12 @@
                 toolsIndex:0,
                 ButtonStatus:false,
                 SocketStatus:true,
+                Message:{
+                    content:"",
+                    Switch:false,
+                    ReturnContent:"",
+                    ButtonStatus:false
+                },
                 serial:{
                     port:"/dev/ttyACM0",
                     rate:"115200",
@@ -145,8 +167,12 @@
                 });
             },
             onTools(tools){
-                if( tools === 3){
+                if( tools === 3) {
                     this.toolsTitle = "串口调试";
+                    this.dialogTools = true;
+                    this.toolsIndex = tools;
+                }else if(tools === 2){
+                    this.toolsTitle = "远程消息";
                     this.dialogTools = true;
                     this.toolsIndex = tools;
                 }else{
@@ -161,6 +187,7 @@
                 this.toolsIndex = 0;
                 this.ButtonStatus = false;
                 this.serial = {port:"/dev/ttyACM0", rate:"115200", bits:"8", content:"", Switch:false, ReturnContent:"", ButtonStatus:false};
+                this.Message = {content:"", Switch:false, ReturnContent:"", ButtonStatus:false}
             },
             onSubmitSerial(){
                 if(this.serial.port === "" || this.serial.rate === "" || this.serial.bits === "" || this.serial.content === ""){
@@ -185,11 +212,24 @@
                     });
                 }
             },
+            onSubmitMessage(){
+                if(this.Message.content === ""){
+                    this.$message({
+                        message: '消息内容不完整，请补充完整',
+                        type: 'warning'
+                    });
+                }else{
+                    this.ButtonStatus = true;
+                }
+            },
             SocketCallback(data){
                 if(data.message_type === "serial_log"){
                     this.serial.ReturnContent = data.serial_message.content;
                 }
-            }
+                if(data.message_type === "message_log"){
+                    this.Message.ReturnContent = data.message_message.content;
+                }
+            },
         },
         beforeDestroy(){
             this.SocketStatus = false;
@@ -200,7 +240,7 @@
 <style lang="scss" scoped>
     .main{
         width: 100%;
-        padding-top: 140px;
+        padding-top: 130px;
         .main-box{
             width: 1200px;
             min-height: 600px;
@@ -231,10 +271,18 @@
                         text-align: center;
                         .tools-button{
                             width: 100px;
-                            height: 35px;
-                            line-height: 35px;
+                            height: 30px;
+                            line-height: 30px;
                             padding: 0;
-                            font-size: 12px;
+                            font-size: 10px;
+                            border-radius: 15px;
+                            background-color: #30333d;
+                            border: 0;
+                            color: #D6D7DA;
+                            &:hover{
+                                color: #ffffff;
+                                background-color: #f56c6c;
+                            }
                         }
                     }
                 }
