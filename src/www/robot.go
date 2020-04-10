@@ -6,10 +6,11 @@ import (
 	"os/signal"
 	"www/application"
 	"www/framework/robot"
+	"www/framework/service/socket"
 )
 
 func init() {
-
+	SocketService.RobotSocketClient()
 }
 
 func main() {

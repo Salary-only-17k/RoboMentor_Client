@@ -58,6 +58,7 @@
         </div>
 
         <el-dialog :title="toolsTitle" :visible.sync="dialogTools" width="1000px" :before-close="HandleClose" :closeOnClickModal="false" :closeOnPressEscape="false">
+
             <el-form ref="form" :model="remote" label-width="0px" v-if="toolsIndex === 2">
                 <el-form-item label="">
                     <el-input type="textarea" v-model="remote.content" placeholder="请输入要发送的消息数据" autocomplete="off" rows="10" resize="none" style="width: 100%;resize: none;"></el-input>
@@ -66,14 +67,8 @@
                 <el-form-item>
                     <el-button type="danger" :loading="remote.ButtonStatus" @click="onSubmitRemote">发送消息</el-button>
                 </el-form-item>
-                <el-form-item label="">
-                    <el-switch v-model="remote.Switch" active-color="#F56C6C" inactive-color="#30333d"></el-switch>
-                    <span class="el-input__span"><i class="iconfont icon-feedback_fill"></i>是否开启消息监听，开启后，可以实时获取机器人设备发来的消息数据。</span>
-                </el-form-item>
-                <el-form-item label="" v-if="remote.Switch">
-                    <el-input type="textarea" v-model="remote.ReturnContent" placeholder="这里会实时显示机器人设备发来的消息数据" autocomplete="off" rows="12" resize="none" style="width: 100%;resize: none;"></el-input>
-                </el-form-item>
             </el-form>
+
             <el-form ref="form" :model="serial" label-width="0px" v-if="toolsIndex === 3">
                 <el-form-item label="">
                     <el-input v-model="serial.port" placeholder="请输入串口地址" autocomplete="off" style="width: 300px;"></el-input>
@@ -101,7 +96,7 @@
 </template>
 
 <script>
-    import{GetHomeTools,SetHomeToolsSerial} from "../../api/index";
+    import{GetHomeTools,SetHomeToolsSerialSubmit,SetHomeToolsRemoteSubmit} from "../../api/index";
 
     export default {
         name: 'App',
@@ -114,8 +109,6 @@
                 SocketStatus:true,
                 remote:{
                     content:"",
-                    Switch:false,
-                    ReturnContent:"",
                     ButtonStatus:false
                 },
                 serial:{
@@ -185,7 +178,7 @@
                 done();
                 this.toolsIndex = 0;
                 this.serial = {port:"/dev/ttyACM0", rate:"115200", bits:"8", content:"", Switch:false, ReturnContent:"", ButtonStatus:false};
-                this.remote = {content:"", Switch:false, ReturnContent:"", ButtonStatus:false}
+                this.remote = {content:"", ButtonStatus:false}
             },
             onSubmitSerial(){
                 if(this.serial.port === "" || this.serial.rate === "" || this.serial.bits === "" || this.serial.content === ""){
@@ -195,7 +188,7 @@
                     });
                 }else{
                     this.serial.ButtonStatus = true;
-                    SetHomeToolsSerial(this.serial).then(res=>{
+                    SetHomeToolsSerialSubmit(this.serial).then(res=>{
                         if(res.data.code === -1) {
                             this.$router.push({path: '/'});
                         }else if(res.data.code === 0){
@@ -218,14 +211,24 @@
                     });
                 }else{
                     this.remote.ButtonStatus = true;
+                    SetHomeToolsRemoteSubmit(this.remote).then(res=>{
+                        if(res.data.code === -1) {
+                            this.$router.push({path: '/'});
+                        }else if(res.data.code === 0){
+                            this.$message({
+                                message: '远程消息发送成功',
+                                type: 'success'
+                            });
+                        }else{
+                            this.$message.error(res.data.msg);
+                        }
+                        this.remote.ButtonStatus = false;
+                    });
                 }
             },
             SocketCallback(data){
-                if(data.message_type === "serial_message"){
+                if(data.message_type === "serial_message" && this.serial.Switch){
                     this.serial.ReturnContent = data.serial_message.content;
-                }
-                if(data.message_type === "message_log"){
-                    this.Message.ReturnContent = data.message_message.content;
                 }
             },
         },

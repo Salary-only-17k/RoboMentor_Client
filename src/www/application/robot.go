@@ -1,6 +1,8 @@
 package robot
 
-import "www/framework/robot"
+import (
+	"www/framework/robot"
+)
 
 // @Title  设置机器人基础配置
 // @Description  可以定义一些机器人开发中需要的自定义变量数据

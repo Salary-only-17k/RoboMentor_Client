@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/eclipse/paho.mqtt.golang"
 	"log"
+	"www/framework/robot"
 )
 
 type ResponseMessage struct {
@@ -25,5 +26,5 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 		return
 	}
 
-
+	Robot.Init.OnMessages(message.Payload(), string(message.Payload()))
 }

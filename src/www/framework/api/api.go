@@ -130,6 +130,33 @@ func GetHomeTools(c *gin.Context){
 	return
 }
 
+type requestSetHomeToolsRemoteSubmit struct {
+	Content string 		`json:"content"`
+}
+
+func SetHomeToolsRemoteSubmit(c *gin.Context){
+
+	postJson, _ := ioutil.ReadAll(c.Request.Body)
+
+	jsonData := requestSetHomeToolsRemoteSubmit{}
+
+	err := json.Unmarshal(postJson, &jsonData)
+	if err != nil {
+		CommonService.Error(c, 10000, "请求失败，请求参数错误", CommonService.EmptyData{})
+		return
+	}
+
+	readData := SocketService.SocketMessage{}
+
+	readData.MessageType = "remote_message"
+	readData.RemoteMessage.Content = jsonData.Content
+
+	SocketService.Channel.Channel = readData
+
+	CommonService.Success(c, 0, "ok", CommonService.EmptyData{})
+	return
+}
+
 type requestSetHomeToolsSerialSubmit struct {
 	Port    string 		`json:"port"`
 	Rate 	string 		`json:"rate"`

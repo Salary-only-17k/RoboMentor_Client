@@ -11,6 +11,7 @@ type SocketMessage struct {
 	SystemMessage 	systemMessage 	`json:"system_message"`
 	SerialMessage 	serialMessage 	`json:"serial_message"`
 	RemoteMessage	remoteMessage 	`json:"remote_message"`
+	ServiceMessage	serviceMessage 	`json:"service_message"`
 }
 
 type systemMessage struct {
@@ -25,5 +26,9 @@ type serialMessage struct {
 }
 
 type remoteMessage struct {
+	Content string 		`json:"content"`
+}
+
+type serviceMessage struct {
 	Content string 		`json:"content"`
 }

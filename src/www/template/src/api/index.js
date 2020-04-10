@@ -89,9 +89,17 @@ export function GetHomeTools() {
     });
 }
 
-export function SetHomeToolsSerial(data) {
+export function SetHomeToolsSerialSubmit(data) {
     return HTTP({
         url: 'common/home/tools/serial/submit',
+        method: 'POST',
+        data: data,
+    });
+}
+
+export function SetHomeToolsRemoteSubmit(data) {
+    return HTTP({
+        url: 'common/home/tools/remote/submit',
         method: 'POST',
         data: data,
     });

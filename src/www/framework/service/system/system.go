@@ -15,7 +15,7 @@ func System() {
 
 		for {
 
-			systemData.MessageType = "system"
+			systemData.MessageType = "system_message"
 
 			systemData.SystemMessage.Time = time.Now().Format("15:04:05")
 

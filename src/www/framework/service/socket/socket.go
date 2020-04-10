@@ -4,11 +4,18 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/websocket"
+	"log"
 	"net/http"
 	"time"
+	"www/framework/robot"
 )
 
-var WebSocketUser = make(map[*websocket.Conn]bool)
+type WebSocketConn struct {
+	User map[*websocket.Conn]bool
+	Status bool
+}
+
+var GetWebSocket = &WebSocketConn{}
 
 var upGrader = websocket.Upgrader{
 	CheckOrigin: func (r *http.Request) bool {
@@ -18,19 +25,18 @@ var upGrader = websocket.Upgrader{
 
 func WebSocket(c *gin.Context) {
 
-	GetWebSocket, _ := upGrader.Upgrade(c.Writer, c.Request, nil)
+	Conn, _ := upGrader.Upgrade(c.Writer, c.Request, nil)
 
-	go WebSocketSend()
+	if GetWebSocket.Status == false {
+		go WebSocketSend()
+		GetWebSocket.User = make(map[*websocket.Conn]bool)
+		GetWebSocket.Status = true
+	}
 
-	WebSocketUser[GetWebSocket] = true
+	GetWebSocket.User[Conn] = true
 
 	for {
-		_, message, err := GetWebSocket.ReadMessage()
-		if err != nil {
-			break
-		}
-
-		err = GetWebSocket.WriteMessage(1, message)
+		_, _, err := Conn.ReadMessage()
 		if err != nil {
 			break
 		}
@@ -47,15 +53,35 @@ func WebSocketSend() {
 
 			Channel.Channel = SocketMessage{}
 
-			for user := range WebSocketUser {
+			for user := range GetWebSocket.User {
 				err := user.WriteMessage(1, sendJson)
 				if err != nil {
 					user.Close()
-					delete(WebSocketUser, user)
+					delete(GetWebSocket.User, user)
 				}
 			}
 		}
 
 		time.Sleep(80 * time.Millisecond)
 	}
+}
+
+func RobotSocketClient() {
+
+	client, _, err := websocket.DefaultDialer.Dial("ws://127.0.0.1:8888/message", nil)
+	if err != nil {
+		log.Println("\033[31m[Robot]\033[0m", "Socket Error")
+	}
+
+	go func() {
+		for {
+			_, message, err := client.ReadMessage()
+			if err != nil {
+				continue
+			}
+
+			Robot.Init.OnMessages(message, string(message))
+		}
+	}()
+
 }

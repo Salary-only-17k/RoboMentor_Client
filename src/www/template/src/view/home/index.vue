@@ -93,7 +93,7 @@
             return {
                 Data:false,
                 SocketStatus:true,
-                Timer:false,
+                Timer:"",
                 ChartData:{
                     labels:[],
                     data1:[],
@@ -112,7 +112,7 @@
             message:{
                 handler() {
                     if(Object.keys(this.message).length !== 0){
-                        if(this.SocketStatus && this.message.message_type === "system"){
+                        if(this.SocketStatus && this.message.message_type === "system_message"){
                             this.SocketCallback(this.message.system_message);
                         }
                     }
@@ -138,33 +138,33 @@
                 });
             },
             SocketCallback(data){
-                if(this.ChartData.labels.length === 10){
-                    this.ChartData.labels.shift();
-                    this.ChartData.data1.shift();
-                    this.ChartData.data2.shift();
-                    this.ChartData.labels.push(data.time);
-                    var sum = 0;
-                    for (var i in data.cpu) {
-                        sum += data.cpu[i];
+                if(this.Timer !== data.time) {
+                    if (this.ChartData.labels.length === 10) {
+                        this.ChartData.labels.shift();
+                        this.ChartData.data1.shift();
+                        this.ChartData.data2.shift();
+                        this.ChartData.labels.push(data.time);
+                        var sum = 0;
+                        for (var i in data.cpu) {
+                            sum += data.cpu[i];
+                        }
+                        this.ChartData.data1.push(parseFloat(sum).toFixed(2));
+                        this.ChartData.data2.push(parseFloat(data.memory).toFixed(2));
+                    } else {
+                        this.ChartData.labels.push(data.time);
+                        var sum = 0;
+                        for (var i in data.cpu) {
+                            sum += data.cpu[i];
+                        }
+                        this.ChartData.data1.push(parseFloat(sum).toFixed(2));
+                        this.ChartData.data2.push(parseFloat(data.memory).toFixed(2));
                     }
-                    this.ChartData.data1.push(parseFloat(sum).toFixed(2));
-                    this.ChartData.data2.push(parseFloat(data.memory).toFixed(2));
-                }else{
-                    this.ChartData.labels.push(data.time);
-                    var sum = 0;
-                    for (var i in data.cpu) {
-                        sum += data.cpu[i];
-                    }
-                    this.ChartData.data1.push(parseFloat(sum).toFixed(2));
-                    this.ChartData.data2.push(parseFloat(data.memory).toFixed(2));
+
+                    this.Timer = data.time;
                 }
             }
         },
         beforeDestroy(){
-            if(this.Timer) {
-                clearInterval(this.Timer);
-                this.Timer = false;
-            }
             this.SocketStatus = false;
         }
     }
