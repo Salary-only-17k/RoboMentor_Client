@@ -25,4 +25,5 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 		return
 	}
 
+
 }

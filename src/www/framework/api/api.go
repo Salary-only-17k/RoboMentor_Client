@@ -1,4 +1,4 @@
-package Api
+package api
 
 import (
 	"encoding/json"
@@ -170,7 +170,7 @@ func SetHomeToolsSerialSubmit(c *gin.Context){
 
 		readData := SocketService.SocketMessage{}
 
-		readData.MessageType = "serial_log"
+		readData.MessageType = "serial_message"
 		readData.SerialMessage.Port = jsonData.Port
 		readData.SerialMessage.Content = readContent
 

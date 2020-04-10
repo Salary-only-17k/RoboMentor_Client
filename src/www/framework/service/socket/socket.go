@@ -8,32 +8,36 @@ import (
 	"time"
 )
 
+var WebSocketUser = make(map[*websocket.Conn]bool)
+
 var upGrader = websocket.Upgrader{
 	CheckOrigin: func (r *http.Request) bool {
 		return true
 	},
 }
 
-func Socket(c *gin.Context) {
+func WebSocket(c *gin.Context) {
 
-	GetSocket, _ := upGrader.Upgrade(c.Writer, c.Request, nil)
+	GetWebSocket, _ := upGrader.Upgrade(c.Writer, c.Request, nil)
 
-	go SocketSend(GetSocket)
+	go WebSocketSend()
+
+	WebSocketUser[GetWebSocket] = true
 
 	for {
-		_, message, err := GetSocket.ReadMessage()
+		_, message, err := GetWebSocket.ReadMessage()
 		if err != nil {
 			break
 		}
 
-		err = GetSocket.WriteMessage(1, message)
+		err = GetWebSocket.WriteMessage(1, message)
 		if err != nil {
 			break
 		}
 	}
 }
 
-func SocketSend(GetSocket *websocket.Conn) {
+func WebSocketSend() {
 
 	for {
 
@@ -41,12 +45,15 @@ func SocketSend(GetSocket *websocket.Conn) {
 
 			sendJson, _ :=json.Marshal(Channel.Channel)
 
-			err := GetSocket.WriteMessage(1, sendJson)
-			if err != nil {
-				continue
-			}
-
 			Channel.Channel = SocketMessage{}
+
+			for user := range WebSocketUser {
+				err := user.WriteMessage(1, sendJson)
+				if err != nil {
+					user.Close()
+					delete(WebSocketUser, user)
+				}
+			}
 		}
 
 		time.Sleep(80 * time.Millisecond)
