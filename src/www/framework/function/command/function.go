@@ -1,12 +1,12 @@
 package commandFunction
 
 import (
-	"os/exec"
+	"github.com/lizongshen/gocommand"
 )
 
-func Shell(command string) (string, error){
+func Shell(command string) (int, string, error){
 
-	run, err := exec.Command(command).Output()
+	pid, out, err := gocommand.NewCommand().Exec("cd /robot/RoboMentor_SDK", "export GOPATH=$PWD", "cd /robot/RoboMentor_SDK/src/www", "go build robot.go")
 
-	return string(run), err
+	return pid, string(out), err
 }

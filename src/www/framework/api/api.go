@@ -200,7 +200,7 @@ func GetHomeSkillRun(c *gin.Context){
 
 	if Type == "Master" {
 
-		_, err := commandFunction.Shell("cd /robot/RoboMentor_SDK && export GOPATH=$PWD && cd /robot/RoboMentor_SDK/src/www && go build robot.go")
+		_, _, err := commandFunction.Shell("cd /robot/RoboMentor_SDK && export GOPATH=$PWD && cd /robot/RoboMentor_SDK/src/www && go build robot.go")
 		if err != nil {
 			log.Println("\033[31m[Error]\033[0m", err.Error())
 			CommonService.Error(c, 10000, "技能编译失败，请求重新尝试", CommonService.EmptyData{})
