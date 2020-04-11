@@ -8,6 +8,6 @@ cd /robot/RoboMentor_SDK/src/www
 
 go build main.go
 
-sudo supervisorctl reload && sudo supervisorctl restart RoboMentorSDK
+sudo supervisorctl restart RoboMentorSDK
 
 echo "MentorsService Restart Success"
