@@ -8,9 +8,10 @@ import (
 	"os"
 	"runtime"
 	"strconv"
+	"strings"
 	"time"
 	"www/framework/config"
-	commandFunction "www/framework/function/command"
+	"www/framework/function/command"
 	"www/framework/function/serial"
 	"www/framework/service/common"
 	"www/framework/service/request"
@@ -205,7 +206,7 @@ func GetHomeSkillBuild(c *gin.Context){
 			return
 		}
 
-		if shell != "Build Success" {
+		if strings.Contains(shell, "Build Success") == false {
 			CommonService.Error(c, 10000, "技能编译失败，请求重新尝试", CommonService.EmptyData{})
 			return
 		}
@@ -227,7 +228,7 @@ func GetHomeSkillRestart(c *gin.Context){
 			return
 		}
 
-		if shell != "Restart Success" {
+		if strings.Contains(shell, "Restart Success") == false {
 			CommonService.Error(c, 10000, "机器人启动失败，请求重新尝试", CommonService.EmptyData{})
 			return
 		}
