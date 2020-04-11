@@ -55,7 +55,7 @@
 </template>
 
 <script>
-    import{GetHomeSkill,GetHomeSkillEdit,GetHomeSkillSave,GetHomeSkillRun} from "../../api/index";
+    import{GetHomeSkill,GetHomeSkillEdit,GetHomeSkillSave,GetHomeSkillBuild,GetHomeSkillRestart} from "../../api/index";
     import CodeMirror from 'vue-codemirror';
     // language
     import "codemirror/mode/go/go.js";
@@ -208,18 +208,41 @@
             },
             onRun(){
                 this.runStatus = true;
-                GetHomeSkillRun(this.codeType).then(res=>{
+                this.ProgressText = "正在编译技能程序";
+                this.Progress = 10;
+                GetHomeSkillBuild(this.codeType).then(res=>{
                     if(res.data.code === -1) {
                         this.$router.push({path: '/'});
                     }else if(res.data.code === 0){
-                        this.$message({
-                            message: '程序代码运行成功',
-                            type: 'success'
-                        });
-                        this.runStatus = false;
+                        this.ProgressText = "技能程序编译成功";
+                        this.Progress = 30;
+                        setTimeout(function(){
+                            this.ProgressText = "正在重启机器人程序";
+                            this.Progress = 55;
+                            GetHomeSkillRestart(this.codeType).then(res=>{
+                                if(res.data.code === -1) {
+                                    this.$router.push({path: '/'});
+                                }else if(res.data.code === 0){
+                                    this.ProgressText = "机器人技能程序重启成功";
+                                    this.Progress = 100;
+                                    setTimeout(function(){
+                                        this.ProgressText = "准备就绪";
+                                        this.Progress = 0;
+                                    },1500);
+                                    this.runStatus = false;
+                                }else{
+                                    this.$message.error(res.data.msg);
+                                    this.runStatus = false;
+                                    this.ProgressText = "准备就绪";
+                                    this.Progress = 0;
+                                }
+                            });
+                        },900);
                     }else{
                         this.$message.error(res.data.msg);
                         this.runStatus = false;
+                        this.ProgressText = "准备就绪";
+                        this.Progress = 0;
                     }
                 });
             },

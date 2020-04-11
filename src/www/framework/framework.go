@@ -37,7 +37,9 @@ func InitRouter() *gin.Engine {
 
 	router.POST("/common/home/skill/save", api.GetHomeSkillSave)
 
-	router.GET("/common/home/skill/run", api.GetHomeSkillRun)
+	router.GET("/common/home/skill/build", api.GetHomeSkillBuild)
+
+	router.GET("/common/home/skill/restart", api.GetHomeSkillRestart)
 
 	router.GET("/common/home/tools", api.GetHomeTools)
 

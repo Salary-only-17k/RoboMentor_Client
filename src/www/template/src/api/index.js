@@ -105,9 +105,17 @@ export function GetHomeSkillSave(data) {
     });
 }
 
-export function GetHomeSkillRun(Type) {
+export function GetHomeSkillBuild(Type) {
     return HTTP({
-        url: 'common/home/skill/run?type=' + Type,
+        url: 'common/home/skill/build?type=' + Type,
+        method: 'GET',
+        data: '',
+    });
+}
+
+export function GetHomeSkillRestart(Type) {
+    return HTTP({
+        url: 'common/home/skill/restart?type=' + Type,
         method: 'GET',
         data: '',
     });

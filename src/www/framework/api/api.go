@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
-	"log"
 	"net"
 	"os"
 	"runtime"
@@ -194,7 +193,7 @@ func GetHomeSkillSave(c *gin.Context){
 	return
 }
 
-func GetHomeSkillRun(c *gin.Context){
+func GetHomeSkillBuild(c *gin.Context){
 
 	Type := c.DefaultQuery("type","")
 
@@ -206,11 +205,30 @@ func GetHomeSkillRun(c *gin.Context){
 			return
 		}
 
-		log.Println("\033[31m[Error]\033[0m", shell)
-
-		_, err = commandFunction.Shell("sudo framework/function/command/run.sh")
-		if err != nil {
+		if shell != "Build Success" {
 			CommonService.Error(c, 10000, "技能编译失败，请求重新尝试", CommonService.EmptyData{})
+			return
+		}
+	}
+
+	CommonService.Success(c, 0, "ok", CommonService.EmptyData{})
+	return
+}
+
+func GetHomeSkillRestart(c *gin.Context){
+
+	Type := c.DefaultQuery("type","")
+
+	if Type == "Master" {
+
+		shell, err := commandFunction.Shell("sudo framework/function/command/restart.sh.sh")
+		if err != nil {
+			CommonService.Error(c, 10000, "机器人启动失败，请求重新尝试", CommonService.EmptyData{})
+			return
+		}
+
+		if shell != "Restart Success" {
+			CommonService.Error(c, 10000, "机器人启动失败，请求重新尝试", CommonService.EmptyData{})
 			return
 		}
 	}
