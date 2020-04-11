@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
-	"log"
 	"net"
 	"os"
 	"runtime"
@@ -200,9 +199,14 @@ func GetHomeSkillRun(c *gin.Context){
 
 	if Type == "Master" {
 
-		f, err := commandFunction.Shell("framework/function/command/build.sh")
+		_, err := commandFunction.Shell("framework/function/command/build.sh")
 		if err != nil {
-			log.Println("\033[31m[Error]\033[0m", err.Error(),f)
+			CommonService.Error(c, 10000, "技能编译失败，请求重新尝试", CommonService.EmptyData{})
+			return
+		}
+
+		_, err := commandFunction.Shell("framework/function/command/run.sh")
+		if err != nil {
 			CommonService.Error(c, 10000, "技能编译失败，请求重新尝试", CommonService.EmptyData{})
 			return
 		}

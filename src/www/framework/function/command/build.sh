@@ -8,4 +8,4 @@ cd /robot/RoboMentor_SDK/src/www
 
 go build robot.go
 
-echo "Restart Success"
+echo "Build Success"
