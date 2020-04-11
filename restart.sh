@@ -6,7 +6,7 @@ export GOPATH=$PWD
 
 cd /robot/RoboMentor_SDK/src/www
 
-go build main.go && go build robot.go
+go build main.go
 
 sudo supervisorctl reload && sudo supervisorctl restart RoboMentorSDK
 

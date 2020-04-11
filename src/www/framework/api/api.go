@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"time"
 	"www/framework/config"
+	commandFunction "www/framework/function/command"
 	"www/framework/function/serial"
 	"www/framework/service/common"
 	"www/framework/service/request"
@@ -198,6 +199,11 @@ func GetHomeSkillRun(c *gin.Context){
 
 	if Type == "Master" {
 
+		_, err := commandFunction.Shell("cd /robot/RoboMentor_SDK && export GOPATH=$PWD && go build robot.go")
+		if err != nil {
+			CommonService.Error(c, 10000, "技能编译失败，请求重新尝试", CommonService.EmptyData{})
+			return
+		}
 	}
 
 	CommonService.Success(c, 0, "ok", CommonService.EmptyData{})
