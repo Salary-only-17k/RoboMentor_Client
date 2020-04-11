@@ -62,7 +62,7 @@ func WebSocketSend() {
 			}
 		}
 
-		time.Sleep(80 * time.Millisecond)
+		time.Sleep(60 * time.Millisecond)
 	}
 }
 

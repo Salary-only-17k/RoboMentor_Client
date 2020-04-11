@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
+	"net"
 	"os"
 	"runtime"
 	"strconv"
@@ -200,6 +201,91 @@ func SetHomeToolsSerialSubmit(c *gin.Context){
 		readData.MessageType = "serial_message"
 		readData.SerialMessage.Port = jsonData.Port
 		readData.SerialMessage.Content = readContent
+
+		SocketService.Channel.Channel = readData
+	}
+
+	CommonService.Success(c, 0, "ok", CommonService.EmptyData{})
+	return
+}
+
+type requestSetHomeToolsTcpSubmit struct {
+	Ip    	string 		`json:"ip"`
+	Write 	string 		`json:"write"`
+	Read 	string 		`json:"read"`
+	Content string 		`json:"content"`
+	Switch 	bool 		`json:"Switch"`
+}
+
+func SetHomeToolsTcpSubmit(c *gin.Context){
+
+	postJson, _ := ioutil.ReadAll(c.Request.Body)
+
+	jsonData := requestSetHomeToolsTcpSubmit{}
+
+	err := json.Unmarshal(postJson, &jsonData)
+	if err != nil {
+		CommonService.Error(c, 10000, "请求失败，请求参数错误", CommonService.EmptyData{})
+		return
+	}
+
+	if jsonData.Ip != "" && jsonData.Write != "" && jsonData.Content != "" {
+
+		conn, err := net.DialTimeout(jsonData.Ip, jsonData.Write, 2*time.Second)
+		if err != nil {
+			CommonService.Error(c, 10000, "请求失败，请求重新尝试", CommonService.EmptyData{})
+			return
+		}
+
+		defer conn.Close()
+
+		writeInt, err := conn.Write([]byte(jsonData.Content))
+		if err != nil {
+			CommonService.Error(c, 10000, "数据发送失败，请求重新尝试", writeInt)
+			return
+		}
+
+		if jsonData.Switch {
+
+			reply := make([]byte, 1024)
+
+			replyInt, err := conn.Read(reply)
+			if err != nil {
+				CommonService.Error(c, 10000, "数据读取失败，请求重新尝试", replyInt)
+				return
+			}
+
+			readData := SocketService.SocketMessage{}
+
+			readData.MessageType = "tcp_message"
+			readData.TcpMessage.Content = string(reply)
+
+			SocketService.Channel.Channel = readData
+		}
+	}
+
+	if jsonData.Ip != "" && jsonData.Read != "" && jsonData.Content != "" && jsonData.Switch {
+
+		conn, err := net.DialTimeout(jsonData.Ip, jsonData.Read, 5*time.Second)
+		if err != nil {
+			CommonService.Error(c, 10000, "请求失败，请求重新尝试", CommonService.EmptyData{})
+			return
+		}
+
+		defer conn.Close()
+
+		reply := make([]byte, 1024)
+
+		replyInt, err := conn.Read(reply)
+		if err != nil {
+			CommonService.Error(c, 10000, "数据读取失败，请求重新尝试", replyInt)
+			return
+		}
+
+		readData := SocketService.SocketMessage{}
+
+		readData.MessageType = "tcp_message"
+		readData.TcpMessage.Content = string(reply)
 
 		SocketService.Channel.Channel = readData
 	}

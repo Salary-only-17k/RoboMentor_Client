@@ -30,9 +30,17 @@
                         </el-col>
                         <el-col :span="6">
                             <div class="grid-content">
+                                <div class="hd">tcp/socket通讯</div>
+                                <div class="button-box">
+                                    <el-button class="tools-button" type="danger" data-tools="tcp/socket通讯" @click="onTools(4)">打开工具</el-button>
+                                </div>
+                            </div>
+                        </el-col>
+                        <el-col :span="6">
+                            <div class="grid-content">
                                 <div class="hd">陀螺仪</div>
                                 <div class="button-box">
-                                    <el-button class="tools-button" type="danger" data-tools="陀螺仪" @click="onTools(4)">打开工具</el-button>
+                                    <el-button class="tools-button" type="danger" data-tools="陀螺仪" @click="onTools(5)">打开工具</el-button>
                                 </div>
                             </div>
                         </el-col>
@@ -40,7 +48,7 @@
                             <div class="grid-content">
                                 <div class="hd">总线舵机</div>
                                 <div class="button-box">
-                                    <el-button class="tools-button" type="danger" data-tools="总线舵机" @click="onTools(5)">打开工具</el-button>
+                                    <el-button class="tools-button" type="danger" data-tools="总线舵机" @click="onTools(6)">打开工具</el-button>
                                 </div>
                             </div>
                         </el-col>
@@ -48,7 +56,7 @@
                             <div class="grid-content">
                                 <div class="hd">PWM</div>
                                 <div class="button-box">
-                                    <el-button class="tools-button" type="danger" data-tools="PWM" @click="onTools(6)">打开工具</el-button>
+                                    <el-button class="tools-button" type="danger" data-tools="PWM" @click="onTools(7)">打开工具</el-button>
                                 </div>
                             </div>
                         </el-col>
@@ -91,6 +99,29 @@
                     <el-input type="textarea" v-model="serial.ReturnContent" placeholder="这里会实时显示串口发来的数据信息" autocomplete="off" rows="12" resize="none" style="width: 100%;resize: none;"></el-input>
                 </el-form-item>
             </el-form>
+
+            <el-form ref="form" :model="tcp" label-width="0px" v-if="toolsIndex === 4">
+                <el-form-item label="">
+                    <el-input v-model="tcp.ip" placeholder="请输入通讯IP地址" autocomplete="off" style="width: 300px;"></el-input>
+                    <el-input v-model="tcp.write" placeholder="写入端口" autocomplete="off" style="width: 160px;"></el-input>
+                    <el-input v-model="tcp.read" placeholder="读取端口" autocomplete="off" style="width: 160px;"></el-input>
+                    <span class="el-input__span"><i class="iconfont icon-feedback_fill"></i>tcp/socket通讯配置，IP、读取端口、写入端口。</span>
+                </el-form-item>
+                <el-form-item label="">
+                    <el-input type="textarea" v-model="tcp.content" placeholder="请输入要发送的tcp/socket数据，为空则视为只读数据" autocomplete="off" rows="10" resize="none" style="width: 100%;resize: none;"></el-input>
+                    <span class="el-input__span"><i class="iconfont icon-feedback_fill"></i>根据tcp/socket协议，填写要发送的数据。</span>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="danger" :loading="tcp.ButtonStatus" @click="onSubmitTcp">发送/读取数据</el-button>
+                </el-form-item>
+                <el-form-item label="">
+                    <el-switch v-model="tcp.Switch" active-color="#F56C6C" inactive-color="#30333d"></el-switch>
+                    <span class="el-input__span"><i class="iconfont icon-feedback_fill"></i>是否开启串口数据监听，开启后，可以实时获取串口发送回来的数据信息。</span>
+                </el-form-item>
+                <el-form-item label="" v-if="tcp.Switch">
+                    <el-input type="textarea" v-model="tcp.ReturnContent" placeholder="这里会实时显示tcp/socket发来的数据信息" autocomplete="off" rows="12" resize="none" style="width: 100%;resize: none;"></el-input>
+                </el-form-item>
+            </el-form>
         </el-dialog>
     </el-container>
 </template>
@@ -115,6 +146,15 @@
                     port:"/dev/ttyACM0",
                     rate:"115200",
                     bits:"8",
+                    content:"",
+                    Switch:false,
+                    ReturnContent:"",
+                    ButtonStatus:false
+                },
+                tcp:{
+                    ip:"",
+                    write:"",
+                    read:"",
                     content:"",
                     Switch:false,
                     ReturnContent:"",
@@ -165,6 +205,10 @@
                     this.toolsIndex = tools;
                 }else if(tools === 2){
                     this.toolsTitle = "远程消息";
+                    this.dialogTools = true;
+                    this.toolsIndex = tools;
+                }else if(tools === 4){
+                    this.toolsTitle = "tcp/socket通讯";
                     this.dialogTools = true;
                     this.toolsIndex = tools;
                 }else{
@@ -225,6 +269,9 @@
                         this.remote.ButtonStatus = false;
                     });
                 }
+            },
+            onSubmitTcp(){
+
             },
             SocketCallback(data){
                 if(data.message_type === "serial_message" && this.serial.Switch){

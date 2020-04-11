@@ -37,5 +37,7 @@ func InitRouter() *gin.Engine {
 
 	router.POST("/common/home/tools/remote/submit", api.SetHomeToolsRemoteSubmit)
 
+	router.POST("/common/home/tools/tcp/submit", api.SetHomeToolsTcpSubmit)
+
 	return router
 }
