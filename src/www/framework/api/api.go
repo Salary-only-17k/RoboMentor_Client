@@ -205,7 +205,7 @@ func GetHomeSkillRun(c *gin.Context){
 			return
 		}
 
-		_, err := commandFunction.Shell("framework/function/command/run.sh")
+		_, err = commandFunction.Shell("framework/function/command/run.sh")
 		if err != nil {
 			CommonService.Error(c, 10000, "技能编译失败，请求重新尝试", CommonService.EmptyData{})
 			return
