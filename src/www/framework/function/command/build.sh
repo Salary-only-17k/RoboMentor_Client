@@ -6,8 +6,6 @@ export GOPATH=$PWD
 
 cd /robot/RoboMentor_SDK/src/www
 
-go build main.go
-
-sudo supervisorctl restart RoboMentorSDK
+go build robot.go
 
 echo "Restart Success"
