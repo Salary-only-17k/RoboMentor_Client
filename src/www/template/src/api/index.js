@@ -81,6 +81,30 @@ export function SetHomeRobotSubmit(name,port,rate,bits) {
     });
 }
 
+export function GetHomeSkill() {
+    return HTTP({
+        url: 'common/home/skill',
+        method: 'GET',
+        data: '',
+    });
+}
+
+export function GetHomeSkillEdit(Type) {
+    return HTTP({
+        url: 'common/home/skill/edit?type=' + Type,
+        method: 'GET',
+        data: '',
+    });
+}
+
+export function GetHomeSkillSave(data) {
+    return HTTP({
+        url: 'common/home/skill/save',
+        method: 'POST',
+        data: data,
+    });
+}
+
 export function GetHomeTools() {
     return HTTP({
         url: 'common/home/tools',
@@ -100,6 +124,14 @@ export function SetHomeToolsSerialSubmit(data) {
 export function SetHomeToolsRemoteSubmit(data) {
     return HTTP({
         url: 'common/home/tools/remote/submit',
+        method: 'POST',
+        data: data,
+    });
+}
+
+export function SetHomeToolsTcpSubmit(data) {
+    return HTTP({
+        url: 'common/home/tools/tcp/submit',
         method: 'POST',
         data: data,
     });

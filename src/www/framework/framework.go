@@ -31,6 +31,12 @@ func InitRouter() *gin.Engine {
 
 	router.GET("/common/home/robot/submit", api.SetHomeRobotSubmit)
 
+	router.GET("/common/home/skill", api.GetHomeSkill)
+
+	router.GET("/common/home/skill/edit", api.GetHomeSkillEdit)
+
+	router.POST("/common/home/skill/save", api.GetHomeSkillSave)
+
 	router.GET("/common/home/tools", api.GetHomeTools)
 
 	router.POST("/common/home/tools/serial/submit", api.SetHomeToolsSerialSubmit)

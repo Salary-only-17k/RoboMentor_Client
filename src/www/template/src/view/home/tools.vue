@@ -103,16 +103,15 @@
             <el-form ref="form" :model="tcp" label-width="0px" v-if="toolsIndex === 4">
                 <el-form-item label="">
                     <el-input v-model="tcp.ip" placeholder="请输入通讯IP地址" autocomplete="off" style="width: 300px;"></el-input>
-                    <el-input v-model="tcp.write" placeholder="写入端口" autocomplete="off" style="width: 160px;"></el-input>
-                    <el-input v-model="tcp.read" placeholder="读取端口" autocomplete="off" style="width: 160px;"></el-input>
-                    <span class="el-input__span"><i class="iconfont icon-feedback_fill"></i>tcp/socket通讯配置，IP、读取端口、写入端口。</span>
+                    <el-input v-model="tcp.port" placeholder="写入端口" autocomplete="off" style="width: 160px;"></el-input>
+                    <span class="el-input__span"><i class="iconfont icon-feedback_fill"></i>tcp/socket通讯配置，包含IP、写入端口。</span>
                 </el-form-item>
                 <el-form-item label="">
                     <el-input type="textarea" v-model="tcp.content" placeholder="请输入要发送的tcp/socket数据，为空则视为只读数据" autocomplete="off" rows="10" resize="none" style="width: 100%;resize: none;"></el-input>
                     <span class="el-input__span"><i class="iconfont icon-feedback_fill"></i>根据tcp/socket协议，填写要发送的数据。</span>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="danger" :loading="tcp.ButtonStatus" @click="onSubmitTcp">发送/读取数据</el-button>
+                    <el-button type="danger" :loading="tcp.ButtonStatus" @click="onSubmitTcp">发送数据</el-button>
                 </el-form-item>
                 <el-form-item label="">
                     <el-switch v-model="tcp.Switch" active-color="#F56C6C" inactive-color="#30333d"></el-switch>
@@ -127,7 +126,7 @@
 </template>
 
 <script>
-    import{GetHomeTools,SetHomeToolsSerialSubmit,SetHomeToolsRemoteSubmit} from "../../api/index";
+    import{GetHomeTools,SetHomeToolsSerialSubmit,SetHomeToolsRemoteSubmit,SetHomeToolsTcpSubmit} from "../../api/index";
 
     export default {
         name: 'App',
@@ -152,9 +151,8 @@
                     ButtonStatus:false
                 },
                 tcp:{
-                    ip:"",
-                    write:"",
-                    read:"",
+                    ip:"192.168.1.8",
+                    port:"40923",
                     content:"",
                     Switch:false,
                     ReturnContent:"",
@@ -271,11 +269,35 @@
                 }
             },
             onSubmitTcp(){
-
+                if(this.tcp.ip === "" && this.tcp.content === "" && this.tcp.port === "") {
+                    this.$message({
+                        message: '通讯信息不完整，请补充完整',
+                        type: 'warning'
+                    });
+                }else{
+                    this.tcp.ButtonStatus = true;
+                    SetHomeToolsTcpSubmit(this.tcp).then(res=>{
+                        if(res.data.code === -1) {
+                            this.$router.push({path: '/'});
+                        }else if(res.data.code === 0){
+                            this.$message({
+                                message: '通讯数据发送成功',
+                                type: 'success'
+                            });
+                        }else{
+                            this.$message.error(res.data.msg);
+                        }
+                        this.tcp.ButtonStatus = false;
+                    });
+                }
             },
             SocketCallback(data){
                 if(data.message_type === "serial_message" && this.serial.Switch){
                     this.serial.ReturnContent = data.serial_message.content;
+                }
+
+                if(data.message_type === "tcp_message" && this.tcp.Switch){
+                    this.tcp.ReturnContent = data.tcp_message.content;
                 }
             },
         },

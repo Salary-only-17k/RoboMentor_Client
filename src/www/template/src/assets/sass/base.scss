@@ -210,6 +210,52 @@ body {
   left: 15px !important;
 }
 
+.CodeMirror{
+  height: auto !important;
+  font-size: 13px !important;
+}
+.CodeMirror pre.CodeMirror-line, .CodeMirror pre.CodeMirror-line-like{
+  font-size: 13px !important;
+  color: white !important;
+}
+.CodeMirror-scroll {
+  height: auto !important;
+  min-height: 800px !important;
+  overflow-y: hidden !important;
+  overflow-x: auto !important;
+}
+.CodeMirror-hints {
+  position: absolute !important;
+  margin: 0 !important;
+  padding: 10px 5px !important;
+  border-radius: 6px !important;
+  font-size: 12px !important;
+  background-color: #333843 !important;
+  border: 0 !important;
+  box-shadow: 1px 1px 1px rgba(0,0,0,.1) !important;
+  min-width: 200px !important;
+  color: #555d71 !important;
+  z-index: 3000 !important;
+}
+.CodeMirror-hint {
+  line-height: 24px !important;
+  color: white !important;
+  padding: 5px 10px !important;
+}
+li.CodeMirror-hint-active {
+  background-color: #30333d !important;
+}
+.cm-s-monokai.CodeMirror{
+  background-color: #000000 !important;
+}
+.cm-s-monokai .CodeMirror-gutters{
+  background-color: #070800 !important;
+}
+
+.el-progress-bar__outer{
+  background-color: #1e1e1f !important;
+}
+
 @font-face {
   font-family: 'iconfont';  /* project id 1396340 */
   src: url('//at.alicdn.com/t/font_1396340_vyz4cod68x.eot');

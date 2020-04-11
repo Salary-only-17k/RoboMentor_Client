@@ -117,6 +117,93 @@ func SetHomeRobotSubmit(c *gin.Context){
 	return
 }
 
+type requestGetHomeSkill struct {
+	Config 		*Config.Config `json:"config"`
+}
+
+func GetHomeSkill(c *gin.Context){
+
+	returnData := requestGetHomeSkill{}
+
+	returnData.Config = Config.MentorConfig
+
+	CommonService.Success(c, 0, "ok", returnData)
+	return
+}
+
+type requestGetHomeSkillEdit struct {
+	Code string `json:"code"`
+}
+
+func GetHomeSkillEdit(c *gin.Context){
+
+	Type := c.DefaultQuery("type","")
+
+	returnData := requestGetHomeSkillEdit{}
+
+	if Type == "Master" {
+		reader, err := ioutil.ReadFile("application/robot.go")
+		if err != nil {
+			CommonService.Error(c, 10000, "请求失败，请重新尝试", CommonService.EmptyData{})
+			return
+		}
+
+		returnData.Code = string(reader)
+	}
+
+	if Type == "Skill" {
+
+	}
+
+	CommonService.Success(c, 0, "ok", returnData)
+	return
+}
+
+type requestGetHomeSkillSave struct {
+	Code string `json:"code"`
+	Type string `json:"type"`
+}
+
+func GetHomeSkillSave(c *gin.Context){
+
+	postJson, _ := ioutil.ReadAll(c.Request.Body)
+
+	jsonData := requestGetHomeSkillSave{}
+
+	err := json.Unmarshal(postJson, &jsonData)
+	if err != nil {
+		CommonService.Error(c, 10000, "请求失败，请求参数错误", CommonService.EmptyData{})
+		return
+	}
+
+	if jsonData.Type == "Master" {
+		err = ioutil.WriteFile("application/robot.go", []byte(jsonData.Code), 0777)
+		if err != nil {
+			CommonService.Error(c, 10000, "保存失败，请求重新尝试", CommonService.EmptyData{})
+			return
+		}
+	}
+
+	if jsonData.Type == "Skill" {
+
+	}
+
+	CommonService.Success(c, 0, "ok", CommonService.EmptyData{})
+	return
+}
+
+func GetHomeSkillRun(c *gin.Context){
+
+	Type := c.DefaultQuery("type","")
+
+	if Type == "Master" {
+
+	}
+
+	CommonService.Success(c, 0, "ok", CommonService.EmptyData{})
+	return
+}
+
 type requestGetHomeTools struct {
 	Config 		*Config.Config `json:"config"`
 }
@@ -211,8 +298,7 @@ func SetHomeToolsSerialSubmit(c *gin.Context){
 
 type requestSetHomeToolsTcpSubmit struct {
 	Ip    	string 		`json:"ip"`
-	Write 	string 		`json:"write"`
-	Read 	string 		`json:"read"`
+	Port 	string 		`json:"port"`
 	Content string 		`json:"content"`
 	Switch 	bool 		`json:"Switch"`
 }
@@ -229,15 +315,13 @@ func SetHomeToolsTcpSubmit(c *gin.Context){
 		return
 	}
 
-	if jsonData.Ip != "" && jsonData.Write != "" && jsonData.Content != "" {
+	if jsonData.Ip != "" && jsonData.Port != "" && jsonData.Content != "" {
 
-		conn, err := net.DialTimeout(jsonData.Ip, jsonData.Write, 2*time.Second)
+		conn, err := net.DialTimeout("tcp", jsonData.Ip + ":" + jsonData.Port, 2*time.Second)
 		if err != nil {
 			CommonService.Error(c, 10000, "请求失败，请求重新尝试", CommonService.EmptyData{})
 			return
 		}
-
-		defer conn.Close()
 
 		writeInt, err := conn.Write([]byte(jsonData.Content))
 		if err != nil {
@@ -247,7 +331,11 @@ func SetHomeToolsTcpSubmit(c *gin.Context){
 
 		if jsonData.Switch {
 
-			reply := make([]byte, 1024)
+			defer conn.Close()
+
+			reply := make([]byte, 0, 1024)
+
+			//这里目前需要重新优化，临时不可用
 
 			replyInt, err := conn.Read(reply)
 			if err != nil {
@@ -262,32 +350,6 @@ func SetHomeToolsTcpSubmit(c *gin.Context){
 
 			SocketService.Channel.Channel = readData
 		}
-	}
-
-	if jsonData.Ip != "" && jsonData.Read != "" && jsonData.Content != "" && jsonData.Switch {
-
-		conn, err := net.DialTimeout(jsonData.Ip, jsonData.Read, 5*time.Second)
-		if err != nil {
-			CommonService.Error(c, 10000, "请求失败，请求重新尝试", CommonService.EmptyData{})
-			return
-		}
-
-		defer conn.Close()
-
-		reply := make([]byte, 1024)
-
-		replyInt, err := conn.Read(reply)
-		if err != nil {
-			CommonService.Error(c, 10000, "数据读取失败，请求重新尝试", replyInt)
-			return
-		}
-
-		readData := SocketService.SocketMessage{}
-
-		readData.MessageType = "tcp_message"
-		readData.TcpMessage.Content = string(reply)
-
-		SocketService.Channel.Channel = readData
 	}
 
 	CommonService.Success(c, 0, "ok", CommonService.EmptyData{})

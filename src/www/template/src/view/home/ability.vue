@@ -45,7 +45,7 @@
 <style lang="scss" scoped>
     .main{
         width: 100%;
-        padding-top: 140px;
+        padding-top: 130px;
         .main-box{
             width: 1200px;
             min-height: 600px;
