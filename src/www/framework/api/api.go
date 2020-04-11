@@ -222,7 +222,7 @@ func GetHomeSkillRestart(c *gin.Context){
 
 	if Type == "Master" {
 
-		shell, err := commandFunction.Shell("sudo framework/function/command/restart.sh.sh")
+		shell, err := commandFunction.Shell("sudo framework/function/command/restart.sh")
 		if err != nil {
 			CommonService.Error(c, 10000, "机器人启动失败，请求重新尝试", CommonService.EmptyData{})
 			return
