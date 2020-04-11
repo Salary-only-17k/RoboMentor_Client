@@ -105,6 +105,14 @@ export function GetHomeSkillSave(data) {
     });
 }
 
+export function GetHomeSkillRun(Type) {
+    return HTTP({
+        url: 'common/home/skill/run?type=' + Type,
+        method: 'GET',
+        data: '',
+    });
+}
+
 export function GetHomeTools() {
     return HTTP({
         url: 'common/home/tools',

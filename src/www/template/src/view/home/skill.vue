@@ -55,7 +55,7 @@
 </template>
 
 <script>
-    import{GetHomeSkill,GetHomeSkillEdit,GetHomeSkillSave} from "../../api/index";
+    import{GetHomeSkill,GetHomeSkillEdit,GetHomeSkillSave,GetHomeSkillRun} from "../../api/index";
     import CodeMirror from 'vue-codemirror';
     // language
     import "codemirror/mode/go/go.js";
@@ -207,7 +207,21 @@
                 });
             },
             onRun(){
-
+                this.runStatus = true;
+                GetHomeSkillRun(this.codeType).then(res=>{
+                    if(res.data.code === -1) {
+                        this.$router.push({path: '/'});
+                    }else if(res.data.code === 0){
+                        this.$message({
+                            message: '程序代码运行成功',
+                            type: 'success'
+                        });
+                        this.runStatus = false;
+                    }else{
+                        this.$message.error(res.data.msg);
+                        this.runStatus = false;
+                    }
+                });
             },
             addSkill(){
 
