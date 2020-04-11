@@ -200,7 +200,7 @@ func GetHomeSkillRun(c *gin.Context){
 
 	if Type == "Master" {
 
-		shell, err := commandFunction.Shell("framework/function/command/build.sh")
+		shell, err := commandFunction.Shell("sudo framework/function/command/build.sh")
 		if err != nil {
 			CommonService.Error(c, 10000, "技能编译失败，请求重新尝试", CommonService.EmptyData{})
 			return
@@ -208,7 +208,7 @@ func GetHomeSkillRun(c *gin.Context){
 
 		log.Println("\033[31m[Error]\033[0m", shell)
 
-		_, err = commandFunction.Shell("framework/function/command/run.sh")
+		_, err = commandFunction.Shell("sudo framework/function/command/run.sh")
 		if err != nil {
 			CommonService.Error(c, 10000, "技能编译失败，请求重新尝试", CommonService.EmptyData{})
 			return
