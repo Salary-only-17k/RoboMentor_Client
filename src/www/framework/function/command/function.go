@@ -1,12 +1,12 @@
 package commandFunction
 
 import (
-	"github.com/lizongshen/gocommand"
+	"os/exec"
 )
 
-func Shell(command string) (int, string, error){
+func Shell(command string) (string, error){
 
-	pid, out, err := gocommand.NewCommand().Exec(command)
+	run, err := exec.Command(command).Output()
 
-	return pid, out, err
+	return string(run), err
 }
