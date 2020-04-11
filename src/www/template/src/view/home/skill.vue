@@ -224,10 +224,6 @@
                                 }else if(res.data.code === 0){
                                     that.ProgressText = "机器人技能程序重启成功";
                                     that.Progress = 100;
-                                    setTimeout(function(){
-                                        that.ProgressText = "准备就绪";
-                                        that.Progress = 0;
-                                    },1500);
                                     that.runStatus = false;
                                 }else{
                                     that.$message.error(res.data.msg);
