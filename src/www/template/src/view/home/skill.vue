@@ -43,7 +43,6 @@
                         </div>
                     </div>
                     <div class="item right">
-                        <el-switch v-model="codeLanguage" active-color="#F56C6C" inactive-color="#30333d" v-if="codeType === 'Skill'">12</el-switch><span v-if="codeType === 'Skill'">切换为Python开发语言</span>
                         <el-button class="el-button-tools" :loading="saveStatus" type="danger" @click="onSave"><i class="iconfont icon-order_fill" v-if="!saveStatus"></i>保存程序</el-button>
                         <el-button class="el-button-tools run" :loading="runStatus" type="danger" @click="onRun"><i class="iconfont icon-play_fill" v-if="!runStatus"></i>运行程序</el-button>
                     </div>
@@ -102,7 +101,6 @@
                 Data:false,
                 dialogBoxStatus:false,
                 codeType:"",
-                codeLanguage:false,
                 codeData:"",
                 cmOption: {
                     tabSize: 4,
@@ -207,42 +205,43 @@
                 });
             },
             onRun(){
-                this.runStatus = true;
-                this.ProgressText = "正在编译技能程序";
-                this.Progress = 10;
-                GetHomeSkillBuild(this.codeType).then(res=>{
+                let that = this;
+                that.runStatus = true;
+                that.ProgressText = "正在编译技能程序";
+                that.Progress = 10;
+                GetHomeSkillBuild(that.codeType).then(res=>{
                     if(res.data.code === -1) {
-                        this.$router.push({path: '/'});
+                        that.$router.push({path: '/'});
                     }else if(res.data.code === 0){
-                        this.ProgressText = "技能程序编译成功";
-                        this.Progress = 30;
+                        that.ProgressText = "技能程序编译成功";
+                        that.Progress = 30;
                         setTimeout(function(){
-                            this.ProgressText = "正在重启机器人程序";
-                            this.Progress = 55;
-                            GetHomeSkillRestart(this.codeType).then(res=>{
+                            that.ProgressText = "正在重启机器人程序";
+                            that.Progress = 55;
+                            GetHomeSkillRestart(that.codeType).then(res=>{
                                 if(res.data.code === -1) {
-                                    this.$router.push({path: '/'});
+                                    that.$router.push({path: '/'});
                                 }else if(res.data.code === 0){
-                                    this.ProgressText = "机器人技能程序重启成功";
-                                    this.Progress = 100;
+                                    that.ProgressText = "机器人技能程序重启成功";
+                                    that.Progress = 100;
                                     setTimeout(function(){
-                                        this.ProgressText = "准备就绪";
-                                        this.Progress = 0;
+                                        that.ProgressText = "准备就绪";
+                                        that.Progress = 0;
                                     },1500);
-                                    this.runStatus = false;
+                                    that.runStatus = false;
                                 }else{
-                                    this.$message.error(res.data.msg);
-                                    this.runStatus = false;
-                                    this.ProgressText = "准备就绪";
-                                    this.Progress = 0;
+                                    that.$message.error(res.data.msg);
+                                    that.runStatus = false;
+                                    that.ProgressText = "准备就绪";
+                                    that.Progress = 0;
                                 }
                             });
                         },900);
                     }else{
-                        this.$message.error(res.data.msg);
-                        this.runStatus = false;
-                        this.ProgressText = "准备就绪";
-                        this.Progress = 0;
+                        that.$message.error(res.data.msg);
+                        that.runStatus = false;
+                        that.ProgressText = "准备就绪";
+                        that.Progress = 0;
                     }
                 });
             },
