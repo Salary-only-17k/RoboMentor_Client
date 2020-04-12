@@ -12,7 +12,6 @@ import (
 	"www/framework"
 	"www/framework/config"
 	"www/framework/service/message"
-	"www/framework/service/system"
 )
 
 func init() {
@@ -29,8 +28,6 @@ func init() {
 	Config.Init(*AppID, *AppSecret)
 
 	MessageService.Messages(*AppID, *AppSecret)
-
-	SystemService.System()
 
 	RoboMentor.Init()
 }

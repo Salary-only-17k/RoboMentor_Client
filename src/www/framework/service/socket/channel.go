@@ -8,17 +8,10 @@ type SocketChannel struct {
 
 type SocketMessage struct {
 	MessageType 	string 			`json:"message_type"`
-	SystemMessage 	systemMessage 	`json:"system_message"`
 	SerialMessage 	serialMessage 	`json:"serial_message"`
 	RemoteMessage	remoteMessage 	`json:"remote_message"`
 	ServiceMessage	serviceMessage 	`json:"service_message"`
 	TcpMessage		tcpMessage 	`json:"tcp_message"`
-}
-
-type systemMessage struct {
-	Time    string 		`json:"time"`
-	Memory 	float64 	`json:"memory"`
-	Cpu 	[]float64 	`json:"cpu"`
 }
 
 type serialMessage struct {

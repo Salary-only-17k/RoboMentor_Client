@@ -27,6 +27,8 @@ func InitRouter() *gin.Engine {
 
 	router.GET("/common/home/index", api.GetHomeIndex)
 
+	router.GET("/common/home/index/system", api.GetHomeIndexSystem)
+
 	router.GET("/common/home/robot", api.GetHomeRobot)
 
 	router.GET("/common/home/robot/submit", api.SetHomeRobotSubmit)

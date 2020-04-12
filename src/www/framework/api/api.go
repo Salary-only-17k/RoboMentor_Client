@@ -3,6 +3,8 @@ package api
 import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"github.com/shirou/gopsutil/cpu"
+	"github.com/shirou/gopsutil/mem"
 	"io/ioutil"
 	"net"
 	"os"
@@ -18,7 +20,7 @@ import (
 	"www/framework/service/socket"
 )
 
-type requestGetHomeIndex struct {
+type responseGetHomeIndex struct {
 	Goos 		string `json:"goos"`
 	Goarch 		string `json:"goarch"`
 	HostName 	string `json:"host_name"`
@@ -28,7 +30,7 @@ type requestGetHomeIndex struct {
 
 func GetHomeIndex(c *gin.Context){
 
-	returnData := requestGetHomeIndex{}
+	returnData := responseGetHomeIndex{}
 
 	returnData.Goos = runtime.GOOS
 	returnData.Goarch = runtime.GOARCH
@@ -44,13 +46,37 @@ func GetHomeIndex(c *gin.Context){
 	return
 }
 
-type requestGetHomeRobot struct {
+type responseGetHomeIndexSystem struct {
+	Time    string 		`json:"time"`
+	Memory 	float64 	`json:"memory"`
+	Cpu 	[]float64 	`json:"cpu"`
+}
+
+func GetHomeIndexSystem(c *gin.Context){
+
+	returnData := responseGetHomeIndexSystem{}
+
+	returnData.Time = time.Now().Format("15:04:05")
+
+	memory, _ := mem.VirtualMemory()
+
+	returnData.Memory = memory.UsedPercent
+
+	cpuInfo, _ := cpu.Percent(time.Second, false)
+
+	returnData.Cpu = cpuInfo
+
+	CommonService.Success(c, 0, "ok", returnData)
+	return
+}
+
+type responseGetHomeRobot struct {
 	Config 		*Config.Config `json:"config"`
 }
 
 func GetHomeRobot(c *gin.Context){
 
-	returnData := requestGetHomeRobot{}
+	returnData := responseGetHomeRobot{}
 
 	returnData.Config = Config.MentorConfig
 
@@ -119,13 +145,13 @@ func SetHomeRobotSubmit(c *gin.Context){
 	return
 }
 
-type requestGetHomeSkill struct {
+type responseGetHomeSkill struct {
 	Config 		*Config.Config `json:"config"`
 }
 
 func GetHomeSkill(c *gin.Context){
 
-	returnData := requestGetHomeSkill{}
+	returnData := responseGetHomeSkill{}
 
 	returnData.Config = Config.MentorConfig
 
@@ -238,13 +264,13 @@ func GetHomeSkillRestart(c *gin.Context){
 	return
 }
 
-type requestGetHomeTools struct {
+type responseGetHomeTools struct {
 	Config 		*Config.Config `json:"config"`
 }
 
 func GetHomeTools(c *gin.Context){
 
-	returnData := requestGetHomeTools{}
+	returnData := responseGetHomeTools{}
 
 	returnData.Config = Config.MentorConfig
 
