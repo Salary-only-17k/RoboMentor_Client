@@ -232,7 +232,12 @@ func GetHomeSkillBuild(c *gin.Context){
 			return
 		}
 
-		if strings.Contains(shell, "Build Success") == false || strings.Contains(shell, ":") == true {
+		if strings.Contains(shell, ":") == true {
+			CommonService.Error(c, 10000, "技能编译失败，请求重新尝试", CommonService.EmptyData{})
+			return
+		}
+
+		if strings.Contains(shell, "Build Success") == false {
 			CommonService.Error(c, 10000, "技能编译失败，请求重新尝试", CommonService.EmptyData{})
 			return
 		}
