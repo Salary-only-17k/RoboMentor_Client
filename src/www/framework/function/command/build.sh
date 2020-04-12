@@ -8,4 +8,8 @@ cd /robot/RoboMentor_SDK/src/www
 
 go build robot.go
 
-echo "Build Success"
+if [ $? -ne 0 ]; then
+    echo "Build Error"
+else
+    echo "Build Success"
+fi
