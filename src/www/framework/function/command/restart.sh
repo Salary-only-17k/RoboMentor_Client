@@ -2,4 +2,8 @@
 
 sudo supervisorctl restart Robot
 
-echo "Restart Success"
+if [ $? -ne 0 ]; then
+    echo "Restart Error"
+else
+    echo "Restart Success"
+fi

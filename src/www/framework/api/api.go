@@ -6,7 +6,6 @@ import (
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/mem"
 	"io/ioutil"
-	"log"
 	"net"
 	"os"
 	"runtime"
@@ -229,13 +228,6 @@ func GetHomeSkillBuild(c *gin.Context){
 
 		shell, err := commandFunction.Shell("sudo framework/function/command/build.sh")
 		if err != nil {
-			CommonService.Error(c, 10000, "技能编译失败，请求重新尝试", CommonService.EmptyData{})
-			return
-		}
-
-		log.Println("\033[31m[Error]\033[0m", shell)
-
-		if strings.Contains(shell, ":") == true {
 			CommonService.Error(c, 10000, "技能编译失败，请求重新尝试", CommonService.EmptyData{})
 			return
 		}
