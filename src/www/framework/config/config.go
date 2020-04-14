@@ -64,7 +64,7 @@ func Init(AppID string, AppSecret string) {
 
 	MentorConfig.RobotAuth.AppSecret = AppSecret
 
-	MentorConfig.RobotApi = "https://api.wileho.com"
+	MentorConfig.RobotApi = "https://api.robomentor.cn"
 
 	MentorConfig.RobotMessage = "tcp://47.111.96.253:1883"
 
