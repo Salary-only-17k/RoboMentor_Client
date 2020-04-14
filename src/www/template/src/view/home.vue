@@ -15,7 +15,10 @@
                                 <a href="https://www.robomentor.cn" target="_blank" class="home-run"><i class="iconfont icon-homepage_fill"></i> 官方网站</a>
                             </div>
                             <div class="hd-tools-item">
-                                <a href="https://www.robomentor.cn/#/shop" target="_blank" class="home-run"><i class="iconfont icon-service_fill"></i> 硬件商城</a>
+                                <a href="https://www.robomentor.cn/#/developer/edu" target="_blank" class="home-run"><i class="iconfont icon-video_fill"></i> 机甲学院</a>
+                            </div>
+                            <div class="hd-tools-item">
+                                <a href="https://www.robomentor.cn/#/developer/shop" target="_blank" class="home-run"><i class="iconfont icon-service_fill"></i> 硬件商城</a>
                             </div>
                             <div class="hd-tools-item">
                                 <a href="http://www.robomentor.cn/#/developer" target="_blank" class="home-run"><i class="iconfont icon-document_fill"></i> 开发者社区</a>
