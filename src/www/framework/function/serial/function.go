@@ -49,7 +49,7 @@ func SerialRead(Port string, Baud int, Buf int) string {
 			stringData = ""
 		}else{
 			log.Println("[info]", stringData)
-			if strings.Index(stringData, "\n") > 0 {
+			if strings.Index(stringData, "end") > 0 {
 				break
 			}else{
 				stringData += fmt.Sprintf("%s", string(readBuf[:serialRead]))
