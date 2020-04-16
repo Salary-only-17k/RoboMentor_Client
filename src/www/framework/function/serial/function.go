@@ -34,7 +34,7 @@ func SerialRead(Port string, Baud int, Buf int) string {
 
 	stringData := ""
 
-	serialConfig := &serial.Config{ Name: Port, Baud: Baud, ReadTimeout: time.Millisecond * 500}
+	serialConfig := &serial.Config{ Name: Port, Baud: Baud, ReadTimeout: 128}
 
 	serialOpen, err := serial.OpenPort(serialConfig)
 	if err != nil {
@@ -47,9 +47,11 @@ func SerialRead(Port string, Baud int, Buf int) string {
 		serialRead, err := serialOpen.Read(readBuf)
 		if err != nil {
 			stringData = ""
+			break
 		}else{
 			log.Println("[info]", stringData)
 			if strings.Index(stringData, "\n") > 0 {
+				stringData += fmt.Sprintf("%s", string(readBuf[:serialRead]))
 				break
 			}else{
 				stringData += fmt.Sprintf("%s", string(readBuf[:serialRead]))
