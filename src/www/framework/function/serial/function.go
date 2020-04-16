@@ -46,11 +46,9 @@ func SerialRead(Port string, Baud int, Buf int) string {
 	for {
 		serialRead, err := serialOpen.Read(readBuf)
 		if err != nil {
-			stringData = ""
 			break
 		}else{
-			log.Println("[info]", stringData)
-			if strings.Index(stringData, "\n") > 0 {
+			if strings.Index(stringData, "}") > 0 {
 				stringData += fmt.Sprintf("%s", string(readBuf[:serialRead]))
 				break
 			}else{

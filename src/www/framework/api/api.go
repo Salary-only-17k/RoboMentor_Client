@@ -6,6 +6,7 @@ import (
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/mem"
 	"io/ioutil"
+	"log"
 	"net"
 	"os"
 	"runtime"
@@ -342,6 +343,8 @@ func SetHomeToolsSerialSubmit(c *gin.Context){
 	if jsonData.Switch {
 
 		readContent := serialFunction.SerialRead(jsonData.Port, RateInt, 6)
+
+		log.Println("[info]", readContent)
 
 		readData := SocketService.SocketMessage{}
 
