@@ -341,7 +341,7 @@ func SetHomeToolsSerialSubmit(c *gin.Context){
 
 	if jsonData.Switch {
 
-		readContent := serialFunction.SerialRead(jsonData.Port, RateInt, 5)
+		readContent := serialFunction.SerialRead(jsonData.Port, RateInt, 1024)
 
 		readData := SocketService.SocketMessage{}
 
