@@ -67,6 +67,11 @@
 
         <el-dialog :title="toolsTitle" :visible.sync="dialogTools" width="1000px" :before-close="HandleClose" :closeOnClickModal="false" :closeOnPressEscape="false">
 
+            <div class="camera-box" v-if="toolsIndex === 1">
+                <div class="no" v-if="!camera.Status">请在机器人主程序中开启摄像头</div>
+                <img src="" v-else>
+            </div>
+
             <el-form ref="form" :model="remote" label-width="0px" v-if="toolsIndex === 2">
                 <el-form-item label="">
                     <el-input type="textarea" v-model="remote.content" placeholder="请输入要发送的消息数据" autocomplete="off" rows="10" resize="none" style="width: 100%;resize: none;"></el-input>
@@ -137,6 +142,9 @@
                 dialogTools:false,
                 toolsIndex:0,
                 SocketStatus:true,
+                camera:{
+                    Status:true
+                },
                 remote:{
                     content:"",
                     ButtonStatus:false
@@ -197,12 +205,16 @@
                 });
             },
             onTools(tools){
-                if( tools === 3) {
-                    this.toolsTitle = "串口调试";
+                if( tools === 1) {
+                    this.toolsTitle = "远程控制";
                     this.dialogTools = true;
                     this.toolsIndex = tools;
                 }else if(tools === 2){
                     this.toolsTitle = "远程消息";
+                    this.dialogTools = true;
+                    this.toolsIndex = tools;
+                }else if(tools === 3){
+                    this.toolsTitle = "串口调试";
                     this.dialogTools = true;
                     this.toolsIndex = tools;
                 }else if(tools === 4){
@@ -357,6 +369,26 @@
                     }
                 }
             }
+        }
+    }
+    .camera-box{
+        width: 100%;
+        height: 540px;
+        background-color: #000000;
+        position: relative;
+        .no{
+            width: 100%;
+            height: 540px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            text-align: center;
+            line-height: 540px;
+            font-size: 12px;
+        }
+        img{
+            width: 100%;
+            height: 540px;
         }
     }
 </style>

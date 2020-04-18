@@ -29,7 +29,6 @@ func WebSocket(c *gin.Context) {
 
 	if GetWebSocket.Status == false {
 		go WebSocketSend()
-		GetWebSocket.User = make(map[*websocket.Conn]bool)
 		GetWebSocket.Status = true
 	}
 
@@ -66,12 +65,16 @@ func WebSocketSend() {
 	}
 }
 
+var RobotSocket = &websocket.Conn{}
+
 func RobotSocketClient() {
 
 	client, _, err := websocket.DefaultDialer.Dial("ws://127.0.0.1:8888/message", nil)
 	if err != nil {
 		log.Println("\033[31m[Robot]\033[0m", "Socket Error")
 	}
+
+	RobotSocket = client
 
 	go func() {
 		for {
@@ -84,4 +87,18 @@ func RobotSocketClient() {
 		}
 	}()
 
+}
+
+func RobotSocketClientSend(Content string) error {
+
+	message := SocketMessage{}
+
+	message.MessageType = "camera_message"
+	message.CameraMessage.Content = Content
+
+	sendJson, _ :=json.Marshal(Channel.Channel)
+
+	err := RobotSocket.WriteMessage(1, sendJson)
+
+	return err
 }

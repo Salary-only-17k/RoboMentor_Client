@@ -11,7 +11,8 @@ type SocketMessage struct {
 	SerialMessage 	serialMessage 	`json:"serial_message"`
 	RemoteMessage	remoteMessage 	`json:"remote_message"`
 	ServiceMessage	serviceMessage 	`json:"service_message"`
-	TcpMessage		tcpMessage 	`json:"tcp_message"`
+	TcpMessage		tcpMessage 		`json:"tcp_message"`
+	CameraMessage	cameraMessage 	`json:"camera_message"`
 }
 
 type serialMessage struct {
@@ -28,5 +29,9 @@ type serviceMessage struct {
 }
 
 type tcpMessage struct {
+	Content string 		`json:"content"`
+}
+
+type cameraMessage struct {
 	Content string 		`json:"content"`
 }
