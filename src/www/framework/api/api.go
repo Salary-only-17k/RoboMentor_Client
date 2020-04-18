@@ -342,7 +342,9 @@ func SetHomeToolsSerialSubmit(c *gin.Context){
 
 	if jsonData.Switch {
 
-		readContent := serialFunction.SerialRead(jsonData.Port, RateInt, 6)
+		bits, _ := strconv.Atoi(jsonData.Bits)
+
+		readContent := serialFunction.SerialRead(jsonData.Port, RateInt, bits)
 
 		log.Println("[info]", readContent)
 

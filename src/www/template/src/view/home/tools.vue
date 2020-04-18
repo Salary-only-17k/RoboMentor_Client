@@ -81,7 +81,7 @@
                 <el-form-item label="">
                     <el-input v-model="serial.port" placeholder="请输入串口地址" autocomplete="off" style="width: 300px;"></el-input>
                     <el-input v-model="serial.rate" placeholder="波特率" autocomplete="off" style="width: 120px;"></el-input>
-                    <el-input v-model="serial.bits" placeholder="数据位" autocomplete="off" style="width: 100px;" disabled></el-input>
+                    <el-input v-model="serial.bits" placeholder="数据位" autocomplete="off" style="width: 100px;"></el-input>
                     <span class="el-input__span"><i class="iconfont icon-feedback_fill"></i>硬件设备的串口地址、波特率、数据位，例如：/dev/ttyACM0。</span>
                 </el-form-item>
                 <el-form-item label="">

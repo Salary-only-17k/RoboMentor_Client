@@ -10,6 +10,8 @@ go build main.go
 
 go build robot.go
 
+sudo supervisorctl reload
+
 sudo supervisorctl restart RoboMentorSDK
 
 sudo supervisorctl restart Robot
