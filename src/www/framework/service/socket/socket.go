@@ -29,6 +29,7 @@ func WebSocket(c *gin.Context) {
 
 	if GetWebSocket.Status == false {
 		go WebSocketSend()
+		GetWebSocket.User = make(map[*websocket.Conn]bool)
 		GetWebSocket.Status = true
 	}
 
