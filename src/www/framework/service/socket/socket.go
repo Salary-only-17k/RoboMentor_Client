@@ -104,11 +104,11 @@ func RobotSocketClient() {
 
 }
 
-func RobotSocketClientSend(Content string) error {
+func RobotSocketClientSend(Type string, Content string) error {
 
 	message := SocketMessage{}
 
-	message.MessageType = "camera_message"
+	message.MessageType = Type
 	message.CameraMessage.Content = Content
 
 	sendJson, err :=json.Marshal(message)

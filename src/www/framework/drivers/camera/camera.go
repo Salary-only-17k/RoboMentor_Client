@@ -14,7 +14,7 @@ type Driver struct {
 	ReadImage string
 }
 
-func StartDevice(Port string) (*Driver, error) {
+func StartDevice(Port string, Status bool) (*Driver, error) {
 
 	camera, err := webcam.Open(Port)
 
@@ -45,9 +45,10 @@ func StartDevice(Port string) (*Driver, error) {
 						c.ReadFrame = frame
 						c.ReadImage = base64.StdEncoding.EncodeToString(frame)
 
-						SocketService.RobotSocketClientSend(c.ReadImage)
-
-						time.Sleep(10 * time.Millisecond)
+						if(Status){
+							SocketService.RobotSocketClientSend("camera_message", c.ReadImage)
+							time.Sleep(10 * time.Millisecond)
+						}
 					}
 			}
 		}
