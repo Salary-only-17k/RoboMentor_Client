@@ -37,7 +37,6 @@ func StartDevice(Port string) (*Driver, error) {
 	c := &Driver{}
 
 	c.Camera = camera
-	c.Status<-false
 
 	log.Println("[robot]", 4)
 
