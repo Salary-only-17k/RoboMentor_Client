@@ -315,7 +315,7 @@
 
                 if(data.message_type === "camera_message"){
                     this.camera.Status = true;
-                    this.camera.ReturnContent = data.camera_message.content;
+                    this.camera.ReturnContent = "data:image/jpeg;base64," + data.camera_message.content;
                 }
             },
         },
