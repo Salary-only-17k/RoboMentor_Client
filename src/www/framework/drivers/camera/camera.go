@@ -27,8 +27,6 @@ func StartDevice(Port string) (*Driver, error) {
 
 	c := &Driver{}
 
-	c.Status<-false
-
 	go func() {
 		for {
 			select {
