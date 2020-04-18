@@ -80,7 +80,7 @@ func WebSocketSend() {
 	}
 }
 
-var RobotSocket = &websocket.Conn{}
+var RobotSocket = &WebSocketConn{}
 
 func RobotSocketClient() {
 
@@ -89,7 +89,8 @@ func RobotSocketClient() {
 		log.Println("\033[31m[Robot]\033[0m", "Socket Error")
 	}
 
-	RobotSocket = client
+	RobotSocket.User = make(map[*websocket.Conn]bool)
+	RobotSocket.User[client] = true
 
 	go func() {
 		for {
@@ -111,9 +112,11 @@ func RobotSocketClientSend(Content string) error {
 	message.MessageType = "camera_message"
 	message.CameraMessage.Content = Content
 
-	sendJson, _ :=json.Marshal(Channel.Channel)
+	sendJson, err :=json.Marshal(Channel.Channel)
 
-	err := RobotSocket.WriteMessage(1, sendJson)
+	for user := range RobotSocket.User {
+		err = user.WriteMessage(1, sendJson)
+	}
 
 	return err
 }
