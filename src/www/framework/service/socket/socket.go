@@ -99,6 +99,8 @@ func RobotSocketClientSend(Content string) error {
 
 	sendJson, _ :=json.Marshal(Channel.Channel)
 
+	log.Println("[robot]", sendJson)
+
 	err := RobotSocket.WriteMessage(1, sendJson)
 
 	return err
