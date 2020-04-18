@@ -45,8 +45,6 @@ func WebSocket(c *gin.Context) {
 
 		json.Unmarshal(m, &Message)
 
-		log.Println("[robot]", string(m))
-
 		if Message.MessageType == "camera_message" {
 			for user := range GetWebSocket.User {
 				err := user.WriteMessage(1, m)
