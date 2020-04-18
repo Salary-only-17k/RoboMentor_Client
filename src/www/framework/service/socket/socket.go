@@ -36,9 +36,23 @@ func WebSocket(c *gin.Context) {
 	GetWebSocket.User[Conn] = true
 
 	for {
-		_, _, err := Conn.ReadMessage()
+		_, m, err := Conn.ReadMessage()
 		if err != nil {
 			break
+		}
+
+		Message := SocketMessage{}
+
+		json.Unmarshal(m, &Message)
+
+		if Message.MessageType == "camera_message" {
+			for user := range GetWebSocket.User {
+				err := user.WriteMessage(1, m)
+				if err != nil {
+					user.Close()
+					delete(GetWebSocket.User, user)
+				}
+			}
 		}
 	}
 }
