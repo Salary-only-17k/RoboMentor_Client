@@ -69,7 +69,7 @@
 
             <div class="camera-box" v-if="toolsIndex === 1">
                 <div class="no" v-if="!camera.Status">请在机器人主程序中开启摄像头</div>
-                <img src="" v-else>
+                <img :src="camera.ReturnContent" v-else>
             </div>
 
             <el-form ref="form" :model="remote" label-width="0px" v-if="toolsIndex === 2">
@@ -143,7 +143,8 @@
                 toolsIndex:0,
                 SocketStatus:true,
                 camera:{
-                    Status:true
+                    Status:false,
+                    ReturnContent:""
                 },
                 remote:{
                     content:"",
@@ -310,6 +311,11 @@
 
                 if(data.message_type === "tcp_message" && this.tcp.Switch){
                     this.tcp.ReturnContent = data.tcp_message.content;
+                }
+
+                if(data.message_type === "camera_message"){
+                    this.camera.Status = true;
+                    this.camera.ReturnContent = data.camera_message.content;
                 }
             },
         },
