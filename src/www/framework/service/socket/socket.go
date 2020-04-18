@@ -113,7 +113,7 @@ func RobotSocketClientSend(Content string) error {
 	message.MessageType = "camera_message"
 	message.CameraMessage.Content = Content
 
-	sendJson, err :=json.Marshal(Channel.Channel)
+	sendJson, err :=json.Marshal(message)
 
 	for user := range RobotSocket.User {
 		err = user.WriteMessage(1, sendJson)
