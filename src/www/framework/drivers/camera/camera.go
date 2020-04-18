@@ -3,6 +3,7 @@ package cameraDriver
 import (
 	"encoding/base64"
 	"github.com/webcam"
+	"time"
 	"www/framework/service/socket"
 )
 
@@ -45,6 +46,8 @@ func StartDevice(Port string) (*Driver, error) {
 						c.ReadImage = base64.StdEncoding.EncodeToString(frame)
 
 						SocketService.RobotSocketClientSend(c.ReadImage)
+
+						time.Sleep(10 * time.Millisecond)
 					}
 			}
 		}
