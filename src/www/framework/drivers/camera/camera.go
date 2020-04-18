@@ -28,6 +28,7 @@ func StartDevice(Port string) (*Driver, error) {
 
 	c := &Driver{}
 
+	c.Camera = camera
 	c.Status<-false
 
 	go func() {
