@@ -32,6 +32,8 @@ func StartDevice(Port string) (*Driver, error) {
 
 	log.Println("[robot]", 3)
 
+	log.Println("[robot]", err)
+
 	c := &Driver{}
 
 	c.Camera = camera
