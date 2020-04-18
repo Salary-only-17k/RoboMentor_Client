@@ -25,7 +25,7 @@ func InitRobot() Robot.Interface {
 // @Title  机器人启动主程序
 // @Description	用户可以在这里设计机器人的各种程序
 func (robot *Base) OnStart() {
-	cameraDriver.StartDevice("/dev/video1")
+	cameraDriver.StartDevice("/dev/video0")
 }
 
 // @Title  机器人停止、意外停止时触发

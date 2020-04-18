@@ -3,7 +3,7 @@ package cameraDriver
 import (
 	"encoding/base64"
 	"github.com/webcam"
-	SocketService "www/framework/service/socket"
+	"www/framework/service/socket"
 )
 
 type Driver struct {
