@@ -3,7 +3,6 @@ package cameraDriver
 import (
 	"encoding/base64"
 	"github.com/webcam"
-	"log"
 	"www/framework/service/socket"
 )
 
@@ -16,11 +15,7 @@ type Driver struct {
 
 func StartDevice(Port string) (*Driver, error) {
 
-	log.Println("[robot]", 1)
-
 	camera, err := webcam.Open(Port)
-
-	log.Println("[robot]", 2)
 
 	for code, formatName := range camera.GetSupportedFormats() {
 		if formatName == "Motion-JPEG" {
@@ -30,23 +25,14 @@ func StartDevice(Port string) (*Driver, error) {
 
 	err = camera.StartStreaming()
 
-	log.Println("[robot]", 3)
-
-	log.Println("[robot]", err)
-
 	c := &Driver{}
 
 	c.Camera = camera
 
-	log.Println("[robot]", 4)
-
 	go func() {
-		log.Println("[robot]", 5)
 		for {
-			log.Println("[robot]", 6)
 			select {
 				case <-c.Status:
-					log.Println("[robot]", c.ReadFrame)
 					return
 				default:
 					frame, err := c.Camera.ReadFrame()
@@ -57,8 +43,6 @@ func StartDevice(Port string) (*Driver, error) {
 					if len(frame) != 0 {
 						c.ReadFrame = frame
 						c.ReadImage = base64.StdEncoding.EncodeToString(frame)
-
-						log.Println("[robot]", c.ReadFrame)
 
 						SocketService.RobotSocketClientSend(c.ReadImage)
 					}
