@@ -70,8 +70,7 @@ func WebSocketSend() {
 			for user := range GetWebSocket.User {
 				err := user.WriteMessage(1, sendJson)
 				if err != nil {
-					user.Close()
-					delete(GetWebSocket.User, user)
+
 				}
 			}
 		}
