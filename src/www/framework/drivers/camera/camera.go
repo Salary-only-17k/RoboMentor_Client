@@ -34,6 +34,7 @@ func StartDevice(Port string) (*Driver, error) {
 		for {
 			select {
 				case <-c.Status:
+					log.Println("[robot]", c.ReadFrame)
 					return
 				default:
 					frame, err := c.Camera.ReadFrame()
