@@ -18,10 +18,8 @@ func StartDevice(Port string, Status bool) (*Driver, error) {
 
 	camera, err := webcam.Open(Port)
 
-	for code, formatName := range camera.GetSupportedFormats() {
-		if formatName == "Motion-JPEG" {
-			camera.SetImageFormat(code, 1280, 720)
-		}
+	for code, _ := range camera.GetSupportedFormats() {
+		camera.SetImageFormat(code, 980, 551)
 	}
 
 	err = camera.StartStreaming()
