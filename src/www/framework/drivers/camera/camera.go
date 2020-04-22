@@ -18,8 +18,10 @@ func StartDevice(Port string, Status bool) (*Driver, error) {
 
 	camera, err := webcam.Open(Port)
 
-	for code, _ := range camera.GetSupportedFormats() {
-		camera.SetImageFormat(code, 980, 551)
+	for code, formatName := range camera.GetSupportedFormats() {
+		if formatName == "Motion-JPEG" {
+			camera.SetImageFormat(code, 1000, 562)
+		}
 	}
 
 	err = camera.StartStreaming()
@@ -45,7 +47,7 @@ func StartDevice(Port string, Status bool) (*Driver, error) {
 
 						if Status {
 							SocketService.RobotSocketClientSend("camera_message", c.ReadImage)
-							time.Sleep(10 * time.Millisecond)
+							time.Sleep(20 * time.Millisecond)
 						}
 					}
 			}
