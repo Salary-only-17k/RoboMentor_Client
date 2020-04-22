@@ -47,7 +47,7 @@ func StartDevice(Port string, Status bool) (*Driver, error) {
 
 						if Status {
 							SocketService.RobotSocketClientSend("camera_message", c.ReadImage)
-							time.Sleep(120 * time.Millisecond)
+							time.Sleep(20 * time.Millisecond)
 						}
 					}
 			}
