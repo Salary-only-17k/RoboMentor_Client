@@ -3,7 +3,6 @@ package cameraDriver
 import (
 	"encoding/base64"
 	"github.com/webcam"
-	"time"
 	"www/framework/service/socket"
 )
 
@@ -47,7 +46,6 @@ func StartDevice(Port string, Status bool) (*Driver, error) {
 
 						if Status {
 							SocketService.RobotSocketClientSend("camera_message", c.ReadImage)
-							time.Sleep(20 * time.Millisecond)
 						}
 					}
 			}
