@@ -30,7 +30,7 @@ func (robot *Base) OnStart() {
 // @Title  机器人停止、意外停止时触发
 // @Description	用户可以在这里设计机器人停止、意外停止时的程序
 func (robot *Base) OnClose() {
-
+	
 }
 
 // @Title  获取机器人本地、远程消息
