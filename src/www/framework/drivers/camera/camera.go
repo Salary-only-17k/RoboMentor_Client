@@ -70,8 +70,6 @@ func StartVisionDevice(Port interface{}, Status bool) (*Driver, error) {
 
 	c := &Driver{}
 
-	prev := time.Now()
-
 	go func() {
 		for {
 			select {
@@ -87,23 +85,16 @@ func StartVisionDevice(Port interface{}, Status bool) (*Driver, error) {
 					continue
 				}
 
-				timeElapsed := time.Now().Sub(prev)
+				gocv.Resize(cameraImage, &cameraImageResize, image.Pt(800, 450), 0, 0, gocv.InterpolationLinear)
 
-				if float64(timeElapsed)/1000/1000/1000 >= 1.0/10.0 {
+				frame, _ := gocv.IMEncode(gocv.JPEGFileExt, cameraImageResize)
 
-					gocv.Resize(cameraImage, &cameraImageResize, image.Pt(0, 0), 0, 0, gocv.InterpolationLinear)
+				c.ReadFrame = frame
 
-					frame, _ := gocv.IMEncode(gocv.JPEGFileExt, cameraImageResize)
+				c.ReadImage = base64.StdEncoding.EncodeToString(frame)
 
-					c.ReadFrame = frame
-
-					c.ReadImage = base64.StdEncoding.EncodeToString(frame)
-
-					if Status {
-						SocketService.RobotSocketClientSend("camera_message", c.ReadImage)
-					}
-
-					prev = time.Now()
+				if Status {
+					SocketService.RobotSocketClientSend("camera_message", c.ReadImage)
 				}
 			}
 		}
