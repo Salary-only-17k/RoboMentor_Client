@@ -2,7 +2,6 @@ package cameraDriver
 
 import (
 	"encoding/base64"
-	"fmt"
 	"github.com/webcam"
 	"gocv.io/x/gocv"
 	"image"
@@ -65,7 +64,7 @@ func StartDevice(Port string, Status bool) (*Driver, error) {
 
 func StartDeviceOpenCV(Port interface{}, Status bool) (*Driver, error) {
 
-	camera, _ := gocv.OpenVideoCapture(Port)
+	camera, err := gocv.OpenVideoCapture(Port)
 
 	cameraImage := gocv.NewMat()
 
@@ -104,6 +103,8 @@ func StartDeviceOpenCV(Port interface{}, Status bool) (*Driver, error) {
 			}
 		}
 	}()
+
+	return c, err
 }
 
 func (c *Driver) OnClose() {
