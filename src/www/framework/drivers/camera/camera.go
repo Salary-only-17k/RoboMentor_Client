@@ -60,7 +60,7 @@ func StartDevice(Port string, Status bool) (*Driver, error) {
 }
 
 
-func StartDeviceOpenCV(Port interface{}, Status bool) (*Driver, error) {
+func StartVisionDevice(Port interface{}, Status bool,) (*Driver, error) {
 
 	camera, err := gocv.OpenVideoCapture(Port)
 
@@ -85,7 +85,7 @@ func StartDeviceOpenCV(Port interface{}, Status bool) (*Driver, error) {
 					continue
 				}
 
-				gocv.Resize(cameraImage, &cameraImageResize, image.Pt(0, 0), 0, 0, gocv.InterpolationLinear)
+				gocv.Resize(cameraImage, &cameraImageResize, image.Pt(800, 450), 0, 0, gocv.InterpolationLinear)
 
 				frame, _ := gocv.IMEncode(gocv.JPEGFileExt, cameraImageResize)
 
