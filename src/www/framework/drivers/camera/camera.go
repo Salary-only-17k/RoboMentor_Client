@@ -21,6 +21,8 @@ func StartDevice(Port string, Status bool) (*Driver, error) {
 	for code, formatName := range camera.GetSupportedFormats() {
 		if formatName == "Motion-JPEG" {
 			camera.SetImageFormat(code, 1000, 562)
+		}else{
+			camera.SetImageFormat(code, 720, 405)
 		}
 	}
 

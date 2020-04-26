@@ -80,7 +80,7 @@ func WebSocketSend() {
 	}
 }
 
-var RobotSocket = &WebSocketConn{}
+var RobotSocket = &websocket.Conn{}
 
 func RobotSocketClient() {
 
@@ -89,12 +89,11 @@ func RobotSocketClient() {
 		log.Println("\033[31m[Robot]\033[0m", "Socket Error")
 	}
 
-	RobotSocket.User = make(map[*websocket.Conn]bool)
-	RobotSocket.User[client] = true
+	RobotSocket = client
 
 	go func() {
 		for {
-			_, message, err := client.ReadMessage()
+			_, message, err := RobotSocket.ReadMessage()
 			if err != nil {
 				continue
 			}
@@ -114,13 +113,7 @@ func RobotSocketClientSend(Type string, Content string) error {
 
 	sendJson, err :=json.Marshal(message)
 
-	for user := range RobotSocket.User {
-		err = user.WriteMessage(1, sendJson)
-		if err != nil {
-			user.Close()
-			delete(GetWebSocket.User, user)
-		}
-	}
+	RobotSocket.WriteMessage(1, sendJson)
 
 	return err
 }

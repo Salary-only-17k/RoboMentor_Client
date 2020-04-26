@@ -9,7 +9,7 @@
                         </div>
                         <div class="hd-box-item right">
                             <div class="hd-tools-item">
-                                <div class="switch-status"><i class="iconfont icon-coordinates_fill"></i> {{serviceStatus}}</div>
+                                <div class="switch-status"><i class="iconfont icon-coordinates_fill"></i> {{socketStatus}}</div>
                             </div>
                             <div class="hd-tools-item">
                                 <a href="https://www.robomentor.cn" target="_blank" class="home-run"><i class="iconfont icon-homepage_fill"></i> 官方网站</a>
@@ -79,14 +79,14 @@
 </template>
 
 <script>
-    const socket = new WebSocket("ws://"+window.location.hostname+":8888/message");
     export default {
         name: 'App',
         data() {
             return {
                 Data:false,
                 message:{},
-                serviceStatus:"正在诊断服务"
+                socketStatus:"正在诊断服务",
+                socket:null
             }
         },
         provide(){
@@ -101,30 +101,35 @@
             Data_In(data){
                 if(!this.Data){
                     this.Data = data;
-                    this.onSocket();
+                    this.initSocket();
                 }
             },
-            onSocket(){
-                let that = this;
-                socket.onopen = function(){
-                    that.serviceStatus = "服务连接正常";
-                    socket.onmessage = function (message){
-                        that.message = JSON.parse(message.data.toString());
-                    };
-                };
-                socket.onerror = function () {
-                    that.serviceStatus = "服务连接异常";
-                };
-                socket.onclose = function () {
-                    that.serviceStatus = "服务连接中断";
-                };
+            initSocket(){
+                const socketUrl = "ws://"+window.location.hostname+":8888/message";
+                this.socket = new WebSocket(socketUrl);
+                this.socket.onmessage = this.socketMessage;
+                this.socket.onopen = this.socketOpen;
+                this.socket.onerror = this.socketError;
+                this.socket.onclose = this.socketClose;
+            },
+            socketMessage(message){
+                this.message = JSON.parse(message.data.toString());
+            },
+            socketOpen(){
+                this.socketStatus = "服务连接正常";
+            },
+            socketError(){
+                this.socketStatus = "服务连接异常";
+            },
+            socketClose(){
+                this.socketStatus = "服务连接中断";
             },
             MessagesEmpty(){
                 this.message = {};
-            },
+            }
         },
         beforeDestroy(){
-
+            this.socket.close();
         }
     }
 </script>
