@@ -51,7 +51,7 @@ func StartDevice(Port string, Status bool) (*Driver, error) {
 
 						if Status {
 							SocketService.RobotSocketClientSend("camera_message", c.ReadImage)
-							time.Sleep(60 * time.Millisecond)
+							time.Sleep(15 * time.Millisecond)
 						}
 					}
 			}
@@ -97,7 +97,6 @@ func StartDeviceOpenCV(Port interface{}, Status bool) (*Driver, error) {
 
 				if Status {
 					SocketService.RobotSocketClientSend("camera_message", c.ReadImage)
-					time.Sleep(60 * time.Millisecond)
 				}
 
 			}
