@@ -70,7 +70,8 @@ func WebSocketSend() {
 			for user := range GetWebSocket.User {
 				err := user.WriteMessage(1, sendJson)
 				if err != nil {
-
+					user.Close()
+					delete(GetWebSocket.User, user)
 				}
 			}
 		}
@@ -115,6 +116,10 @@ func RobotSocketClientSend(Type string, Content string) error {
 
 	for user := range RobotSocket.User {
 		err = user.WriteMessage(1, sendJson)
+		if err != nil {
+			user.Close()
+			delete(GetWebSocket.User, user)
+		}
 	}
 
 	return err

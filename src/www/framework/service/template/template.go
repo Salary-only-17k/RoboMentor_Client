@@ -12,6 +12,6 @@ func Template(c *gin.Context) {
 
 	err := Action.Execute(c.Writer, nil)
 	if err != nil {
-		log.Println("\033[31m[Error]\033[0m", "RoboMentorSDK Template Error")
+		log.Println("\033[31m[Error]\033[0m", "RoboMentorClient Template Error")
 	}
 }

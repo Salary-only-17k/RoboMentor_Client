@@ -23,7 +23,7 @@ func SerialWrite(Port string, Baud int, Data string) bool {
 	serialWrite, err := serialOpen.Write([]byte(Data))
 	if err != nil {
 		status = false
-		log.Println("\033[31m[Error]\033[0m", "RoboMentorSDK Serial Write Error", serialWrite)
+		log.Println("\033[31m[Error]\033[0m", "RoboMentorClient Serial Write Error", serialWrite)
 		return status
 	}
 

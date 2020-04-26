@@ -96,18 +96,18 @@ func Init(AppID string, AppSecret string) {
 
 	if Response.StatusCode != 200 {
 		MentorConfig.RobotAuth.Status = false
-		log.Println("\033[31m[Error]\033[0m", "RoboMentorSDK Register Error")
+		log.Println("\033[31m[Error]\033[0m", "RoboMentorClient Register Error")
 	}
 
 	err := json.Unmarshal(ResponseBody, &responseData)
 	if err != nil {
 		MentorConfig.RobotAuth.Status = false
-		log.Println("\033[31m[Error]\033[0m", "RoboMentorSDK Register Error")
+		log.Println("\033[31m[Error]\033[0m", "RoboMentorClient Register Error")
 	}
 
 	if responseData.Code != 0 {
 		MentorConfig.RobotAuth.Status = false
-		log.Println("\033[31m[Error]\033[0m", "RoboMentorSDK Register Error")
+		log.Println("\033[31m[Error]\033[0m", "RoboMentorClient Register Error")
 	}
 
 	MentorConfig.Token = responseData.Data.Token

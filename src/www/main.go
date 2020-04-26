@@ -22,7 +22,7 @@ func init() {
 	flag.Parse()
 
 	if  *AppID == "" || *AppSecret == "" {
-		log.Println("\033[31m[Error]\033[0m", "RoboMentorSDK AppID AppSecret Error")
+		log.Println("\033[31m[Error]\033[0m", "RoboMentorClient AppID AppSecret Error")
 	}
 
 	Config.Init(*AppID, *AppSecret)
@@ -34,7 +34,7 @@ func init() {
 
 func main() {
 
-	log.Println("[info]", "RoboMentorSDK Start")
+	log.Println("[info]", "RoboMentorClient Start")
 
 	router := RoboMentor.InitRouter()
 
@@ -50,7 +50,7 @@ func main() {
 		if err := s.ListenAndServe(); err != nil {}
 	}()
 
-	log.Println("[info]", "RoboMentorSDK Start Success")
+	log.Println("[info]", "RoboMentorClient Start Success")
 
 	quit := make(chan os.Signal)
 	signal.Notify(quit, os.Interrupt)
@@ -62,5 +62,5 @@ func main() {
 
 	if err := s.Shutdown(ctx); err != nil {}
 
-	log.Println("[info]", "RoboMentorSDK Stop")
+	log.Println("[info]", "RoboMentorClient Stop")
 }

@@ -28,12 +28,12 @@ func Messages(AppID string, AppSecret string) {
 
 	client.Client = mqtt.NewClient(clientOptions)
 	if token := client.Client.Connect(); token.Wait() && token.Error() != nil {
-		log.Println("\033[31m[Error]\033[0m", "RoboMentorSDK MessageClient Connect Error")
+		log.Println("\033[31m[Error]\033[0m", "RoboMentorClient MessageClient Connect Error")
 	}
 
 	topic := "robot/" + Config.MentorConfig.RobotMac
 
 	if token := client.Client.Subscribe(topic, 0, responseMessage); token.Wait() && token.Error() != nil {
-		log.Println("\033[31m[Error]\033[0m", "RoboMentorSDK MessageClient Subscribe Error")
+		log.Println("\033[31m[Error]\033[0m", "RoboMentorClient MessageClient Subscribe Error")
 	}
 }

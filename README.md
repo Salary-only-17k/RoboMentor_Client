@@ -1,2 +1,2 @@
-# RoboMentor SDK
-RoboMentor SDK
+# RoboMentor Client
+RoboMentor Client

@@ -22,7 +22,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 
 	err := json.Unmarshal(message.Payload(), &messageData)
 	if err != nil {
-		log.Println("\033[31m[Error]\033[0m", "RoboMentorSDK ResponseMessage Error")
+		log.Println("\033[31m[Error]\033[0m", "RoboMentorClient ResponseMessage Error")
 		return
 	}
 

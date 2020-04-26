@@ -1,10 +1,10 @@
 #!/bin/sh
 
-cd /robot/RoboMentor_SDK
+cd /robot/RoboMentor_Client
 
 export GOPATH=$PWD
 
-cd /robot/RoboMentor_SDK/src/www
+cd /robot/RoboMentor_Client/src/www
 
 go build robot.go
 
