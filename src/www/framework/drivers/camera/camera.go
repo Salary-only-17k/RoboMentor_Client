@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"gocv.io/x/gocv"
 	"image"
+	"time"
 	"www/framework/service/socket"
 )
 
@@ -14,7 +15,7 @@ type Driver struct {
 	ReadImage string
 }
 
-func StartDevice(Port string, Status bool) (*Driver, error) {
+func StartDevice(Port interface{}, Status bool) (*Driver, error) {
 
 	camera, err := gocv.OpenVideoCapture(Port)
 
@@ -51,6 +52,7 @@ func StartDevice(Port string, Status bool) (*Driver, error) {
 
 				if Status {
 					SocketService.RobotSocketClientSend("camera_message", c.ReadImage)
+					time.Sleep(10 * time.Millisecond)
 				}
 			}
 		}
