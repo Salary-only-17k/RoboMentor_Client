@@ -1,6 +1,7 @@
 package robot
 
 import (
+	"gocv.io/x/gocv"
 	"www/framework/robot"
 )
 
@@ -24,7 +25,11 @@ func InitRobot() Robot.Interface {
 // @Title  机器人启动主程序
 // @Description	用户可以在这里设计机器人的各种程序
 func (robot *Base) OnStart() {
+	webcam, _ := gocv.OpenVideoCapture("/dev/video0")
 
+	img := gocv.NewMat()
+
+	webcam.Read(&img)
 }
 
 // @Title  机器人停止、意外停止时触发
