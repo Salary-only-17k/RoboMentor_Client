@@ -60,7 +60,7 @@ func StartDevice(Port string, Status bool) (*Driver, error) {
 }
 
 
-func StartVisionDevice(Port interface{}, Status bool,) (*Driver, error) {
+func StartVisionDevice(Port interface{}, Status bool) (*Driver, error) {
 
 	camera, err := gocv.OpenVideoCapture(Port)
 
@@ -69,6 +69,8 @@ func StartVisionDevice(Port interface{}, Status bool,) (*Driver, error) {
 	cameraImageResize := gocv.NewMat()
 
 	c := &Driver{}
+
+	prev := time.Now()
 
 	go func() {
 		for {
@@ -85,19 +87,24 @@ func StartVisionDevice(Port interface{}, Status bool,) (*Driver, error) {
 					continue
 				}
 
-				gocv.Resize(cameraImage, &cameraImageResize, image.Pt(800, 450), 0, 0, gocv.InterpolationLinear)
+				timeElapsed := time.Now().Sub(prev)
 
-				frame, _ := gocv.IMEncode(gocv.JPEGFileExt, cameraImageResize)
+				if float64(timeElapsed)/1000/1000/1000 >= 1.0/10.0 {
 
-				c.ReadFrame = frame
+					gocv.Resize(cameraImage, &cameraImageResize, image.Pt(0, 0), 0, 0, gocv.InterpolationLinear)
 
-				c.ReadImage = base64.StdEncoding.EncodeToString(frame)
+					frame, _ := gocv.IMEncode(gocv.JPEGFileExt, cameraImageResize)
 
-				if Status {
-					SocketService.RobotSocketClientSend("camera_message", c.ReadImage)
-					time.Sleep(15 * time.Millisecond)
+					c.ReadFrame = frame
+
+					c.ReadImage = base64.StdEncoding.EncodeToString(frame)
+
+					if Status {
+						SocketService.RobotSocketClientSend("camera_message", c.ReadImage)
+					}
+
+					prev = time.Now()
 				}
-
 			}
 		}
 	}()
