@@ -42,7 +42,7 @@ func StartDevice(Port interface{}, Status bool) (*Driver, error) {
 					continue
 				}
 
-				gocv.Resize(cameraImage, &cameraImageResize, image.Pt(1280, 720), 0, 0, gocv.InterpolationNearestNeighbor)
+				gocv.Resize(cameraImage, &cameraImageResize, image.Pt(cameraImage.Rows(), cameraImage.Cols()), 0, 0, gocv.InterpolationCubic)
 
 				frame, _ := gocv.IMEncode(gocv.JPEGFileExt, cameraImageResize)
 
