@@ -22,7 +22,7 @@ func StartDevice(Port string, Status bool) (*Driver, error) {
 
 	for code, formatName := range camera.GetSupportedFormats() {
 		if formatName == "Motion-JPEG" {
-			camera.SetImageFormat(code, 800, 450)
+			camera.SetImageFormat(code, 640, 480)
 		}
 	}
 
@@ -85,7 +85,7 @@ func StartVisionDevice(Port interface{}, Status bool) (*Driver, error) {
 					continue
 				}
 
-				gocv.Resize(cameraImage, &cameraImageResize, image.Pt(800, 450), 0, 0, gocv.InterpolationLinear)
+				gocv.Resize(cameraImage, &cameraImageResize, image.Pt(640, 480), 0, 0, gocv.InterpolationLinear)
 
 				frame, _ := gocv.IMEncode(gocv.JPEGFileExt, cameraImageResize)
 
