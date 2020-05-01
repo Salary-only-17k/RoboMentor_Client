@@ -9,14 +9,17 @@ import (
 	"os"
 	"os/signal"
 	"time"
+	"www/application"
 	"www/framework"
 	"www/framework/config"
+	"www/framework/robot"
 	"www/framework/service/message"
 )
 
 func init() {
 
 	var AppID = flag.String("a", "", "AppID Error")
+
 	var AppSecret = flag.String("s", "", "AppSecret Error")
 
 	flag.Parse()
@@ -50,6 +53,10 @@ func main() {
 		if err := s.ListenAndServe(); err != nil {}
 	}()
 
+	Robot.Init = robot.InitRobot()
+
+	Robot.Init.OnStart()
+
 	log.Println("[info]", "RoboMentorClient Start Success")
 
 	quit := make(chan os.Signal)
@@ -61,6 +68,8 @@ func main() {
 	defer cancel()
 
 	if err := s.Shutdown(ctx); err != nil {}
+
+	Robot.Init.OnClose()
 
 	log.Println("[info]", "RoboMentorClient Stop")
 }

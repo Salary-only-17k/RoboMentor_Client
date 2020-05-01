@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 type ResponseData struct {
@@ -13,11 +15,7 @@ type ResponseData struct {
 	Msg 	string 			`json:"msg"`
 }
 
-func DefaultGet(url string, params map[string]string, headers map[string]string) (*http.Response, error) {
-	return Get(url, params, headers)
-}
-
-func Get(url string, params map[string]string, headers map[string]string) (*http.Response, error) {
+func Get(url string, params map[string]string, headers map[string]string, AppID string, AppSecret string) (*http.Response, error) {
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -25,6 +23,7 @@ func Get(url string, params map[string]string, headers map[string]string) (*http
 	}
 
 	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Robot-Token", AppID + "@" + AppSecret + "@" + strconv.Itoa(int(time.Now().Unix())))
 
 	q := req.URL.Query()
 	if params != nil {
@@ -45,11 +44,7 @@ func Get(url string, params map[string]string, headers map[string]string) (*http
 	return client.Do(req)
 }
 
-func DefaultPost(url string, body map[string]string, params map[string]string, headers map[string]string) (*http.Response, error) {
-	return Post(url, body, params, headers)
-}
-
-func Post(url string, body map[string]string, params map[string]string, headers map[string]string) (*http.Response, error) {
+func Post(url string, body map[string]string, params map[string]string, headers map[string]string, AppID string, AppSecret string) (*http.Response, error) {
 
 	var bodyJson []byte
 	var req *http.Request
@@ -67,6 +62,7 @@ func Post(url string, body map[string]string, params map[string]string, headers 
 	}
 
 	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Robot-Token", AppID + "@" + AppSecret + "@" + strconv.Itoa(int(time.Now().Unix())))
 
 	q := req.URL.Query()
 	if params != nil {

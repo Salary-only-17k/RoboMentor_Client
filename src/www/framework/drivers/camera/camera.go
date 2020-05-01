@@ -4,8 +4,6 @@ import (
 	"encoding/base64"
 	"gocv.io/x/gocv"
 	"image"
-	"time"
-	"www/framework/service/socket"
 )
 
 type Driver struct {
@@ -42,7 +40,7 @@ func StartDevice(Port interface{}, Status bool) (*Driver, error) {
 					continue
 				}
 
-				gocv.Resize(cameraImage, &cameraImageResize, image.Pt(cameraImage.Rows(), cameraImage.Cols()), 0, 0, gocv.InterpolationCubic)
+				gocv.Resize(cameraImage, &cameraImageResize, image.Pt(cameraImage.Cols(), cameraImage.Rows()), 0, 0, gocv.InterpolationNearestNeighbor)
 
 				frame, _ := gocv.IMEncode(gocv.JPEGFileExt, cameraImageResize)
 
@@ -51,8 +49,7 @@ func StartDevice(Port interface{}, Status bool) (*Driver, error) {
 				c.ReadImage = base64.StdEncoding.EncodeToString(frame)
 
 				if Status {
-					SocketService.RobotSocketClientSend("camera_message", c.ReadImage)
-					time.Sleep(10 * time.Millisecond)
+
 				}
 			}
 		}

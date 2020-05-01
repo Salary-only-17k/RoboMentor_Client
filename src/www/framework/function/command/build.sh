@@ -6,7 +6,7 @@ export GOPATH=$PWD
 
 cd /robot/RoboMentor_Client/src/www
 
-go build robot.go
+go build main.go
 
 if [ $? -ne 0 ]; then
     echo "Build Error"

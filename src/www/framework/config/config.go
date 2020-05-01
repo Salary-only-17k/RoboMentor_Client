@@ -7,8 +7,6 @@ import (
 	"net"
 	"os"
 	"path/filepath"
-	"strconv"
-	"time"
 	"www/framework/service/common"
 	"www/framework/service/request"
 )
@@ -44,6 +42,10 @@ type responseData struct {
 	Code 	int 			`json:"code"`
 	Data 	responseRobot 	`json:"data"`
 	Msg 	string 			`json:"msg"`
+}
+
+type ResponseRobot struct {
+	responseRobot
 }
 
 type responseRobot struct {
@@ -90,7 +92,7 @@ func Init(AppID string, AppSecret string) {
 
 	responseData := responseData{}
 
-	Response, _ := RequestService.DefaultGet(MentorConfig.RobotApi + "/oauth/robot/register", paramsData, map[string]string{"Robot-Token":MentorConfig.RobotAuth.AppID + "@" + MentorConfig.RobotAuth.AppSecret + "@" + strconv.Itoa(int(time.Now().Unix()))})
+	Response, _ := RequestService.Get(MentorConfig.RobotApi + "/oauth/robot/register", paramsData, map[string]string{}, MentorConfig.RobotAuth.AppID, MentorConfig.RobotAuth.AppSecret)
 
 	ResponseBody, _ := ioutil.ReadAll(Response.Body)
 
@@ -113,7 +115,13 @@ func Init(AppID string, AppSecret string) {
 	MentorConfig.Token = responseData.Data.Token
 	MentorConfig.RobotName = responseData.Data.RobotTitle
 	MentorConfig.RobotNetIp = responseData.Data.RobotNetIp
-	MentorConfig.RobotBoard.Port = responseData.Data.RobotBoard.Port
-	MentorConfig.RobotBoard.Bits = responseData.Data.RobotBoard.Bits
-	MentorConfig.RobotBoard.Rate = responseData.Data.RobotBoard.Rate
+
+	if responseData.Data.RobotBoard.Port != "" {
+		isExists := CommonService.Exists(responseData.Data.RobotBoard.Port)
+		if isExists == true {
+			MentorConfig.RobotBoard.Port = responseData.Data.RobotBoard.Port
+			MentorConfig.RobotBoard.Bits = responseData.Data.RobotBoard.Bits
+			MentorConfig.RobotBoard.Rate = responseData.Data.RobotBoard.Rate
+		}
+	}
 }
