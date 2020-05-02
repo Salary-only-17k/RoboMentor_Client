@@ -2,7 +2,6 @@ package cameraDriver
 
 import (
 	"encoding/base64"
-	"fmt"
 	"github.com/webcam"
 )
 
@@ -23,13 +22,8 @@ func StartDevice(Port string) (*Driver, error) {
 	var formats []webcam.PixelFormat
 	for f := range formatDesc {
 		formats = append(formats, f)
+		camera.SetImageFormat(f, 1280, 720)
 	}
-
-	choice := readChoice(fmt.Sprintf("Choose format [1-%d]: ", len(formats)))
-
-	format := formats[choice-1]
-
-	camera.SetImageFormat(format, 1280, 720)
 
 	err = camera.StartStreaming()
 
@@ -55,18 +49,4 @@ func StartDevice(Port string) (*Driver, error) {
 	}()
 
 	return Camera, err
-}
-
-func readChoice(s string) int {
-	var i int
-	for true {
-		print(s)
-		_, err := fmt.Scanf("%d\n", &i)
-		if err != nil || i < 1 {
-
-		} else {
-			break
-		}
-	}
-	return i
 }
