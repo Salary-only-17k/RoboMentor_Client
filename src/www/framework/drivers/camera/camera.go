@@ -2,6 +2,7 @@ package cameraDriver
 
 import (
 	"encoding/base64"
+	"fmt"
 	"github.com/webcam"
 )
 
@@ -12,22 +13,25 @@ type Driver struct {
 	Status 			chan bool
 	ReadFrame 		[]byte
 	ReadImage 		string
-	AccessToken 	string
 }
 
-func StartDevice(Port string, visionType string) (*Driver, error) {
+func StartDevice(Port string) (*Driver, error) {
 
 	camera, err := webcam.Open(Port)
 
-	for code, formatName := range camera.GetSupportedFormats() {
-		if formatName == "Motion-JPEG" {
-			camera.SetImageFormat(code, 1000, 562)
-		}
+	formatDesc := camera.GetSupportedFormats()
+	var formats []webcam.PixelFormat
+	for f := range formatDesc {
+		formats = append(formats, f)
 	}
 
-	err = camera.StartStreaming()
+	choice := readChoice(fmt.Sprintf("Choose format [1-%d]: ", len(formats)))
 
-	Camera := &Driver{}
+	format := formats[choice-1]
+
+	camera.SetImageFormat(format, 1280, 720)
+
+	err = camera.StartStreaming()
 
 	Camera.Camera = camera
 
@@ -45,14 +49,24 @@ func StartDevice(Port string, visionType string) (*Driver, error) {
 				if len(frame) != 0 {
 					Camera.ReadFrame = frame
 					Camera.ReadImage = base64.StdEncoding.EncodeToString(frame)
-
-					if visionType != "" {
-
-					}
 				}
 			}
 		}
 	}()
 
 	return Camera, err
+}
+
+func readChoice(s string) int {
+	var i int
+	for true {
+		print(s)
+		_, err := fmt.Scanf("%d\n", &i)
+		if err != nil || i < 1 {
+
+		} else {
+			break
+		}
+	}
+	return i
 }
