@@ -2,7 +2,10 @@ package cameraDriver
 
 import (
 	"encoding/base64"
+	"github.com/gin-gonic/gin"
 	"github.com/webcam"
+	"strconv"
+	"time"
 )
 
 var Camera = &Driver{}
@@ -43,10 +46,21 @@ func StartDevice(Port string) (*Driver, error) {
 				if len(frame) != 0 {
 					Camera.ReadFrame = frame
 					Camera.ReadImage = base64.StdEncoding.EncodeToString(frame)
+
+					time.Sleep(20 * time.Millisecond)
 				}
 			}
 		}
 	}()
 
 	return Camera, err
+}
+
+func WebCamera(c *gin.Context){
+
+	c.Header("Content-Type", "image/jpeg")
+
+	c.Header("Content-Length", strconv.Itoa(len(Camera.ReadFrame)))
+
+	c.Writer.WriteString(string(Camera.ReadFrame))
 }
