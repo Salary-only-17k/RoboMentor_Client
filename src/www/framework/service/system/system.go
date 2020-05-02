@@ -33,8 +33,5 @@ func System()  {
 
 			time.Sleep(2000 * time.Millisecond)
 		}
-
-
-		room(roomid).Submit(userid + ": " + message)
 	}()
 }
