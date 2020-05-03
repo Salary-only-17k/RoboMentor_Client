@@ -16,7 +16,7 @@ func InitRobot() Robot.Interface {
 }
 
 func (robot *Base) OnStart() {
-	
+
 }
 
 func (robot *Base) OnClose() {

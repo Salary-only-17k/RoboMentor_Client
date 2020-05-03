@@ -44,7 +44,7 @@ func Get(url string, params map[string]string, headers map[string]string, AppID 
 	return client.Do(req)
 }
 
-func Post(url string, body map[string]string, params map[string]string, headers map[string]string, AppID string, AppSecret string) (*http.Response, error) {
+func Post(url string, body map[string]interface{}, params map[string]string, headers map[string]string, AppID string, AppSecret string) (*http.Response, error) {
 
 	var bodyJson []byte
 	var req *http.Request

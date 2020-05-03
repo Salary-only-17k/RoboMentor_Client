@@ -17,9 +17,9 @@ type Driver struct {
 	ReadImage 		string
 }
 
-func StartDevice(Port string) (*Driver, error) {
+func StartDevice(Port string) {
 
-	camera, err := webcam.Open(Port)
+	camera, _ := webcam.Open(Port)
 
 	formatDesc := camera.GetSupportedFormats()
 	for code, formatName := range formatDesc {
@@ -28,9 +28,12 @@ func StartDevice(Port string) (*Driver, error) {
 		}
 	}
 
-	err = camera.StartStreaming()
+	camera.StartStreaming()
 
 	Camera.Camera = camera
+
+	// 避免协程优先执行，故意延迟
+	time.Sleep(10 * time.Millisecond)
 
 	go func() {
 		for {
@@ -46,14 +49,11 @@ func StartDevice(Port string) (*Driver, error) {
 				if len(frame) != 0 {
 					Camera.ReadFrame = frame
 					Camera.ReadImage = base64.StdEncoding.EncodeToString(frame)
-
-					time.Sleep(20 * time.Millisecond)
+					time.Sleep(10 * time.Millisecond)
 				}
 			}
 		}
 	}()
-
-	return Camera, err
 }
 
 func WebCamera(c *gin.Context){
