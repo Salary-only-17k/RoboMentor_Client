@@ -1,6 +1,7 @@
 package robot
 
 import (
+	"www/framework/ability/face"
 	"www/framework/robot"
 )
 
@@ -16,7 +17,7 @@ func InitRobot() Robot.Interface {
 }
 
 func (robot *Base) OnStart() {
-
+	faceAbility.DetectFace()
 }
 
 func (robot *Base) OnClose() {
