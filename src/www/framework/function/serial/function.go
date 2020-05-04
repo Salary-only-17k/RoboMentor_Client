@@ -4,15 +4,25 @@ import (
 	"fmt"
 	"github.com/tarm/goserial"
 	"log"
+	"os"
+	"strconv"
 	"strings"
 	"time"
 )
 
-func SerialWrite(Port string, Baud int, Data string) bool {
+func SerialWrite(Port string, Baud string, Data string) bool {
 
 	status := true
 
-	serialConfig := &serial.Config{ Name: Port, Baud: Baud, ReadTimeout: time.Millisecond * 10}
+	isExists := exists(Port)
+	if isExists == false {
+		status = false
+		return status
+	}
+
+	RateInt, _ := strconv.Atoi(Baud)
+
+	serialConfig := &serial.Config{ Name: Port, Baud: RateInt, ReadTimeout: time.Millisecond * 10}
 
 	serialOpen, err := serial.OpenPort(serialConfig)
 	if err != nil {
@@ -30,18 +40,27 @@ func SerialWrite(Port string, Baud int, Data string) bool {
 	return status
 }
 
-func SerialRead(Port string, Baud int, Buf int) string {
+func SerialRead(Port string, Baud string, Buf string) string {
 
 	stringData := ""
 
-	serialConfig := &serial.Config{ Name: Port, Baud: Baud, ReadTimeout: 128}
+	isExists := exists(Port)
+	if isExists == false {
+		return stringData
+	}
+
+	RateInt, _ := strconv.Atoi(Baud)
+
+	bits, _ := strconv.Atoi(Buf)
+
+	serialConfig := &serial.Config{ Name: Port, Baud: RateInt, ReadTimeout: 128}
 
 	serialOpen, err := serial.OpenPort(serialConfig)
 	if err != nil {
 		stringData = ""
 	}
 
-	readBuf := make([]byte, Buf)
+	readBuf := make([]byte, bits)
 
 	for {
 		serialRead, err := serialOpen.Read(readBuf)
@@ -60,3 +79,13 @@ func SerialRead(Port string, Baud int, Buf int) string {
 	return stringData
 }
 
+func exists(path string) bool {
+	_, err := os.Stat(path)
+	if err != nil {
+		if os.IsExist(err) {
+			return true
+		}
+		return false
+	}
+	return true
+}

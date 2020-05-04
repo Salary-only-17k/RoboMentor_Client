@@ -144,9 +144,8 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 		}
 
 		if isExists {
-			RateInt, _ := strconv.Atoi(messageData.SerialMessage.Rate)
 
-			sendStatus := serialFunction.SerialWrite(messageData.SerialMessage.Port, RateInt, messageData.SerialMessage.Content)
+			sendStatus := serialFunction.SerialWrite(messageData.SerialMessage.Port, messageData.SerialMessage.Rate, messageData.SerialMessage.Content)
 			if sendStatus == false {
 				sendMessage.MessageType = "serial_message_error"
 				sendMessage.SerialMessageError.Content = "串口数据发送失败，请重新尝试"
@@ -154,9 +153,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 
 			if messageData.SerialMessage.Switch {
 
-				bits, _ := strconv.Atoi(messageData.SerialMessage.Bits)
-
-				readContent := serialFunction.SerialRead(messageData.SerialMessage.Port, RateInt, bits)
+				readContent := serialFunction.SerialRead(messageData.SerialMessage.Port, messageData.SerialMessage.Rate, messageData.SerialMessage.Bits)
 
 				sendMessage.MessageType = "serial_message_read"
 				sendMessage.SerialMessageRead.Content = readContent
