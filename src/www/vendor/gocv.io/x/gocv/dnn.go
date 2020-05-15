@@ -39,6 +39,9 @@ const (
 
 	// NetBackendVKCOM is the Vulkan backend.
 	NetBackendVKCOM NetBackendType = 4
+
+	// NetBackendCUDA is the Cuda backend.
+	NetBackendCUDA NetBackendType = 5
 )
 
 // ParseNetBackend returns a valid NetBackendType given a string. Valid values are:
@@ -46,6 +49,7 @@ const (
 // - openvino
 // - opencv
 // - vulkan
+// - cuda
 // - default
 func ParseNetBackend(backend string) NetBackendType {
 	switch backend {
@@ -57,6 +61,8 @@ func ParseNetBackend(backend string) NetBackendType {
 		return NetBackendOpenCV
 	case "vulkan":
 		return NetBackendVKCOM
+	case "cuda":
+		return NetBackendCUDA
 	default:
 		return NetBackendDefault
 	}
@@ -83,6 +89,12 @@ const (
 
 	// NetTargetFPGA is the FPGA target.
 	NetTargetFPGA NetTargetType = 5
+
+	// NetTargetCUDA is the CUDA target.
+	NetTargetCUDA NetTargetType = 6
+
+	// NetTargetCUDAFP16 is the CUDA target.
+	NetTargetCUDAFP16 NetTargetType = 7
 )
 
 // ParseNetTarget returns a valid NetTargetType given a string. Valid values are:
@@ -92,6 +104,8 @@ const (
 // - vpu
 // - vulkan
 // - fpga
+// - cuda
+// - cudafp16
 func ParseNetTarget(target string) NetTargetType {
 	switch target {
 	case "cpu":
@@ -106,6 +120,10 @@ func ParseNetTarget(target string) NetTargetType {
 		return NetTargetVulkan
 	case "fpga":
 		return NetTargetFPGA
+	case "cuda":
+		return NetTargetCUDA
+	case "cudafp16":
+		return NetTargetCUDAFP16
 	default:
 		return NetTargetCPU
 	}
@@ -406,6 +424,28 @@ func (net *Net) GetUnconnectedOutLayers() (ids []int) {
 
 	for i := 0; i < int(cids.length); i++ {
 		ids = append(ids, int(pcids[i]))
+	}
+	return
+}
+
+// GetLayerNames returns all layer names.
+//
+// For furtherdetails, please see:
+// https://docs.opencv.org/master/db/d30/classcv_1_1dnn_1_1Net.html#ae8be9806024a0d1d41aba687cce99e6b
+//
+func (net *Net) GetLayerNames() (names []string) {
+	cstrs := C.CStrings{}
+	C.Net_GetLayerNames((C.Net)(net.p), &cstrs)
+
+	h := &reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(cstrs.strs)),
+		Len:  int(cstrs.length),
+		Cap:  int(cstrs.length),
+	}
+	pcstrs := *(*[]string)(unsafe.Pointer(h))
+
+	for i := 0; i < int(cstrs.length); i++ {
+		names = append(names, string(pcstrs[i]))
 	}
 	return
 }

@@ -56,8 +56,17 @@ typedef struct Points {
     int length;
 } Points;
 
+// Wrapper for the vector of Point2f structs aka std::vector<Point2f>
+typedef struct Points2f {
+    Point2f* points;
+    int length;
+} Points2f;
+
 // Contour is alias for Points
 typedef Points Contour;
+
+// Contour2f is alias for Points2f
+typedef Points2f Contour2f;
 
 // Wrapper for the vector of Points vectors aka std::vector< std::vector<Point> >
 typedef struct Contours {
@@ -285,6 +294,9 @@ void Mat_AddFloat(Mat m, float val);
 void Mat_SubtractFloat(Mat m, float val);
 void Mat_MultiplyFloat(Mat m, float val);
 void Mat_DivideFloat(Mat m, float val);
+Mat Mat_MultiplyMatrix(Mat x, Mat y);
+
+Mat Mat_T(Mat x);
 
 void LUT(Mat src, Mat lut, Mat dst);
 
@@ -354,6 +366,7 @@ double Mat_SolvePoly(Mat coeffs, Mat roots, int maxIters);
 void Mat_Reduce(Mat src, Mat dst, int dim, int rType, int dType);
 void Mat_Repeat(Mat src, int nY, int nX, Mat dst);
 void Mat_ScaleAdd(Mat src1, double alpha, Mat src2, Mat dst);
+void Mat_SetIdentity(Mat src, double scalar);
 void Mat_Sort(Mat src, Mat dst, int flags);
 void Mat_SortIdx(Mat src, Mat dst, int flags);
 void Mat_Split(Mat src, struct Mats* mats);
@@ -370,6 +383,11 @@ TermCriteria TermCriteria_New(int typ, int maxCount, double epsilon);
 
 int64_t GetCVTickCount();
 double GetTickFrequency();
+
+Mat Mat_rowRange(Mat m,int startrow,int endrow);
+Mat Mat_colRange(Mat m,int startrow,int endrow);
+
+void IntVector_Close(struct IntVector ivec);
 
 #ifdef __cplusplus
 }

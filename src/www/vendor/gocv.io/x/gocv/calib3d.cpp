@@ -27,3 +27,16 @@ Mat GetOptimalNewCameraMatrixWithParams(Mat cameraMatrix,Mat distCoeffs,Size siz
     return mat;
 }
 
+void Undistort(Mat src, Mat dst, Mat cameraMatrix, Mat distCoeffs, Mat newCameraMatrix) {
+    cv::undistort(*src, *dst, *cameraMatrix, *distCoeffs, *newCameraMatrix);
+}
+
+bool FindChessboardCorners(Mat image, Size patternSize, Mat corners, int flags) {
+    cv::Size sz(patternSize.width, patternSize.height);
+    return cv::findChessboardCorners(*image, sz, *corners, flags);
+}
+
+void DrawChessboardCorners(Mat image, Size patternSize, Mat corners, bool patternWasFound) {
+    cv::Size sz(patternSize.width, patternSize.height);
+    cv::drawChessboardCorners(*image, sz, *corners, patternWasFound);
+}

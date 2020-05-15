@@ -1,3 +1,85 @@
+0.23.0
+---
+* **build**
+    * update Makefile and README
+    * update to use go1.14
+* **calib3d**
+    * add draw chessboard
+* **core**
+    * fix memory leak in Mat.Size() and Mat.Split() (#580)
+* **cuda**
+    * add build support
+    * add cuda backend/target
+    * add support for:
+        * cv::cuda::CannyEdgeDetector
+        * cv::cuda::CascadeClassifier Class
+        * cv::cuda::HOG Class
+    * remove breaking case statement
+* **dnn**
+    * avoid parallel test runs
+    * remove attempt at providing grayscale image blog conversion that uses mean adjustment
+* **docker**
+    * docker file last command change (#505)
+* **docs**
+    * add recent contributions to ROADMAP
+* **imgproc**
+    * add ErodeWithParams function
+    * add getGaussianKernel function
+    * add Go Point2f type and update GetPerspectiveTransform() (#589)
+    * add PhaseCorrelate binding (#626)
+    * added Polylines feature
+    * do not free contours data until after we have drawn the needed contours
+    * Threshold() should return a value (#620)
+* **make**
+    * added raspberry pi zero support to the makefile
+* **opencv**
+    * update to OpenCV 4.3.0
+* **openvino**
+    * add build support
+* **windows**
+    * add cmake flag for allocator stats counter type to avoid opencv issue #16398
+
+0.22.0
+---
+* **bgsegm**
+    * Add BackgroundSubtractorCNT
+* **calib3d**
+    * Added undistort function (#520)
+* **core**
+    * add functions (singular value decomposition, multiply between matrices, transpose matrix) (#559)
+    * Add new funcs (#578)
+    * add setIdentity() method to Mat
+    * add String method (#552)
+    * MatType: add missing constants
+* **dnn**
+    * Adding GetLayerNames()
+    * respect the bit depth of the input image to set the expected output when converting an image to a blob
+* **doc**
+    * change opencv version 3.x to 4.x
+* **docker**
+    * use Go1.13.5 for image
+* **imgcodecs**
+    * Fix webp image decode error (#523)
+imgcodecs: optimize copy of data used for IMDecode method
+* **imgproc**
+    * Add GetRectSubPix
+    * Added ClipLine
+    * Added InvertAffineTransform
+    * Added LinearPolar function (#524)
+    * correct ksize param used for MedianBlur unit test
+    * Feature/put text with line type (#527)
+    * FitEllipse
+    * In FillPoly and DrawContours functions, remove func() wrap to avoid memory freed before calling opencv functions. (#543)
+* **objdetect**
+    * Add support QR codes
+* **opencv**
+    * update to OpenCV 4.2.0 release
+* **openvino**
+    * Add openvino async
+* **test**
+    * Tolerate imprecise result in SolvePoly
+    * Tolerate imprecision in TestHoughLines
+
 0.21.0
 ---
 * **build**

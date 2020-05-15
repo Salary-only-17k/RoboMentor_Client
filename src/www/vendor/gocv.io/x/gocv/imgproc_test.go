@@ -373,6 +373,30 @@ func TestMinAreaRect(t *testing.T) {
 	}
 }
 
+func TestFitEllipse(t *testing.T) {
+	src := []image.Point{
+		image.Pt(1, 1),
+		image.Pt(0, 1),
+		image.Pt(0, 2),
+		image.Pt(1, 3),
+		image.Pt(2, 3),
+		image.Pt(4, 2),
+		image.Pt(4, 1),
+		image.Pt(0, 3),
+		image.Pt(0, 2),
+	}
+	rect := FitEllipse(src)
+	if rect.Center.X != 2 {
+		t.Errorf("TestFitEllipse(): unexpected center.X = %v, want = %v", rect.Center.X, 2)
+	}
+	if rect.Center.Y != 2 {
+		t.Errorf("TestFitEllipse(): unexpected center.Y = %v, want = %v", rect.Center.Y, 2)
+	}
+	if rect.Angle != 78.60807800292969 {
+		t.Errorf("TestFitEllipse(): unexpected angle = %v, want = %v", rect.Angle, 78.60807800292969)
+	}
+}
+
 func TestFindContours(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
 	if img.Empty() {
@@ -500,6 +524,25 @@ func TestErode(t *testing.T) {
 	}
 }
 
+func TestErodeWithParams(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in ErodeWithParams test")
+	}
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	kernel := GetStructuringElement(MorphRect, image.Pt(1, 1))
+	defer kernel.Close()
+
+	ErodeWithParams(img, &dest, kernel, image.Pt(-1, -1), 3, 0)
+	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
+		t.Error("Invalid ErodeWithParams test")
+	}
+}
+
 func TestMorphologyDefaultBorderValue(t *testing.T) {
 	zeroScalar := Scalar{}
 	morphologyDefaultBorderValue := MorphologyDefaultBorderValue()
@@ -564,6 +607,24 @@ func TestGaussianBlur(t *testing.T) {
 	}
 }
 
+func TestGetGaussianKernel(t *testing.T) {
+	kernel := GetGaussianKernel(1, 0.5)
+	defer kernel.Close()
+	if kernel.Empty() {
+		t.Error("Invalid GetGaussianKernel test")
+	}
+
+}
+
+func TestGetGaussianKernelWithParams(t *testing.T) {
+	kernel := GetGaussianKernelWithParams(1, 0.5, MatTypeCV64F)
+	defer kernel.Close()
+	if kernel.Empty() {
+		t.Error("Invalid GetGaussianKernel test")
+	}
+
+}
+
 func TestLaplacian(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadColor)
 	if img.Empty() {
@@ -606,7 +667,7 @@ func TestMedianBlur(t *testing.T) {
 	dest := NewMat()
 	defer dest.Close()
 
-	MedianBlur(img, &dest, 1)
+	MedianBlur(img, &dest, 3)
 	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
 		t.Error("Invalid MedianBlur test")
 	}
@@ -757,7 +818,8 @@ func TestHoughLines(t *testing.T) {
 	if dest.Empty() {
 		t.Error("Empty HoughLines test")
 	}
-	if dest.Rows() != 10411 {
+	rowsDiff := dest.Rows() - 10411
+	if rowsDiff > 2 || rowsDiff < 0 {
 		t.Errorf("Invalid HoughLines test rows: %v", dest.Rows())
 	}
 	if dest.Cols() != 1 {
@@ -1086,6 +1148,20 @@ func TestPutText(t *testing.T) {
 		t.Error("Error in PutText test")
 	}
 }
+func TestPutTextWithParams(t *testing.T) {
+	img := NewMatWithSize(150, 150, MatTypeCV8U)
+	if img.Empty() {
+		t.Error("Invalid Mat in IMRead")
+	}
+	defer img.Close()
+
+	pt := image.Pt(10, 10)
+	PutTextWithParams(&img, "Testing", pt, FontHersheyPlain, 1.2, color.RGBA{255, 255, 255, 0}, 2, LineAA, false)
+
+	if img.Empty() {
+		t.Error("Error in PutText test")
+	}
+}
 
 func TestResize(t *testing.T) {
 	src := IMRead("images/gocvlogo.jpg", IMReadColor)
@@ -1105,6 +1181,22 @@ func TestResize(t *testing.T) {
 	Resize(src, &dst, image.Pt(440, 377), 0, 0, InterpolationCubic)
 	if dst.Cols() != 440 || dst.Rows() != 377 {
 		t.Errorf("Expected dst size of 440x377 got %dx%d", dst.Cols(), dst.Rows())
+	}
+}
+
+func TestGetRectSubPix(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadColor)
+	if src.Empty() {
+		t.Error("Invalid read of Mat in Resize test")
+	}
+	defer src.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	GetRectSubPix(src, image.Point{20, 30}, image.Point{200, 172}, &dst)
+	if dst.Cols() != 20 || dst.Rows() != 30 {
+		t.Errorf("Expected dst size of 20x30 got %dx%d", dst.Cols(), dst.Rows())
 	}
 }
 
@@ -1219,6 +1311,13 @@ func TestWarpAffineWithParamsGocvLogo(t *testing.T) {
 	}
 }
 
+func TestClipLine(t *testing.T) {
+
+	if ok := ClipLine(image.Point{20, 20}, image.Point{5, 5}, image.Point{5, 5}); !ok {
+		t.Error("ClipLine(): is false")
+	}
+}
+
 func TestWatershed(t *testing.T) {
 	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
 	if src.Empty() {
@@ -1313,6 +1412,31 @@ func TestGetPerspectiveTransform(t *testing.T) {
 	}
 
 	m := GetPerspectiveTransform(src, dst)
+	defer m.Close()
+
+	if m.Cols() != 3 {
+		t.Errorf("TestWarpPerspective(): unexpected cols = %v, want = %v", m.Cols(), 3)
+	}
+	if m.Rows() != 3 {
+		t.Errorf("TestWarpPerspective(): unexpected rows = %v, want = %v", m.Rows(), 3)
+	}
+}
+
+func TestGetPerspectiveTransform2f(t *testing.T) {
+	src := []Point2f{
+		{0, 0},
+		{10.5, 5.5},
+		{10.5, 10.5},
+		{5.5, 10.5},
+	}
+	dst := []Point2f{
+		{0, 0},
+		{590.20, 24.12},
+		{100.12, 150.21},
+		{0, 10},
+	}
+
+	m := GetPerspectiveTransform2f(src, dst)
 	defer m.Close()
 
 	if m.Cols() != 3 {
@@ -1419,6 +1543,26 @@ func TestFillPoly(t *testing.T) {
 	}
 }
 
+func TestPolylines(t *testing.T) {
+	img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+	defer img.Close()
+
+	white := color.RGBA{255, 255, 255, 0}
+	pts := [][]image.Point{
+		{
+			image.Pt(10, 10),
+			image.Pt(10, 20),
+			image.Pt(20, 20),
+			image.Pt(20, 10),
+		},
+	}
+	Polylines(&img, pts, true, white, 1)
+
+	if v := img.GetUCharAt(10, 10); v != 255 {
+		t.Errorf("TestPolylines(): wrong pixel value = %v, want = %v", v, 255)
+	}
+}
+
 func TestRemap(t *testing.T) {
 	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
 	defer src.Close()
@@ -1489,6 +1633,20 @@ func TestLogPolar(t *testing.T) {
 	}
 }
 
+func TestLinearPolar(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	defer src.Close()
+
+	dst := src.Clone()
+	defer dst.Close()
+
+	LinearPolar(src, &dst, image.Pt(22, 22), 1, InterpolationDefault)
+
+	if ok := dst.Empty(); ok {
+		t.Errorf("LinearPolar(): dst is empty")
+	}
+}
+
 func TestFitLine(t *testing.T) {
 	points := []image.Point{image.Pt(125, 24), image.Pt(124, 75), image.Pt(175, 76), image.Pt(176, 25)}
 
@@ -1499,6 +1657,20 @@ func TestFitLine(t *testing.T) {
 
 	if ok := line.Empty(); ok {
 		t.Errorf("FitLine(): line is empty")
+	}
+}
+
+func TestInvertAffineTransform(t *testing.T) {
+	src := NewMatWithSize(2, 3, MatTypeCV32F)
+	defer src.Close()
+
+	dst := NewMatWithSize(2, 3, MatTypeCV32F)
+	defer dst.Close()
+
+	InvertAffineTransform(src, &dst)
+
+	if ok := dst.Empty(); ok {
+		t.Errorf("InvertAffineTransform(): dst is empty")
 	}
 }
 
@@ -1543,5 +1715,49 @@ func TestCLAHEWithParams(t *testing.T) {
 	c.Apply(src, &dst)
 	if dst.Empty() || img.Rows() != dst.Rows() || img.Cols() != dst.Cols() {
 		t.Error("Invalid NewCLAHEWithParams test")
+	}
+}
+
+func TestPhaseCorrelate(t *testing.T) {
+	template := IMRead("images/simple.jpg", IMReadGrayScale)
+	matched := IMRead("images/simple-translated.jpg", IMReadGrayScale)
+	notMatchedOrig := IMRead("images/space_shuttle.jpg", IMReadGrayScale)
+	notMatched := NewMat()
+
+	defer template.Close()
+	defer matched.Close()
+	defer notMatchedOrig.Close()
+	defer notMatched.Close()
+
+	Resize(notMatchedOrig, &notMatched, image.Point{X: matched.Size()[0], Y: matched.Size()[1]}, 0, 0, InterpolationLinear)
+
+	template32FC1 := NewMat()
+	matched32FC1 := NewMat()
+	notMatched32FC1 := NewMat()
+
+	defer template32FC1.Close()
+	defer matched32FC1.Close()
+	defer notMatched32FC1.Close()
+
+	template.ConvertTo(&template32FC1, MatTypeCV32FC1)
+	matched.ConvertTo(&matched32FC1, MatTypeCV32FC1)
+	notMatched.ConvertTo(&notMatched32FC1, MatTypeCV32FC1)
+
+	window := NewMat()
+	defer window.Close()
+
+	shiftTranslated, responseTranslated := PhaseCorrelate(template32FC1, matched32FC1, window)
+	_, responseDifferent := PhaseCorrelate(template32FC1, notMatched32FC1, window)
+
+	if !(shiftTranslated.X < 15) || !(shiftTranslated.Y < 15) {
+		t.Errorf("expected shift to be > 15 pixels, got %v", shiftTranslated)
+	}
+
+	if responseTranslated < 0.85 {
+		t.Errorf("expected response for translated image to be > 0.85, got %f", responseTranslated)
+	}
+
+	if responseDifferent > 0.05 {
+		t.Errorf("expected response for different image to be < 0.05, but got %f", responseDifferent)
 	}
 }
