@@ -12,7 +12,7 @@ import (
 	"www/framework/config"
 	"www/framework/function/command"
 	"www/framework/function/serial"
-	servoPlatform "www/framework/platform/servo"
+	"www/framework/platform/servo"
 	"www/framework/robot"
 	"www/framework/service/common"
 )
