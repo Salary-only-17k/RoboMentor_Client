@@ -33,6 +33,8 @@ type messageData struct {
 	TcpMessage		tcpMessage 				`json:"tcp_message"`
 	TcpMessageRead	tcpMessageRead 			`json:"tcp_message_read"`
 	TcpMessageError	tcpMessageError 		`json:"tcp_message_error"`
+	ServoMessage	servoMessage 	`json:"servo_message"`
+	ServoMessageRead servoMessageRead `json:"servo_message_read"`
 	CameraMessage	cameraMessage 			`json:"camera_message"`
 	DetectMessage	detectMessage 			`json:"detect_message"`
 }
@@ -88,6 +90,14 @@ type tcpMessageRead struct {
 }
 
 type tcpMessageError struct {
+	Content string 		`json:"content"`
+}
+
+type servoMessage struct {
+	Content string 		`json:"content"`
+}
+
+type servoMessageRead struct {
 	Content string 		`json:"content"`
 }
 
@@ -189,6 +199,10 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 
 		sendString, _ := json.Marshal(sendMessage)
 		Send("", string(sendString))
+	}
+
+	if messageData.MessageType == "servo_message" {
+		log.Println("[info]", messageData.ServoMessage.Content)
 	}
 
 	if messageData.MessageType == "robot_run" {
