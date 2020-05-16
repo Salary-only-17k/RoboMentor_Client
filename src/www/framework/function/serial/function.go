@@ -20,9 +20,9 @@ func SerialWrite(Port string, Baud string, Data string) bool {
 		return status
 	}
 
-	RateInt, _ := strconv.Atoi(Baud)
+	BaudInt, _ := strconv.Atoi(Baud)
 
-	serialConfig := &serial.Config{ Name: Port, Baud: RateInt, ReadTimeout: time.Millisecond * 10}
+	serialConfig := &serial.Config{ Name: Port, Baud: BaudInt, ReadTimeout: time.Millisecond * 10}
 
 	serialOpen, err := serial.OpenPort(serialConfig)
 	if err != nil {
@@ -49,11 +49,11 @@ func SerialRead(Port string, Baud string, Buf string) string {
 		return stringData
 	}
 
-	RateInt, _ := strconv.Atoi(Baud)
+	BaudInt, _ := strconv.Atoi(Baud)
 
 	bits, _ := strconv.Atoi(Buf)
 
-	serialConfig := &serial.Config{ Name: Port, Baud: RateInt, ReadTimeout: 128}
+	serialConfig := &serial.Config{ Name: Port, Baud: BaudInt, ReadTimeout: 128}
 
 	serialOpen, err := serial.OpenPort(serialConfig)
 	if err != nil {

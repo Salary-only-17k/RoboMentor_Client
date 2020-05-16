@@ -49,7 +49,7 @@ func StartDevice(Port string) {
 				if len(frame) != 0 {
 					Camera.ReadFrame = frame
 					Camera.ReadImage = base64.StdEncoding.EncodeToString(frame)
-					time.Sleep(10 * time.Millisecond)
+					time.Sleep(15 * time.Millisecond)
 				}
 			}
 		}
