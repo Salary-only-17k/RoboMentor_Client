@@ -92,6 +92,10 @@ type tcpMessageError struct {
 	Content string 		`json:"content"`
 }
 
+type ServoMessage struct {
+	servoMessage
+}
+
 type servoMessage struct {
 	Type        string `json:"type"`
 	Id 			string `json:"id"`
@@ -329,9 +333,6 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 
 			}
 		}
-
-		sendString, _ := json.Marshal(sendMessage)
-		Send("", string(sendString))
 	}
 
 	if messageData.MessageType == "robot_run" {
