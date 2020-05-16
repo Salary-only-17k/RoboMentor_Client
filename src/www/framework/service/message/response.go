@@ -93,6 +93,7 @@ type tcpMessageError struct {
 }
 
 type servoMessage struct {
+	Type        string `json:"type"`
 	Id 			string `json:"id"`
 	Channel 	string `json:"channel"`
 	Mode 		string `json:"mode"`
