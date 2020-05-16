@@ -99,10 +99,10 @@ type servoMessage struct {
 	Mode 		string `json:"mode"`
 	Speed 		string `json:"speed"`
 	Value 		string `json:"value"`
-	MinAngle 	string `json:"min_angle"`
-	MaxAngle 	string `json:"max_angle"`
-	MinVin 		string `json:"min_vin"`
-	MaxVin 		string `json:"max_vin"`
+	MinAngle 	string `json:"minAngle"`
+	MaxAngle 	string `json:"maxAngle"`
+	MinVin 		string `json:"minVin"`
+	MaxVin 		string `json:"maxVin"`
 }
 
 type servoMessageRead struct {
