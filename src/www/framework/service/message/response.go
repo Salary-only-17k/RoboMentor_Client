@@ -225,7 +225,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 
 		if isExists {
 
-			if messageData.ServoMessage.Id != "" {
+			if messageData.ServoMessage.Id != "" && messageData.ServoMessage.Type == "write" {
 
 				serialData := servoPlatform.ServoWriteId{}
 				serialData.Type = "SERVO-WRITE-ID"
@@ -244,7 +244,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 				time.Sleep(30 * time.Millisecond)
 			}
 
-			if messageData.ServoMessage.Mode != "" {
+			if messageData.ServoMessage.Mode != "" && messageData.ServoMessage.Type == "write" {
 
 				serialData := servoPlatform.ServoWriteMode{}
 				serialData.Type = "SERVO-WRITE-MODE"
@@ -266,7 +266,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 				time.Sleep(10 * time.Millisecond)
 			}
 
-			if messageData.ServoMessage.Value != "" {
+			if messageData.ServoMessage.Value != "" && messageData.ServoMessage.Type == "write" {
 
 				serialData := servoPlatform.ServoAngleOffsetWrite{}
 				serialData.Type = "SERVO-ANGLE-OFFSET-WRITE"
@@ -285,7 +285,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 				time.Sleep(10 * time.Millisecond)
 			}
 
-			if messageData.ServoMessage.MinAngle != "" && messageData.ServoMessage.MaxAngle != "" {
+			if messageData.ServoMessage.MinAngle != "" && messageData.ServoMessage.MaxAngle != "" && messageData.ServoMessage.Type == "write" {
 
 				serialData := servoPlatform.ServoAngleLimitWrite{}
 				serialData.Type = "SERVO-ANGLE-LIMIT-WRITE"
@@ -305,7 +305,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 				time.Sleep(10 * time.Millisecond)
 			}
 
-			if messageData.ServoMessage.MinVin != "" && messageData.ServoMessage.MaxVin != "" {
+			if messageData.ServoMessage.MinVin != "" && messageData.ServoMessage.MaxVin != "" && messageData.ServoMessage.Type == "write" {
 
 				serialData := servoPlatform.ServoVinLimitWrite{}
 				serialData.Type = "SERVO-VIN-LIMIT-WRITE"
@@ -323,6 +323,10 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 				}
 
 				time.Sleep(10 * time.Millisecond)
+			}
+
+			if messageData.ServoMessage.Type == "read" {
+
 			}
 		}
 
