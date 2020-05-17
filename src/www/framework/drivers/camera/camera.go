@@ -64,3 +64,12 @@ func WebCamera(c *gin.Context){
 
 	c.Writer.WriteString(string(Camera.ReadFrame))
 }
+
+func WebVideo(c *gin.Context){
+
+	c.Header("Content-Type", "video/mp4")
+
+	c.Header("Content-Length", strconv.Itoa(len(Camera.ReadFrame)))
+
+	c.Writer.WriteString(string(Camera.ReadFrame))
+}
