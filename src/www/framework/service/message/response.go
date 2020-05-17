@@ -371,6 +371,5 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 		if messageData.RobotRun.Type == "restart" {
 			commandFunction.Shell("sudo framework/function/command/restart.sh")
 		}
-
 	}
 }
