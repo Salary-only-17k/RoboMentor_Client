@@ -327,7 +327,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 					sendMessage.ServoMessageError.Content = "舵机通讯数据发送失败，请重新尝试"
 				}
 
-				time.Sleep(40 * time.Millisecond)
+				time.Sleep(60 * time.Millisecond)
 			}
 
 			if messageData.ServoMessage.Status != "" && messageData.ServoMessage.Type == "write" {
