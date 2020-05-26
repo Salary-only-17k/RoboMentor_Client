@@ -6,6 +6,7 @@ import (
 	"github.com/webcam"
 	"strconv"
 	"time"
+	"www/framework/service/common"
 )
 
 var Camera = &Driver{}
@@ -19,12 +20,17 @@ type Driver struct {
 
 func StartDevice(Port string) {
 
+	isExists := CommonService.Exists(Port)
+	if isExists == false {
+		return
+	}
+
 	camera, _ := webcam.Open(Port)
 
 	formatDesc := camera.GetSupportedFormats()
 	for code, formatName := range formatDesc {
 		if formatName == "Motion-JPEG" {
-			camera.SetImageFormat(code, 1280, 720)
+			camera.SetImageFormat(code, 950, 534)
 		}
 	}
 
@@ -59,15 +65,6 @@ func StartDevice(Port string) {
 func WebCamera(c *gin.Context){
 
 	c.Header("Content-Type", "image/jpeg")
-
-	c.Header("Content-Length", strconv.Itoa(len(Camera.ReadFrame)))
-
-	c.Writer.WriteString(string(Camera.ReadFrame))
-}
-
-func WebVideo(c *gin.Context){
-
-	c.Header("Content-Type", "video/mp4")
 
 	c.Header("Content-Length", strconv.Itoa(len(Camera.ReadFrame)))
 
