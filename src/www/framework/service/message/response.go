@@ -35,6 +35,7 @@ type messageData struct {
 	TcpMessageRead	tcpMessageRead 			`json:"tcp_message_read"`
 	TcpMessageError	tcpMessageError 		`json:"tcp_message_error"`
 	ServoMessage	servoMessage 			`json:"servo_message"`
+	ServoControlMessage servoControlMessage `json:"servo_control_message"`
 	ServoMessageRead servoMessageRead 		`json:"servo_message_read"`
 	ServoMessageError	servoMessageError 	`json:"servo_message_error"`
 	CameraMessage	cameraMessage 			`json:"camera_message"`
@@ -108,6 +109,17 @@ type servoMessage struct {
 	MinVin 		string `json:"minVin"`
 	MaxVin 		string `json:"maxVin"`
 	Status 		string `json:"status"`
+}
+
+type ServoControlMessage struct {
+	servoControlMessage
+}
+
+type servoControlMessage struct {
+	Id 			string `json:"id"`
+	Channel 	string `json:"channel"`
+	Angle 		string `json:"angle"`
+	Time 		string `json:"time"`
 }
 
 type servoMessageRead struct {
@@ -481,6 +493,38 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 						sendMessage.ServoMessageRead.Status = strconv.Itoa(readStringJson.Status)
 					}
 				}
+			}
+		}
+
+		sendString, _ := json.Marshal(sendMessage)
+		Send("", string(sendString))
+	}
+
+	if messageData.MessageType == "servo_message" {
+
+		sendMessage := ResponseMessage{}
+
+		isExists := CommonService.Exists(Config.MentorConfig.RobotBoard.Port)
+		if isExists == false {
+			sendMessage.MessageType = "servo_message_error"
+			sendMessage.ServoMessageError.Content = "舵机通讯失败，请重新尝试"
+		}
+
+		if isExists == true {
+
+			serialData := servoPlatform.ServoMotionWrite{}
+			serialData.Type = "SERVO-MOTION-WRITE"
+			serialData.Channel, _ = strconv.Atoi(messageData.ServoControlMessage.Channel)
+			serialData.Id, _ = strconv.Atoi(messageData.ServoControlMessage.Id)
+			serialData.Angle, _ = strconv.Atoi(messageData.ServoControlMessage.Angle)
+			serialData.Time, _ = strconv.Atoi(messageData.ServoControlMessage.Time)
+
+			serialDataString, _ := json.Marshal(serialData)
+
+			sendStatus := serialFunction.SerialWrite(Config.MentorConfig.RobotBoard.Port, Config.MentorConfig.RobotBoard.Rate, string(serialDataString))
+			if sendStatus == false {
+				sendMessage.MessageType = "servo_message_error"
+				sendMessage.ServoMessageError.Content = "舵机通讯数据发送失败，请重新尝试"
 			}
 		}
 
