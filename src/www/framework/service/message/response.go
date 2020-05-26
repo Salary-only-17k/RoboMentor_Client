@@ -500,7 +500,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 		Send("", string(sendString))
 	}
 
-	if messageData.MessageType == "servo_message" {
+	if messageData.MessageType == "servo_control_message" {
 
 		sendMessage := ResponseMessage{}
 
