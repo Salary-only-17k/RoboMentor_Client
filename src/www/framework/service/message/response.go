@@ -559,7 +559,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 			sendMessage.ServoMessageError.Content = "舵机通讯失败，请重新尝试"
 		}
 
-		if isExists == true {
+		if isExists {
 
 			serialData := pwmMessage{}
 			serialData.Type = "WRITE-PWM"
