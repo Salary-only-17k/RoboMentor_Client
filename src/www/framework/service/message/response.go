@@ -371,6 +371,8 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 					readString := serialFunction.SerialRead(Config.MentorConfig.RobotBoard.Port, Config.MentorConfig.RobotBoard.Rate, Config.MentorConfig.RobotBoard.Bits)
 					if readString != "" {
 
+						log.Println("[info]", readString)
+
 						readStringJson := servoPlatform.ServoWriteMode{}
 
 						json.Unmarshal([]byte(readString), &readStringJson)
@@ -395,6 +397,8 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 					readString := serialFunction.SerialRead(Config.MentorConfig.RobotBoard.Port, Config.MentorConfig.RobotBoard.Rate, Config.MentorConfig.RobotBoard.Bits)
 					if readString != "" {
 
+						log.Println("[info]", readString)
+
 						readStringJson := servoPlatform.ServoAngleOffsetWrite{}
 
 						json.Unmarshal([]byte(readString), &readStringJson)
@@ -417,6 +421,8 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 				if sendStatus == true {
 					readString := serialFunction.SerialRead(Config.MentorConfig.RobotBoard.Port, Config.MentorConfig.RobotBoard.Rate, Config.MentorConfig.RobotBoard.Bits)
 					if readString != "" {
+
+						log.Println("[info]", readString)
 
 						readStringJson := servoPlatform.ServoAngleLimitWrite{}
 
@@ -442,6 +448,8 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 					readString := serialFunction.SerialRead(Config.MentorConfig.RobotBoard.Port, Config.MentorConfig.RobotBoard.Rate, Config.MentorConfig.RobotBoard.Bits)
 					if readString != "" {
 
+						log.Println("[info]", readString)
+
 						readStringJson := servoPlatform.ServoAngleLimitWrite{}
 
 						json.Unmarshal([]byte(readString), &readStringJson)
@@ -465,6 +473,8 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 				if sendStatus == true {
 					readString := serialFunction.SerialRead(Config.MentorConfig.RobotBoard.Port, Config.MentorConfig.RobotBoard.Rate, Config.MentorConfig.RobotBoard.Bits)
 					if readString != "" {
+
+						log.Println("[info]", readString)
 
 						readStringJson := servoPlatform.ServoStatusWrite{}
 
