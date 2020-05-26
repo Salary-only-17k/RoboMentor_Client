@@ -24,7 +24,5 @@ func InitRouter() *gin.Engine {
 
 	router.GET("/camera", cameraDriver.WebCamera)
 
-	router.GET("/video", cameraDriver.WebVideo)
-
 	return router
 }
