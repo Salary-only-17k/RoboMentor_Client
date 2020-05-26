@@ -245,7 +245,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 					sendMessage.ServoMessageError.Content = "舵机通讯数据发送失败，请重新尝试"
 				}
 
-				time.Sleep(20 * time.Millisecond)
+				time.Sleep(25 * time.Millisecond)
 			}
 
 			if messageData.ServoMessage.Mode != "" && messageData.ServoMessage.Type == "write" {
@@ -268,7 +268,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 					sendMessage.ServoMessageError.Content = "舵机通讯数据发送失败，请重新尝试"
 				}
 
-				time.Sleep(20 * time.Millisecond)
+				time.Sleep(25 * time.Millisecond)
 			}
 
 			if messageData.ServoMessage.Value != "" && messageData.ServoMessage.Type == "write" {
@@ -287,7 +287,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 					sendMessage.ServoMessageError.Content = "舵机通讯数据发送失败，请重新尝试"
 				}
 
-				time.Sleep(20 * time.Millisecond)
+				time.Sleep(25 * time.Millisecond)
 			}
 
 			if messageData.ServoMessage.MinAngle != "" && messageData.ServoMessage.MaxAngle != "" && messageData.ServoMessage.Type == "write" {
@@ -307,7 +307,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 					sendMessage.ServoMessageError.Content = "舵机通讯数据发送失败，请重新尝试"
 				}
 
-				time.Sleep(20 * time.Millisecond)
+				time.Sleep(25 * time.Millisecond)
 			}
 
 			if messageData.ServoMessage.MinVin != "" && messageData.ServoMessage.MaxVin != "" && messageData.ServoMessage.Type == "write" {
@@ -327,7 +327,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 					sendMessage.ServoMessageError.Content = "舵机通讯数据发送失败，请重新尝试"
 				}
 
-				time.Sleep(20 * time.Millisecond)
+				time.Sleep(25 * time.Millisecond)
 			}
 
 			if messageData.ServoMessage.Status != "" && messageData.ServoMessage.Type == "write" {
@@ -346,7 +346,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 					sendMessage.ServoMessageError.Content = "舵机通讯数据发送失败，请重新尝试"
 				}
 
-				time.Sleep(20 * time.Millisecond)
+				time.Sleep(25 * time.Millisecond)
 			}
 
 			if messageData.ServoMessage.Type == "read" {
