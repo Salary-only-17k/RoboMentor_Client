@@ -138,7 +138,7 @@ type PwmMessage struct {
 
 type pwmMessage struct {
 	Type 	string 	`json:"type"`
-	Channel string 	`json:"channel"`
+	Channel int 	`json:"channel"`
 	Width 	int 	`json:"width"`
 	Rate 	int 	`json:"rate"`
 }
