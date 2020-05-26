@@ -30,7 +30,7 @@ func StartDevice(Port string) {
 	formatDesc := camera.GetSupportedFormats()
 	for code, formatName := range formatDesc {
 		if formatName == "Motion-JPEG" {
-			camera.SetImageFormat(code, 950, 534)
+			camera.SetImageFormat(code, 1280, 720)
 		}
 	}
 

@@ -65,7 +65,7 @@ type robotConfig struct {
 }
 
 type robotRun struct {
-	Type 	string `json:"type"`
+	Type 	string 		`json:"type"`
 	Content string 		`json:"content"`
 }
 
@@ -107,10 +107,11 @@ type servoMessage struct {
 	MaxAngle 	string `json:"maxAngle"`
 	MinVin 		string `json:"minVin"`
 	MaxVin 		string `json:"maxVin"`
+	Status 		string `json:"status"`
 }
 
 type servoMessageRead struct {
-	Content string 		`json:"content"`
+	servoMessage
 }
 
 type servoMessageError struct {
@@ -245,7 +246,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 					sendMessage.ServoMessageError.Content = "舵机通讯数据发送失败，请重新尝试"
 				}
 
-				time.Sleep(30 * time.Millisecond)
+				time.Sleep(5 * time.Millisecond)
 			}
 
 			if messageData.ServoMessage.Mode != "" && messageData.ServoMessage.Type == "write" {
@@ -253,6 +254,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 				serialData := servoPlatform.ServoWriteMode{}
 				serialData.Type = "SERVO-WRITE-MODE"
 				serialData.Channel, _ = strconv.Atoi(messageData.ServoMessage.Channel)
+				serialData.Id, _ = strconv.Atoi(messageData.ServoMessage.Id)
 				serialData.Mode, _ = strconv.Atoi(messageData.ServoMessage.Mode)
 				serialData.Speed = 0
 				if serialData.Mode == 1 {
@@ -267,7 +269,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 					sendMessage.ServoMessageError.Content = "舵机通讯数据发送失败，请重新尝试"
 				}
 
-				time.Sleep(10 * time.Millisecond)
+				time.Sleep(5 * time.Millisecond)
 			}
 
 			if messageData.ServoMessage.Value != "" && messageData.ServoMessage.Type == "write" {
@@ -286,7 +288,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 					sendMessage.ServoMessageError.Content = "舵机通讯数据发送失败，请重新尝试"
 				}
 
-				time.Sleep(10 * time.Millisecond)
+				time.Sleep(5 * time.Millisecond)
 			}
 
 			if messageData.ServoMessage.MinAngle != "" && messageData.ServoMessage.MaxAngle != "" && messageData.ServoMessage.Type == "write" {
@@ -306,7 +308,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 					sendMessage.ServoMessageError.Content = "舵机通讯数据发送失败，请重新尝试"
 				}
 
-				time.Sleep(10 * time.Millisecond)
+				time.Sleep(5 * time.Millisecond)
 			}
 
 			if messageData.ServoMessage.MinVin != "" && messageData.ServoMessage.MaxVin != "" && messageData.ServoMessage.Type == "write" {
@@ -326,13 +328,157 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 					sendMessage.ServoMessageError.Content = "舵机通讯数据发送失败，请重新尝试"
 				}
 
-				time.Sleep(10 * time.Millisecond)
+				time.Sleep(5 * time.Millisecond)
+			}
+
+			if messageData.ServoMessage.Status != "" && messageData.ServoMessage.Type == "write" {
+
+				serialData := servoPlatform.ServoStatusWrite{}
+				serialData.Type = "SERVO-STATUS-WRITE"
+				serialData.Channel, _ = strconv.Atoi(messageData.ServoMessage.Channel)
+				serialData.Id, _ = strconv.Atoi(messageData.ServoMessage.Id)
+				serialData.Status, _ = strconv.Atoi(messageData.ServoMessage.Status)
+
+				serialDataString, _ := json.Marshal(serialData)
+
+				sendStatus := serialFunction.SerialWrite(Config.MentorConfig.RobotBoard.Port, Config.MentorConfig.RobotBoard.Rate, string(serialDataString))
+				if sendStatus == false {
+					sendMessage.MessageType = "servo_message_error"
+					sendMessage.ServoMessageError.Content = "舵机通讯数据发送失败，请重新尝试"
+				}
+
+				time.Sleep(5 * time.Millisecond)
 			}
 
 			if messageData.ServoMessage.Type == "read" {
 
+				sendMessage.MessageType = "servo_message_read"
+				sendMessage.ServoMessageRead.Id = messageData.ServoMessage.Id
+				sendMessage.ServoMessageRead.Channel = messageData.ServoMessage.Channel
+				sendMessage.ServoMessageRead.Type = "read"
+
+				serialData := servoPlatform.ServoReadData{}
+
+				serialData.Type = "SERVO-READ-MODE"
+				serialData.Channel, _ = strconv.Atoi(messageData.ServoMessage.Channel)
+				serialData.Id, _ = strconv.Atoi(messageData.ServoMessage.Id)
+				serialDataString, _ := json.Marshal(serialData)
+				sendStatus := serialFunction.SerialWrite(Config.MentorConfig.RobotBoard.Port, Config.MentorConfig.RobotBoard.Rate, string(serialDataString))
+				if sendStatus == false {
+					sendMessage.MessageType = "servo_message_error"
+					sendMessage.ServoMessageError.Content = "舵机通讯数据发送失败，请重新尝试"
+				}
+				if sendStatus == true {
+					readString := serialFunction.SerialRead(Config.MentorConfig.RobotBoard.Port, Config.MentorConfig.RobotBoard.Rate, Config.MentorConfig.RobotBoard.Bits)
+					if readString != "" {
+
+						readStringJson := servoPlatform.ServoWriteMode{}
+
+						json.Unmarshal([]byte(readString), &readStringJson)
+
+						sendMessage.ServoMessageRead.Mode = strconv.Itoa(readStringJson.Mode)
+						sendMessage.ServoMessageRead.Speed = strconv.Itoa(readStringJson.Speed)
+					}
+				}
+
+				time.Sleep(5 * time.Millisecond)
+
+				serialData.Type = "SERVO-ANGLE-OFFSET-READ"
+				serialData.Channel, _ = strconv.Atoi(messageData.ServoMessage.Channel)
+				serialData.Id, _ = strconv.Atoi(messageData.ServoMessage.Id)
+				serialDataString, _ = json.Marshal(serialData)
+				sendStatus = serialFunction.SerialWrite(Config.MentorConfig.RobotBoard.Port, Config.MentorConfig.RobotBoard.Rate, string(serialDataString))
+				if sendStatus == false {
+					sendMessage.MessageType = "servo_message_error"
+					sendMessage.ServoMessageError.Content = "舵机通讯数据发送失败，请重新尝试"
+				}
+				if sendStatus == true {
+					readString := serialFunction.SerialRead(Config.MentorConfig.RobotBoard.Port, Config.MentorConfig.RobotBoard.Rate, Config.MentorConfig.RobotBoard.Bits)
+					if readString != "" {
+
+						readStringJson := servoPlatform.ServoAngleOffsetWrite{}
+
+						json.Unmarshal([]byte(readString), &readStringJson)
+
+						sendMessage.ServoMessageRead.Value = strconv.Itoa(readStringJson.Value)
+					}
+				}
+
+				time.Sleep(5 * time.Millisecond)
+
+				serialData.Type = "SERVO-ANGLE-LIMIT-READ"
+				serialData.Channel, _ = strconv.Atoi(messageData.ServoMessage.Channel)
+				serialData.Id, _ = strconv.Atoi(messageData.ServoMessage.Id)
+				serialDataString, _ = json.Marshal(serialData)
+				sendStatus = serialFunction.SerialWrite(Config.MentorConfig.RobotBoard.Port, Config.MentorConfig.RobotBoard.Rate, string(serialDataString))
+				if sendStatus == false {
+					sendMessage.MessageType = "servo_message_error"
+					sendMessage.ServoMessageError.Content = "舵机通讯数据发送失败，请重新尝试"
+				}
+				if sendStatus == true {
+					readString := serialFunction.SerialRead(Config.MentorConfig.RobotBoard.Port, Config.MentorConfig.RobotBoard.Rate, Config.MentorConfig.RobotBoard.Bits)
+					if readString != "" {
+
+						readStringJson := servoPlatform.ServoAngleLimitWrite{}
+
+						json.Unmarshal([]byte(readString), &readStringJson)
+
+						sendMessage.ServoMessageRead.MinAngle = strconv.Itoa(readStringJson.Min)
+						sendMessage.ServoMessageRead.MaxAngle = strconv.Itoa(readStringJson.Max)
+					}
+				}
+
+				time.Sleep(5 * time.Millisecond)
+
+				serialData.Type = "SERVO-VIN-LIMIT-READ"
+				serialData.Channel, _ = strconv.Atoi(messageData.ServoMessage.Channel)
+				serialData.Id, _ = strconv.Atoi(messageData.ServoMessage.Id)
+				serialDataString, _ = json.Marshal(serialData)
+				sendStatus = serialFunction.SerialWrite(Config.MentorConfig.RobotBoard.Port, Config.MentorConfig.RobotBoard.Rate, string(serialDataString))
+				if sendStatus == false {
+					sendMessage.MessageType = "servo_message_error"
+					sendMessage.ServoMessageError.Content = "舵机通讯数据发送失败，请重新尝试"
+				}
+				if sendStatus == true {
+					readString := serialFunction.SerialRead(Config.MentorConfig.RobotBoard.Port, Config.MentorConfig.RobotBoard.Rate, Config.MentorConfig.RobotBoard.Bits)
+					if readString != "" {
+
+						readStringJson := servoPlatform.ServoAngleLimitWrite{}
+
+						json.Unmarshal([]byte(readString), &readStringJson)
+
+						sendMessage.ServoMessageRead.MinVin = strconv.Itoa(readStringJson.Min)
+						sendMessage.ServoMessageRead.MaxVin = strconv.Itoa(readStringJson.Max)
+					}
+				}
+
+				time.Sleep(5 * time.Millisecond)
+
+				serialData.Type = "SERVO-STATUS-READ"
+				serialData.Channel, _ = strconv.Atoi(messageData.ServoMessage.Channel)
+				serialData.Id, _ = strconv.Atoi(messageData.ServoMessage.Id)
+				serialDataString, _ = json.Marshal(serialData)
+				sendStatus = serialFunction.SerialWrite(Config.MentorConfig.RobotBoard.Port, Config.MentorConfig.RobotBoard.Rate, string(serialDataString))
+				if sendStatus == false {
+					sendMessage.MessageType = "servo_message_error"
+					sendMessage.ServoMessageError.Content = "舵机通讯数据发送失败，请重新尝试"
+				}
+				if sendStatus == true {
+					readString := serialFunction.SerialRead(Config.MentorConfig.RobotBoard.Port, Config.MentorConfig.RobotBoard.Rate, Config.MentorConfig.RobotBoard.Bits)
+					if readString != "" {
+
+						readStringJson := servoPlatform.ServoStatusWrite{}
+
+						json.Unmarshal([]byte(readString), &readStringJson)
+
+						sendMessage.ServoMessageRead.Status = strconv.Itoa(readStringJson.Status)
+					}
+				}
 			}
 		}
+
+		sendString, _ := json.Marshal(sendMessage)
+		Send("", string(sendString))
 	}
 
 	if messageData.MessageType == "robot_run" {
