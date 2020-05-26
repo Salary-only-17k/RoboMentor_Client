@@ -382,7 +382,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 					}
 				}
 
-				time.Sleep(100 * time.Millisecond)
+				time.Sleep(200 * time.Millisecond)
 
 				serialData.Type = "SERVO-ANGLE-OFFSET-READ"
 				serialData.Channel, _ = strconv.Atoi(messageData.ServoMessage.Channel)
@@ -407,7 +407,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 					}
 				}
 
-				time.Sleep(100 * time.Millisecond)
+				time.Sleep(200 * time.Millisecond)
 
 				serialData.Type = "SERVO-ANGLE-LIMIT-READ"
 				serialData.Channel, _ = strconv.Atoi(messageData.ServoMessage.Channel)
@@ -433,7 +433,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 					}
 				}
 
-				time.Sleep(100 * time.Millisecond)
+				time.Sleep(200 * time.Millisecond)
 
 				serialData.Type = "SERVO-VIN-LIMIT-READ"
 				serialData.Channel, _ = strconv.Atoi(messageData.ServoMessage.Channel)
@@ -459,7 +459,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 					}
 				}
 
-				time.Sleep(100 * time.Millisecond)
+				time.Sleep(200 * time.Millisecond)
 
 				serialData.Type = "SERVO-STATUS-READ"
 				serialData.Channel, _ = strconv.Atoi(messageData.ServoMessage.Channel)
