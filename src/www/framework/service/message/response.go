@@ -516,7 +516,7 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 			serialData.Type = "SERVO-MOTION-WRITE"
 			serialData.Channel, _ = strconv.Atoi(messageData.ServoControlMessage.Channel)
 			serialData.Id, _ = strconv.Atoi(messageData.ServoControlMessage.Id)
-			serialData.Angle, _ = strconv.Atoi(messageData.ServoControlMessage.Angle)
+			serialData.Angle = messageData.ServoControlMessage.Angle
 			serialData.Time, _ = strconv.Atoi(messageData.ServoControlMessage.Time)
 
 			serialDataString, _ := json.Marshal(serialData)
