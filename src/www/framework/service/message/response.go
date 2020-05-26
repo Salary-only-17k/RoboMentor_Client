@@ -118,7 +118,7 @@ type ServoControlMessage struct {
 type servoControlMessage struct {
 	Id 			string `json:"id"`
 	Channel 	string `json:"channel"`
-	Angle 		string `json:"angle"`
+	Angle 		int 	`json:"angle"`
 	Time 		string `json:"time"`
 }
 
