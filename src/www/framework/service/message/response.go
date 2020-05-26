@@ -231,24 +231,21 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 		if isExists {
 
 			if messageData.ServoMessage.Id != "" && messageData.ServoMessage.Type == "write" {
+				serialData := servoPlatform.ServoWriteId{}
+				serialData.Type = "SERVO-WRITE-ID"
+				serialData.Channel, _ = strconv.Atoi(messageData.ServoMessage.Channel)
+				serialData.OldId = 254
+				serialData.NewId, _ = strconv.Atoi(messageData.ServoMessage.Id)
 
-				if messageData.ServoMessage.Id == "254" {
-					serialData := servoPlatform.ServoWriteId{}
-					serialData.Type = "SERVO-WRITE-ID"
-					serialData.Channel, _ = strconv.Atoi(messageData.ServoMessage.Channel)
-					serialData.OldId = 254
-					serialData.NewId, _ = strconv.Atoi(messageData.ServoMessage.Id)
+				serialDataString, _ := json.Marshal(serialData)
 
-					serialDataString, _ := json.Marshal(serialData)
-
-					sendStatus := serialFunction.SerialWrite(Config.MentorConfig.RobotBoard.Port, Config.MentorConfig.RobotBoard.Rate, string(serialDataString))
-					if sendStatus == false {
-						sendMessage.MessageType = "servo_message_error"
-						sendMessage.ServoMessageError.Content = "舵机通讯数据发送失败，请重新尝试"
-					}
-
-					time.Sleep(5 * time.Millisecond)
+				sendStatus := serialFunction.SerialWrite(Config.MentorConfig.RobotBoard.Port, Config.MentorConfig.RobotBoard.Rate, string(serialDataString))
+				if sendStatus == false {
+					sendMessage.MessageType = "servo_message_error"
+					sendMessage.ServoMessageError.Content = "舵机通讯数据发送失败，请重新尝试"
 				}
+
+				time.Sleep(5 * time.Millisecond)
 			}
 
 			if messageData.ServoMessage.Mode != "" && messageData.ServoMessage.Type == "write" {
