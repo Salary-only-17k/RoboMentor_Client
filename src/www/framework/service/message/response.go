@@ -35,9 +35,11 @@ type messageData struct {
 	TcpMessageRead	tcpMessageRead 			`json:"tcp_message_read"`
 	TcpMessageError	tcpMessageError 		`json:"tcp_message_error"`
 	ServoMessage	servoMessage 			`json:"servo_message"`
-	ServoControlMessage servoControlMessage `json:"servo_control_message"`
+	ServoMessageControl servoMessageControl `json:"servo_message_control"`
 	ServoMessageRead servoMessageRead 		`json:"servo_message_read"`
 	ServoMessageError	servoMessageError 	`json:"servo_message_error"`
+	PwmMessage 			pwmMessage 			`json:"pwm_message"`
+	PwmMessageError 	pwmMessageError 	`json:"pwm_message_error"`
 	CameraMessage	cameraMessage 			`json:"camera_message"`
 	DetectMessage	detectMessage 			`json:"detect_message"`
 }
@@ -111,11 +113,11 @@ type servoMessage struct {
 	Status 		string `json:"status"`
 }
 
-type ServoControlMessage struct {
-	servoControlMessage
+type ServoMessageControl struct {
+	servoMessageControl
 }
 
-type servoControlMessage struct {
+type servoMessageControl struct {
 	Id 			string `json:"id"`
 	Channel 	string `json:"channel"`
 	Angle 		int 	`json:"angle"`
@@ -127,6 +129,21 @@ type servoMessageRead struct {
 }
 
 type servoMessageError struct {
+	Content string 		`json:"content"`
+}
+
+type PwmMessage struct {
+	pwmMessage
+}
+
+type pwmMessage struct {
+	Type 	string 	`json:"type"`
+	Channel string 	`json:"channel"`
+	Width 	int 	`json:"width"`
+	Rate 	int 	`json:"rate"`
+}
+
+type pwmMessageError struct {
 	Content string 		`json:"content"`
 }
 
@@ -514,10 +531,41 @@ var responseMessage mqtt.MessageHandler = func(client mqtt.Client, message mqtt.
 
 			serialData := servoPlatform.ServoMotionWrite{}
 			serialData.Type = "SERVO-MOTION-WRITE"
-			serialData.Channel, _ = strconv.Atoi(messageData.ServoControlMessage.Channel)
-			serialData.Id, _ = strconv.Atoi(messageData.ServoControlMessage.Id)
-			serialData.Angle = messageData.ServoControlMessage.Angle
-			serialData.Time, _ = strconv.Atoi(messageData.ServoControlMessage.Time)
+			serialData.Channel, _ = strconv.Atoi(messageData.ServoMessageControl.Channel)
+			serialData.Id, _ = strconv.Atoi(messageData.ServoMessageControl.Id)
+			serialData.Angle = messageData.ServoMessageControl.Angle
+			serialData.Time, _ = strconv.Atoi(messageData.ServoMessageControl.Time)
+
+			serialDataString, _ := json.Marshal(serialData)
+
+			sendStatus := serialFunction.SerialWrite(Config.MentorConfig.RobotBoard.Port, Config.MentorConfig.RobotBoard.Rate, string(serialDataString))
+			if sendStatus == false {
+				sendMessage.MessageType = "servo_message_error"
+				sendMessage.ServoMessageError.Content = "舵机通讯数据发送失败，请重新尝试"
+			}
+		}
+
+		sendString, _ := json.Marshal(sendMessage)
+		Send("", string(sendString))
+	}
+
+	if messageData.MessageType == "pwm_message" {
+
+		sendMessage := ResponseMessage{}
+
+		isExists := CommonService.Exists(Config.MentorConfig.RobotBoard.Port)
+		if isExists == false {
+			sendMessage.MessageType = "pwm_message_error"
+			sendMessage.ServoMessageError.Content = "舵机通讯失败，请重新尝试"
+		}
+
+		if isExists == true {
+
+			serialData := pwmMessage{}
+			serialData.Type = "WRITE-PWM"
+			serialData.Channel = messageData.PwmMessage.Channel
+			serialData.Width = messageData.PwmMessage.Width
+			serialData.Rate = messageData.PwmMessage.Rate
 
 			serialDataString, _ := json.Marshal(serialData)
 
