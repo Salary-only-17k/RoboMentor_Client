@@ -7,6 +7,7 @@ import (
 	"log"
 	"strconv"
 	"time"
+	Config "www/framework/config"
 )
 
 var Servo = &Platform{}
@@ -93,13 +94,13 @@ type ServoStatusWrite struct {
 	Status 	int 	`json:"status"`
 }
 
-func StartPlatform(Port string, Baud string, Buf string, MotionMode int, Speed int)  {
+func StartPlatform(MotionMode int, Speed int) {
 
-	Servo.Baud, _ = strconv.Atoi(Baud)
-	Servo.Buf, _ = strconv.Atoi(Buf)
-	Servo.Port = Port
+	Servo.Baud, _ = strconv.Atoi(Config.MentorConfig.RobotBoard.Rate)
+	Servo.Buf, _ = strconv.Atoi(Config.MentorConfig.RobotBoard.Bits)
+	Servo.Port = Config.MentorConfig.RobotBoard.Port
 
-	serialConfig := &serial.Config{ Name: Port, Baud: Servo.Baud, ReadTimeout: time.Millisecond * 10}
+	serialConfig := &serial.Config{ Name: Servo.Port, Baud: Servo.Baud, ReadTimeout: time.Millisecond * 10}
 
 	Servo.conn , _ = serial.OpenPort(serialConfig)
 

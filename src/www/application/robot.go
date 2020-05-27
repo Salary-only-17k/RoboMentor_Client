@@ -1,6 +1,7 @@
 package robot
 
 import (
+	"www/framework/platform/servo"
 	"www/framework/robot"
 )
 
@@ -17,6 +18,9 @@ func InitRobot() Robot.Interface {
 
 func (robot *Base) OnStart() {
 
+	servoPlatform.StartPlatform(1,50)
+
+	servoPlatform.SitDownAction()
 }
 
 func (robot *Base) OnClose() {
