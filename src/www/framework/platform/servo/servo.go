@@ -170,7 +170,7 @@ func SitDownAction() {
 
 	SetMotion()
 
-	time.Sleep(10 * time.Millisecond)
+	time.Sleep(40 * time.Millisecond)
 
 	Servo.Action = action2
 
