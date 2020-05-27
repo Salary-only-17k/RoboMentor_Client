@@ -152,23 +152,23 @@ func SitDownAction() bool {
 
 	var action = []ActionItem{
 		{Channel:1, Id:1, Speed:0, Angle:500},
-		{Channel:1, Id:2, Speed:0, Angle:250},
+		{Channel:1, Id:2, Speed:0, Angle:150},
 		{Channel:1, Id:3, Speed:0, Angle:650},
 		{Channel:1, Id:4, Speed:0, Angle:500},
-		{Channel:1, Id:5, Speed:0, Angle:250},
+		{Channel:1, Id:5, Speed:0, Angle:150},
 		{Channel:1, Id:6, Speed:0, Angle:650},
 		{Channel:1, Id:7, Speed:0, Angle:500},
-		{Channel:1, Id:8, Speed:0, Angle:250},
+		{Channel:1, Id:8, Speed:0, Angle:150},
 		{Channel:1, Id:9, Speed:0, Angle:650},
 
 		{Channel:2, Id:1, Speed:0, Angle:500},
-		{Channel:2, Id:2, Speed:0, Angle:250},
+		{Channel:2, Id:2, Speed:0, Angle:150},
 		{Channel:2, Id:3, Speed:0, Angle:650},
 		{Channel:2, Id:4, Speed:0, Angle:500},
-		{Channel:2, Id:5, Speed:0, Angle:250},
+		{Channel:2, Id:5, Speed:0, Angle:150},
 		{Channel:2, Id:6, Speed:0, Angle:650},
 		{Channel:2, Id:7, Speed:0, Angle:500},
-		{Channel:2, Id:8, Speed:0, Angle:250},
+		{Channel:2, Id:8, Speed:0, Angle:150},
 		{Channel:2, Id:9, Speed:0, Angle:650},
 	}
 
