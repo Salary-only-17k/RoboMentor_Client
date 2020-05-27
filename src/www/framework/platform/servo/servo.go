@@ -129,6 +129,8 @@ func SetMotion() bool {
 			log.Println("\033[31m[Error]\033[0m", "SetMotion Error", sendString)
 		}
 
+		log.Println("[info]", string(sendString))
+
 		serialWrite, err := Servo.conn.Write(sendString)
 		if err != nil {
 			log.Println("\033[31m[Error]\033[0m", "SetMotion Error", serialWrite)
