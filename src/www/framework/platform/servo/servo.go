@@ -7,7 +7,7 @@ import (
 	"log"
 	"strconv"
 	"time"
-	Config "www/framework/config"
+	"www/framework/config"
 )
 
 var Servo = &Platform{}
