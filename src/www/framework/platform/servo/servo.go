@@ -1,16 +1,31 @@
 package servoPlatform
 
 import (
+	"encoding/json"
+	"github.com/tarm/goserial"
+	"io"
+	"log"
 	"strconv"
+	"time"
 )
 
 var Servo = &Platform{}
 
 type Platform struct {
-	Status		chan bool
+	conn		io.ReadWriteCloser
 	Port 		string
 	Baud 		int
 	Buf 		int
+	Speed		int
+	MotionMode 	int
+	Action		[]ActionItem
+}
+
+type ActionItem struct {
+	Channel int
+	Id 		int
+	Speed	int
+	Angle 	int
 }
 
 type ServoReadData struct {
@@ -78,9 +93,112 @@ type ServoStatusWrite struct {
 	Status 	int 	`json:"status"`
 }
 
-func StartPlatform(Port string, Baud string, Buf string) {
+func StartPlatform(Port string, Baud string, Buf string, MotionMode int, Speed int)  {
+
 	Servo.Baud, _ = strconv.Atoi(Baud)
 	Servo.Buf, _ = strconv.Atoi(Buf)
 	Servo.Port = Port
+
+	serialConfig := &serial.Config{ Name: Port, Baud: Servo.Baud, ReadTimeout: time.Millisecond * 10}
+
+	Servo.conn , _ = serial.OpenPort(serialConfig)
+
+	Servo.MotionMode = MotionMode
+
+	Servo.Speed = Speed
 }
 
+func SetMotion() bool {
+
+	setStatus := true
+
+	if len(Servo.Action) > 0 {
+		for _, v := range Servo.Action {
+
+			sendData := ServoMotionWrite{}
+			sendData.Type = "SERVO-MOTION-WRITE"
+			sendData.Channel = v.Channel
+			sendData.Id = v.Id
+			sendData.Angle = v.Speed
+			sendData.Time = Servo.Speed
+			if	v.Speed > 0  {
+				sendData.Time = v.Speed
+			}
+
+			if sendData.Angle != -1 {
+
+				sendString, err := json.Marshal(sendData)
+				if err != nil {
+					log.Println("\033[31m[Error]\033[0m", "SetMotion Error", sendString)
+				}
+
+				serialWrite, err := Servo.conn.Write(sendString)
+				if err != nil {
+					log.Println("\033[31m[Error]\033[0m", "SetMotion Error", serialWrite)
+				}
+
+				time.Sleep(10 * time.Millisecond)
+			}
+		}
+
+		Servo.Action = make([]ActionItem, 0)
+	}
+
+	return setStatus
+}
+
+func SitDownAction() bool {
+
+	var action = []ActionItem{
+		{Channel:1, Id:1, Speed:0, Angle:500},
+		{Channel:1, Id:2, Speed:0, Angle:320},
+		{Channel:1, Id:3, Speed:0, Angle:750},
+		{Channel:1, Id:4, Speed:0, Angle:500},
+		{Channel:1, Id:5, Speed:0, Angle:320},
+		{Channel:1, Id:6, Speed:0, Angle:750},
+		{Channel:1, Id:7, Speed:0, Angle:500},
+		{Channel:1, Id:8, Speed:0, Angle:320},
+		{Channel:1, Id:9, Speed:0, Angle:750},
+		{Channel:2, Id:1, Speed:0, Angle:500},
+		{Channel:2, Id:2, Speed:0, Angle:320},
+		{Channel:2, Id:3, Speed:0, Angle:750},
+		{Channel:2, Id:4, Speed:0, Angle:500},
+		{Channel:2, Id:5, Speed:0, Angle:320},
+		{Channel:2, Id:6, Speed:0, Angle:750},
+		{Channel:2, Id:7, Speed:0, Angle:500},
+		{Channel:2, Id:8, Speed:0, Angle:320},
+		{Channel:2, Id:9, Speed:0, Angle:750},
+	}
+
+	Servo.Action = action
+
+	return SetMotion()
+}
+
+func StandUpAction() bool {
+
+	var action = []ActionItem{
+		{Channel:1, Id:1, Speed:0, Angle:500},
+		{Channel:1, Id:2, Speed:0, Angle:320},
+		{Channel:1, Id:3, Speed:0, Angle:900},
+		{Channel:1, Id:4, Speed:0, Angle:500},
+		{Channel:1, Id:5, Speed:0, Angle:320},
+		{Channel:1, Id:6, Speed:0, Angle:900},
+		{Channel:1, Id:7, Speed:0, Angle:500},
+		{Channel:1, Id:8, Speed:0, Angle:320},
+		{Channel:1, Id:9, Speed:0, Angle:900},
+		{Channel:2, Id:1, Speed:0, Angle:500},
+		{Channel:2, Id:2, Speed:0, Angle:320},
+		{Channel:2, Id:3, Speed:0, Angle:900},
+		{Channel:2, Id:4, Speed:0, Angle:500},
+		{Channel:2, Id:5, Speed:0, Angle:320},
+		{Channel:2, Id:6, Speed:0, Angle:900},
+		{Channel:2, Id:7, Speed:0, Angle:500},
+		{Channel:2, Id:8, Speed:0, Angle:320},
+		{Channel:2, Id:9, Speed:0, Angle:900},
+	}
+
+	Servo.Action = action
+
+	return SetMotion()
+}
