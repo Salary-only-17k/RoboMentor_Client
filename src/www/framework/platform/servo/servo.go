@@ -140,32 +140,41 @@ func SetMotion() bool {
 	return setStatus
 }
 
-func SitDownAction() bool {
+func SitDownAction() {
 
-	var action = []ActionItem{
+	var action1 = []ActionItem{
 		{Channel:1, Id:1, Time:0, Angle:500},
-		{Channel:2, Id:1, Time:0, Angle:500},
 		{Channel:1, Id:2, Time:0, Angle:150},
-		{Channel:2, Id:2, Time:0, Angle:150},
 		{Channel:1, Id:3, Time:0, Angle:890},
-		{Channel:2, Id:3, Time:0, Angle:890},
 		{Channel:1, Id:4, Time:0, Angle:500},
-		{Channel:2, Id:4, Time:0, Angle:500},
 		{Channel:1, Id:5, Time:0, Angle:150},
-		{Channel:2, Id:5, Time:0, Angle:150},
 		{Channel:1, Id:6, Time:0, Angle:890},
-		{Channel:2, Id:6, Time:0, Angle:890},
 		{Channel:1, Id:7, Time:0, Angle:500},
-		{Channel:2, Id:7, Time:0, Angle:500},
 		{Channel:1, Id:8, Time:0, Angle:150},
-		{Channel:2, Id:8, Time:0, Angle:150},
 		{Channel:1, Id:9, Time:0, Angle:890},
+	}
+
+	var action2 = []ActionItem{
+		{Channel:2, Id:1, Time:0, Angle:500},
+		{Channel:2, Id:2, Time:0, Angle:150},
+		{Channel:2, Id:3, Time:0, Angle:890},
+		{Channel:2, Id:4, Time:0, Angle:500},
+		{Channel:2, Id:5, Time:0, Angle:150},
+		{Channel:2, Id:6, Time:0, Angle:890},
+		{Channel:2, Id:7, Time:0, Angle:500},
+		{Channel:2, Id:8, Time:0, Angle:150},
 		{Channel:2, Id:9, Time:0, Angle:890},
 	}
 
-	Servo.Action = action
+	Servo.Action = action1
 
-	return SetMotion()
+	SetMotion()
+
+	time.Sleep(10 * time.Millisecond)
+
+	Servo.Action = action2
+
+	SetMotion()
 }
 
 func StandUpAction() bool {
