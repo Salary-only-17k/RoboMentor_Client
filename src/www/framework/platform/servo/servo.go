@@ -120,7 +120,7 @@ func SetMotion() bool {
 			sendData.Type = "SERVO-MOTION-WRITE"
 			sendData.Channel = v.Channel
 			sendData.Id = v.Id
-			sendData.Angle = v.Speed
+			sendData.Angle = v.Angle
 			sendData.Time = Servo.Speed
 			if	v.Speed > 0  {
 				sendData.Time = v.Speed
@@ -138,7 +138,7 @@ func SetMotion() bool {
 					log.Println("\033[31m[Error]\033[0m", "SetMotion Error", serialWrite)
 				}
 
-				time.Sleep(50 * time.Millisecond)
+				time.Sleep(55 * time.Millisecond)
 			}
 		}
 
@@ -160,6 +160,7 @@ func SitDownAction() bool {
 		{Channel:1, Id:7, Speed:0, Angle:500},
 		{Channel:1, Id:8, Speed:0, Angle:320},
 		{Channel:1, Id:9, Speed:0, Angle:750},
+
 		{Channel:2, Id:1, Speed:0, Angle:500},
 		{Channel:2, Id:2, Speed:0, Angle:320},
 		{Channel:2, Id:3, Speed:0, Angle:750},
