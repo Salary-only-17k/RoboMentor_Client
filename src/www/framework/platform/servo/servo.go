@@ -122,7 +122,20 @@ func SetMotion() bool {
 
 		sendData := ServoMotionBatchWrite{}
 		sendData.Type = "SERVO-MOTION-BATCH-WRITE"
-		sendData.List = Servo.Action
+
+		for _, v := range Servo.Action {
+
+			item := ActionItem{}
+			item.Channel = v.Channel
+			item.Id = v.Id
+			item.Angle = v.Angle
+			item.Time = Servo.Speed
+			if v.Time > 0 {
+				item.Time = v.Time
+			}
+
+			sendData.List = append(sendData.List, item)
+		}
 
 		sendString, err := json.Marshal(sendData)
 		if err != nil {
