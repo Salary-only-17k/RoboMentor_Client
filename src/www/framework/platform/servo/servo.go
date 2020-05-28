@@ -229,7 +229,7 @@ func StandUpAction() {
 
 func ForwardAction() {
 	var action1 = []ActionItem{
-		{Channel:2, Id:5, Time:-1, Angle:150},
+		{Channel:2, Id:2, Time:-1, Angle:150},
 		{Channel:2, Id:8, Time:-1, Angle:150},
 		{Channel:1, Id:5, Time:-1, Angle:150},
 	}
