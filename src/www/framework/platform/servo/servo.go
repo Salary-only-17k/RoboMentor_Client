@@ -252,6 +252,7 @@ func ForwardAction() {
 		{Channel:1, Id:8, Time:-1, Angle:350},
 		{Channel:1, Id:9, Time:-1, Angle:750},
 		{Channel:1, Id:3, Time:-1, Angle:900},
+		{Channel:2, Id:4, Time:-1, Angle:525},
 	}
 
 	Servo.Action = action1
