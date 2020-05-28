@@ -280,25 +280,25 @@ func ForwardAction() {
 
 	SetMotion()
 
-	time.Sleep(250 * time.Millisecond)
+	time.Sleep(350 * time.Millisecond)
 
 	Servo.Action = action2
 
 	SetMotion()
 
-	time.Sleep(250 * time.Millisecond)
+	time.Sleep(350 * time.Millisecond)
 
 	Servo.Action = action3
 
 	SetMotion()
 
-	time.Sleep(250 * time.Millisecond)
+	time.Sleep(350 * time.Millisecond)
 
 	Servo.Action = action4
 
 	SetMotion()
 
-	time.Sleep(250 * time.Millisecond)
+	time.Sleep(350 * time.Millisecond)
 
 	Servo.Action = action5
 
