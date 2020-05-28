@@ -198,10 +198,10 @@ func StandUpAction() {
 		{Channel:1, Id:3, Time:-1, Angle:950},
 		{Channel:1, Id:4, Time:-1, Angle:500},
 		{Channel:1, Id:5, Time:-1, Angle:320},
-		{Channel:1, Id:6, Time:-1, Angle:900},
+		{Channel:1, Id:6, Time:-1, Angle:950},
 		{Channel:1, Id:7, Time:-1, Angle:500},
 		{Channel:1, Id:8, Time:-1, Angle:320},
-		{Channel:1, Id:9, Time:-1, Angle:900},
+		{Channel:1, Id:9, Time:-1, Angle:950},
 	}
 
 	var action2 = []ActionItem{
