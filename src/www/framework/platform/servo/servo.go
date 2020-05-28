@@ -246,7 +246,9 @@ func ForwardAction() {
 		{Channel:2, Id:1, Time:-1, Angle:500},
 		{Channel:2, Id:7, Time:-1, Angle:500},
 		{Channel:1, Id:4, Time:-1, Angle:500},
+	}
 
+	var action4 = []ActionItem{
 		{Channel:1, Id:8, Time:-1, Angle:350},
 		{Channel:1, Id:9, Time:-1, Angle:750},
 		{Channel:1, Id:3, Time:-1, Angle:900},
@@ -266,6 +268,12 @@ func ForwardAction() {
 	time.Sleep(300 * time.Millisecond)
 
 	Servo.Action = action3
+
+	SetMotion()
+
+	time.Sleep(200 * time.Millisecond)
+
+	Servo.Action = action4
 
 	SetMotion()
 }
