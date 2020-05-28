@@ -130,7 +130,7 @@ func SetMotion() bool {
 			item.Id = v.Id
 			item.Angle = v.Angle
 			item.Time = Servo.Speed
-			if v.Time > 0 {
+			if v.Time > -1 {
 				item.Time = v.Time
 			}
 
@@ -156,27 +156,27 @@ func SetMotion() bool {
 func SitDownAction() {
 
 	var action1 = []ActionItem{
-		{Channel:1, Id:1, Time:0, Angle:500},
-		{Channel:1, Id:2, Time:0, Angle:150},
-		{Channel:1, Id:3, Time:0, Angle:950},
-		{Channel:1, Id:4, Time:0, Angle:500},
-		{Channel:1, Id:5, Time:0, Angle:150},
-		{Channel:1, Id:6, Time:0, Angle:950},
-		{Channel:1, Id:7, Time:0, Angle:500},
-		{Channel:1, Id:8, Time:0, Angle:150},
-		{Channel:1, Id:9, Time:0, Angle:950},
+		{Channel:1, Id:1, Time:-1, Angle:500},
+		{Channel:1, Id:2, Time:-1, Angle:150},
+		{Channel:1, Id:3, Time:-1, Angle:950},
+		{Channel:1, Id:4, Time:-1, Angle:500},
+		{Channel:1, Id:5, Time:-1, Angle:150},
+		{Channel:1, Id:6, Time:-1, Angle:950},
+		{Channel:1, Id:7, Time:-1, Angle:500},
+		{Channel:1, Id:8, Time:-1, Angle:150},
+		{Channel:1, Id:9, Time:-1, Angle:950},
 	}
 
 	var action2 = []ActionItem{
-		{Channel:2, Id:1, Time:0, Angle:500},
-		{Channel:2, Id:2, Time:0, Angle:150},
-		{Channel:2, Id:3, Time:0, Angle:950},
-		{Channel:2, Id:4, Time:0, Angle:500},
-		{Channel:2, Id:5, Time:0, Angle:150},
-		{Channel:2, Id:6, Time:0, Angle:950},
-		{Channel:2, Id:7, Time:0, Angle:500},
-		{Channel:2, Id:8, Time:0, Angle:150},
-		{Channel:2, Id:9, Time:0, Angle:950},
+		{Channel:2, Id:1, Time:-1, Angle:500},
+		{Channel:2, Id:2, Time:-1, Angle:150},
+		{Channel:2, Id:3, Time:-1, Angle:950},
+		{Channel:2, Id:4, Time:-1, Angle:500},
+		{Channel:2, Id:5, Time:-1, Angle:150},
+		{Channel:2, Id:6, Time:-1, Angle:950},
+		{Channel:2, Id:7, Time:-1, Angle:500},
+		{Channel:2, Id:8, Time:-1, Angle:150},
+		{Channel:2, Id:9, Time:-1, Angle:950},
 	}
 
 	Servo.Action = action1
@@ -193,51 +193,33 @@ func SitDownAction() {
 func StandUpAction() {
 
 	var action1 = []ActionItem{
-		{Channel:1, Id:1, Time:0, Angle:500},
-		{Channel:1, Id:2, Time:0, Angle:320},
-		{Channel:1, Id:3, Time:0, Angle:950},
-		{Channel:1, Id:4, Time:0, Angle:500},
-		{Channel:1, Id:5, Time:0, Angle:320},
-		{Channel:1, Id:6, Time:0, Angle:900},
-		{Channel:1, Id:7, Time:0, Angle:500},
-		{Channel:1, Id:8, Time:0, Angle:320},
-		{Channel:1, Id:9, Time:0, Angle:900},
-	}
-
-	var action2 = []ActionItem{
-		{Channel:2, Id:1, Time:0, Angle:500},
-		{Channel:2, Id:2, Time:0, Angle:320},
-		{Channel:2, Id:3, Time:0, Angle:950},
-		{Channel:2, Id:4, Time:0, Angle:500},
-		{Channel:2, Id:5, Time:0, Angle:320},
-		{Channel:2, Id:6, Time:0, Angle:950},
-		{Channel:2, Id:7, Time:0, Angle:500},
-		{Channel:2, Id:8, Time:0, Angle:320},
-		{Channel:2, Id:9, Time:0, Angle:950},
+		{Channel:2, Id:1, Time:-1, Angle:500},
+		{Channel:1, Id:2, Time:-1, Angle:320},
+		{Channel:1, Id:3, Time:-1, Angle:950},
+		{Channel:1, Id:4, Time:-1, Angle:500},
+		{Channel:1, Id:5, Time:-1, Angle:320},
+		{Channel:1, Id:6, Time:-1, Angle:900},
+		{Channel:1, Id:7, Time:-1, Angle:500},
+		{Channel:1, Id:8, Time:-1, Angle:320},
+		{Channel:1, Id:9, Time:-1, Angle:900},
 	}
 
 	Servo.Action = action1
-
-	SetMotion()
-
-	time.Sleep(60 * time.Millisecond)
-
-	Servo.Action = action2
 
 	SetMotion()
 }
 
 func ForwardAction() {
 	var action1 = []ActionItem{
-		{Channel:1, Id:4, Time:0, Angle:600},
-		{Channel:1, Id:5, Time:0, Angle:220},
-		{Channel:1, Id:6, Time:0, Angle:800},
-		{Channel:2, Id:1, Time:0, Angle:450},
-		{Channel:2, Id:2, Time:0, Angle:220},
-		{Channel:2, Id:3, Time:0, Angle:800},
-		{Channel:2, Id:1, Time:0, Angle:400},
-		{Channel:2, Id:2, Time:0, Angle:220},
-		{Channel:2, Id:3, Time:0, Angle:800},
+		{Channel:1, Id:4, Time:-1, Angle:600},
+		{Channel:1, Id:5, Time:-1, Angle:220},
+		{Channel:1, Id:6, Time:-1, Angle:800},
+		{Channel:2, Id:1, Time:-1, Angle:450},
+		{Channel:2, Id:2, Time:-1, Angle:220},
+		{Channel:2, Id:3, Time:-1, Angle:800},
+		{Channel:2, Id:1, Time:-1, Angle:400},
+		{Channel:2, Id:2, Time:-1, Angle:220},
+		{Channel:2, Id:3, Time:-1, Angle:800},
 	}
 
 	Servo.Action = action1
