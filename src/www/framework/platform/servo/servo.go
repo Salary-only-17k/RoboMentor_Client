@@ -193,7 +193,7 @@ func SitDownAction() {
 func StandUpAction() {
 
 	var action1 = []ActionItem{
-		{Channel:2, Id:1, Time:-1, Angle:500},
+		{Channel:1, Id:1, Time:-1, Angle:500},
 		{Channel:1, Id:2, Time:-1, Angle:320},
 		{Channel:1, Id:3, Time:-1, Angle:950},
 		{Channel:1, Id:4, Time:-1, Angle:500},
@@ -204,7 +204,25 @@ func StandUpAction() {
 		{Channel:1, Id:9, Time:-1, Angle:900},
 	}
 
+	var action2 = []ActionItem{
+		{Channel:2, Id:1, Time:-1, Angle:500},
+		{Channel:2, Id:2, Time:-1, Angle:320},
+		{Channel:2, Id:3, Time:-1, Angle:950},
+		{Channel:2, Id:4, Time:-1, Angle:500},
+		{Channel:2, Id:5, Time:-1, Angle:320},
+		{Channel:2, Id:6, Time:-1, Angle:950},
+		{Channel:2, Id:7, Time:-1, Angle:500},
+		{Channel:2, Id:8, Time:-1, Angle:320},
+		{Channel:2, Id:9, Time:-1, Angle:950},
+	}
+
 	Servo.Action = action1
+
+	SetMotion()
+
+	time.Sleep(60 * time.Millisecond)
+
+	Servo.Action = action2
 
 	SetMotion()
 }
