@@ -373,6 +373,30 @@ func ForwardAction() {
 		{Channel:2, Id:9, Time:-1, Angle:900},
 	}
 
+	var action7t1 = []ActionItem{
+		{Channel:1, Id:1, Time:-1, Angle:500},
+		{Channel:1, Id:2, Time:-1, Angle:320},
+		{Channel:1, Id:3, Time:-1, Angle:900},
+		{Channel:1, Id:4, Time:-1, Angle:650},
+		{Channel:1, Id:5, Time:-1, Angle:320},
+		{Channel:1, Id:6, Time:-1, Angle:900},
+		{Channel:1, Id:7, Time:-1, Angle:500},
+		{Channel:1, Id:8, Time:-1, Angle:320},
+		{Channel:1, Id:9, Time:-1, Angle:900},
+	}
+
+	var action7t2 = []ActionItem{
+		{Channel:2, Id:1, Time:-1, Angle:350},
+		{Channel:2, Id:2, Time:-1, Angle:320},
+		{Channel:2, Id:3, Time:-1, Angle:900},
+		{Channel:2, Id:4, Time:-1, Angle:500},
+		{Channel:2, Id:5, Time:-1, Angle:320},
+		{Channel:2, Id:6, Time:-1, Angle:900},
+		{Channel:2, Id:7, Time:-1, Angle:350},
+		{Channel:2, Id:8, Time:-1, Angle:320},
+		{Channel:2, Id:9, Time:-1, Angle:900},
+	}
+
 	Servo.Action = action1t1
 
 	SetMotion()
