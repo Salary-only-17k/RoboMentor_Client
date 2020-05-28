@@ -131,7 +131,7 @@ func SetMotion() bool {
 			item.Angle = v.Angle
 			item.Time = Servo.Speed
 			if v.Time > -1 {
-				item.Time = v.Time
+				item.Time = v.Time + Servo.Speed
 			}
 
 			sendData.List = append(sendData.List, item)
