@@ -146,8 +146,6 @@ func SetMotion() bool {
 		if err != nil {
 			log.Println("\033[31m[Error]\033[0m", "SetMotion Error", serialWrite)
 		}
-
-		Servo.Action = make([]ActionItem, 0)
 	}
 
 	return setStatus
