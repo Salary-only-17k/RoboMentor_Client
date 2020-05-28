@@ -228,81 +228,38 @@ func StandUpAction() {
 }
 
 func ForwardAction() {
-	var action1 = []ActionItem{
-		{Channel:2, Id:2, Time:-1, Angle:200},
-		{Channel:2, Id:8, Time:-1, Angle:200},
-		{Channel:1, Id:5, Time:-1, Angle:200},
 
-		{Channel:2, Id:1, Time:100, Angle:350},
-		{Channel:2, Id:7, Time:100, Angle:350},
-		{Channel:1, Id:4, Time:100, Angle:650},
-	}
-
-	var action2 = []ActionItem{
-		{Channel:2, Id:2, Time:-1, Angle:320},
-		{Channel:2, Id:8, Time:-1, Angle:320},
-		{Channel:1, Id:5, Time:-1, Angle:320},
-
-		{Channel:1, Id:2, Time:100, Angle:200},
-		{Channel:1, Id:8, Time:100, Angle:200},
-		{Channel:2, Id:5, Time:100, Angle:200},
-	}
-
-	var action3 = []ActionItem{
-		{Channel:2, Id:1, Time:-1, Angle:500},
-		{Channel:2, Id:7, Time:-1, Angle:500},
-		{Channel:1, Id:4, Time:-1, Angle:500},
-
-		{Channel:1, Id:1, Time:100, Angle:650},
-		{Channel:1, Id:7, Time:100, Angle:650},
-		{Channel:2, Id:4, Time:100, Angle:350},
-	}
-
-	var action4 = []ActionItem{
-		{Channel:1, Id:2, Time:-1, Angle:320},
-		{Channel:1, Id:8, Time:-1, Angle:320},
-		{Channel:2, Id:5, Time:-1, Angle:320},
-
-		{Channel:2, Id:2, Time:100, Angle:200},
-		{Channel:2, Id:8, Time:100, Angle:200},
-		{Channel:1, Id:5, Time:100, Angle:200},
-	}
-
-	var action5 = []ActionItem{
+	var action1t1 = []ActionItem{
 		{Channel:1, Id:1, Time:-1, Angle:500},
+		{Channel:1, Id:2, Time:-1, Angle:200},
+		{Channel:1, Id:3, Time:-1, Angle:900},
+		{Channel:1, Id:4, Time:-1, Angle:500},
+		{Channel:1, Id:5, Time:-1, Angle:320},
+		{Channel:1, Id:6, Time:-1, Angle:900},
 		{Channel:1, Id:7, Time:-1, Angle:500},
-		{Channel:2, Id:4, Time:-1, Angle:500},
-
-		{Channel:2, Id:2, Time:100, Angle:320},
-		{Channel:2, Id:8, Time:100, Angle:320},
-		{Channel:1, Id:5, Time:100, Angle:320},
+		{Channel:1, Id:8, Time:-1, Angle:200},
+		{Channel:1, Id:9, Time:-1, Angle:900},
 	}
 
-	Servo.Action = action1
+	var action1t2 = []ActionItem{
+		{Channel:2, Id:1, Time:-1, Angle:500},
+		{Channel:2, Id:2, Time:-1, Angle:320},
+		{Channel:2, Id:3, Time:-1, Angle:900},
+		{Channel:2, Id:4, Time:-1, Angle:500},
+		{Channel:2, Id:5, Time:-1, Angle:200},
+		{Channel:2, Id:6, Time:-1, Angle:900},
+		{Channel:2, Id:7, Time:-1, Angle:500},
+		{Channel:2, Id:8, Time:-1, Angle:320},
+		{Channel:2, Id:9, Time:-1, Angle:900},
+	}
+
+	Servo.Action = action1t1
 
 	SetMotion()
 
-	time.Sleep(350 * time.Millisecond)
+	time.Sleep(60 * time.Millisecond)
 
-	Servo.Action = action2
-
-	SetMotion()
-
-	time.Sleep(350 * time.Millisecond)
-
-	Servo.Action = action3
-
-	SetMotion()
-
-	time.Sleep(350 * time.Millisecond)
-
-	Servo.Action = action4
-
-	SetMotion()
-
-	time.Sleep(350 * time.Millisecond)
-
-	Servo.Action = action5
+	Servo.Action = action1t2
 
 	SetMotion()
 }
