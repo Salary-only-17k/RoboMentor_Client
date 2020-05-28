@@ -353,55 +353,55 @@ func ForwardAction() {
 
 	SetMotion()
 
-	time.Sleep(300 * time.Millisecond)
+	time.Sleep(60 * time.Millisecond)
 
 	Servo.Action = action1t2
 
 	SetMotion()
 
-	time.Sleep(300 * time.Millisecond)
+	time.Sleep(60 * time.Millisecond)
 
 	Servo.Action = action2t1
 
 	SetMotion()
 
-	time.Sleep(300 * time.Millisecond)
+	time.Sleep(60 * time.Millisecond)
 
 	Servo.Action = action2t2
 
 	SetMotion()
 
-	time.Sleep(300 * time.Millisecond)
+	time.Sleep(60 * time.Millisecond)
 
 	Servo.Action = action3t1
 
 	SetMotion()
 
-	time.Sleep(300 * time.Millisecond)
+	time.Sleep(60 * time.Millisecond)
 
 	Servo.Action = action3t2
 
 	SetMotion()
 
-	time.Sleep(300 * time.Millisecond)
+	time.Sleep(60 * time.Millisecond)
 
 	Servo.Action = action4t1
 
 	SetMotion()
 
-	time.Sleep(300 * time.Millisecond)
+	time.Sleep(60 * time.Millisecond)
 
 	Servo.Action = action4t2
 
 	SetMotion()
 
-	time.Sleep(300 * time.Millisecond)
+	time.Sleep(60 * time.Millisecond)
 
 	Servo.Action = action5t1
 
 	SetMotion()
 
-	time.Sleep(300 * time.Millisecond)
+	time.Sleep(60 * time.Millisecond)
 
 	Servo.Action = action5t2
 
