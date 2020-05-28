@@ -230,59 +230,30 @@ func ForwardAction() {
 		{Channel:2, Id:2, Time:-1, Angle:200},
 		{Channel:2, Id:8, Time:-1, Angle:200},
 		{Channel:1, Id:5, Time:-1, Angle:200},
+
+		{Channel:2, Id:1, Time:100, Angle:400},
+		{Channel:2, Id:7, Time:100, Angle:400},
+		{Channel:1, Id:4, Time:100, Angle:600},
 	}
 
 	var action2 = []ActionItem{
-		{Channel:2, Id:1, Time:-1, Angle:400},
-		{Channel:2, Id:7, Time:-1, Angle:400},
-		{Channel:1, Id:4, Time:-1, Angle:600},
-
-		{Channel:2, Id:2, Time:100, Angle:320},
-		{Channel:2, Id:8, Time:100, Angle:320},
-		{Channel:1, Id:5, Time:100, Angle:320},
-	}
-
-	var action3 = []ActionItem{
-		{Channel:1, Id:2, Time:-1, Angle:200},
-		{Channel:1, Id:8, Time:-1, Angle:200},
-		{Channel:2, Id:5, Time:-1, Angle:200},
-
-		{Channel:2, Id:1, Time:100, Angle:500},
-		{Channel:2, Id:7, Time:100, Angle:500},
-		{Channel:1, Id:4, Time:100, Angle:500},
-	}
-
-	var action4 = []ActionItem{
-
-		{Channel:1, Id:1, Time:-1, Angle:600},
-		{Channel:1, Id:7, Time:-1, Angle:600},
-		{Channel:2, Id:4, Time:-1, Angle:400},
+		{Channel:2, Id:2, Time:-1, Angle:320},
+		{Channel:2, Id:8, Time:-1, Angle:320},
+		{Channel:1, Id:5, Time:-1, Angle:320},
 
 		{Channel:1, Id:2, Time:100, Angle:200},
 		{Channel:1, Id:8, Time:100, Angle:200},
 		{Channel:2, Id:5, Time:100, Angle:200},
 	}
 
-	var action5 = []ActionItem{
+	var action3 = []ActionItem{
+		{Channel:2, Id:1, Time:-1, Angle:500},
+		{Channel:2, Id:7, Time:-1, Angle:500},
+		{Channel:1, Id:4, Time:-1, Angle:500},
 
-		{Channel:1, Id:2, Time:-1, Angle:320},
-		{Channel:1, Id:8, Time:-1, Angle:320},
-		{Channel:2, Id:5, Time:-1, Angle:320},
-
-		{Channel:2, Id:2, Time:100, Angle:200},
-		{Channel:2, Id:8, Time:100, Angle:200},
-		{Channel:1, Id:5, Time:100, Angle:200},
-	}
-
-	var action6 = []ActionItem{
-
-		{Channel:1, Id:1, Time:-1, Angle:500},
-		{Channel:1, Id:7, Time:-1, Angle:500},
-		{Channel:2, Id:4, Time:-1, Angle:500},
-
-		{Channel:2, Id:2, Time:100, Angle:320},
-		{Channel:2, Id:8, Time:100, Angle:320},
-		{Channel:1, Id:5, Time:100, Angle:320},
+		{Channel:1, Id:1, Time:100, Angle:600},
+		{Channel:1, Id:7, Time:100, Angle:600},
+		{Channel:2, Id:4, Time:100, Angle:400},
 	}
 
 	Servo.Action = action1
@@ -298,24 +269,6 @@ func ForwardAction() {
 	time.Sleep(250 * time.Millisecond)
 
 	Servo.Action = action3
-
-	SetMotion()
-
-	time.Sleep(250 * time.Millisecond)
-
-	Servo.Action = action4
-
-	SetMotion()
-
-	time.Sleep(250 * time.Millisecond)
-
-	Servo.Action = action5
-
-	SetMotion()
-
-	time.Sleep(250 * time.Millisecond)
-
-	Servo.Action = action6
 
 	SetMotion()
 }
