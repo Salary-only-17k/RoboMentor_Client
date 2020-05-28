@@ -244,7 +244,7 @@ func ForwardAction() {
 
 	SetMotion()
 
-	time.Sleep(100 * time.Millisecond)
+	time.Sleep(200 * time.Millisecond)
 
 	Servo.Action = action2
 
