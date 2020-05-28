@@ -231,9 +231,9 @@ func ForwardAction() {
 		{Channel:2, Id:8, Time:-1, Angle:200},
 		{Channel:1, Id:5, Time:-1, Angle:200},
 
-		{Channel:2, Id:1, Time:100, Angle:400},
-		{Channel:2, Id:7, Time:100, Angle:400},
-		{Channel:1, Id:4, Time:100, Angle:600},
+		{Channel:2, Id:1, Time:100, Angle:350},
+		{Channel:2, Id:7, Time:100, Angle:350},
+		{Channel:1, Id:4, Time:100, Angle:650},
 	}
 
 	var action2 = []ActionItem{
@@ -251,9 +251,9 @@ func ForwardAction() {
 		{Channel:2, Id:7, Time:-1, Angle:500},
 		{Channel:1, Id:4, Time:-1, Angle:500},
 
-		{Channel:1, Id:1, Time:100, Angle:600},
-		{Channel:1, Id:7, Time:100, Angle:600},
-		{Channel:2, Id:4, Time:100, Angle:400},
+		{Channel:1, Id:1, Time:100, Angle:650},
+		{Channel:1, Id:7, Time:100, Angle:650},
+		{Channel:2, Id:4, Time:100, Angle:350},
 	}
 
 	var action4 = []ActionItem{
