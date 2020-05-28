@@ -132,6 +132,8 @@ func SetMotion() bool {
 			item.Time = Servo.Speed
 			if v.Time > -1 {
 				item.Time = v.Time + Servo.Speed
+			}else{
+				item.Time = Servo.Speed
 			}
 
 			sendData.List = append(sendData.List, item)
@@ -163,9 +165,6 @@ func SitDownAction() {
 		{Channel:1, Id:7, Time:-1, Angle:500},
 		{Channel:1, Id:8, Time:-1, Angle:150},
 		{Channel:1, Id:9, Time:-1, Angle:950},
-	}
-
-	var action2 = []ActionItem{
 		{Channel:2, Id:1, Time:-1, Angle:500},
 		{Channel:2, Id:2, Time:-1, Angle:150},
 		{Channel:2, Id:3, Time:-1, Angle:950},
@@ -178,12 +177,6 @@ func SitDownAction() {
 	}
 
 	Servo.Action = action1
-
-	SetMotion()
-
-	time.Sleep(60 * time.Millisecond)
-
-	Servo.Action = action2
 
 	SetMotion()
 }
@@ -200,9 +193,6 @@ func StandUpAction() {
 		{Channel:1, Id:7, Time:-1, Angle:500},
 		{Channel:1, Id:8, Time:-1, Angle:320},
 		{Channel:1, Id:9, Time:-1, Angle:900},
-	}
-
-	var action2 = []ActionItem{
 		{Channel:2, Id:1, Time:-1, Angle:500},
 		{Channel:2, Id:2, Time:-1, Angle:320},
 		{Channel:2, Id:3, Time:-1, Angle:900},
@@ -215,12 +205,6 @@ func StandUpAction() {
 	}
 
 	Servo.Action = action1
-
-	SetMotion()
-
-	time.Sleep(60 * time.Millisecond)
-
-	Servo.Action = action2
 
 	SetMotion()
 }
