@@ -237,9 +237,9 @@ func ForwardAction() {
 		{Channel:2, Id:7, Time:-1, Angle:400},
 		{Channel:1, Id:4, Time:-1, Angle:600},
 
-		{Channel:2, Id:2, Time:150, Angle:320},
-		{Channel:2, Id:8, Time:150, Angle:320},
-		{Channel:1, Id:5, Time:150, Angle:320},
+		{Channel:2, Id:2, Time:100, Angle:320},
+		{Channel:2, Id:8, Time:100, Angle:320},
+		{Channel:1, Id:5, Time:100, Angle:320},
 	}
 
 	var action3 = []ActionItem{
@@ -247,9 +247,9 @@ func ForwardAction() {
 		{Channel:1, Id:8, Time:-1, Angle:200},
 		{Channel:2, Id:5, Time:-1, Angle:200},
 
-		{Channel:2, Id:1, Time:150, Angle:500},
-		{Channel:2, Id:7, Time:150, Angle:500},
-		{Channel:1, Id:4, Time:150, Angle:500},
+		{Channel:2, Id:1, Time:100, Angle:500},
+		{Channel:2, Id:7, Time:100, Angle:500},
+		{Channel:1, Id:4, Time:100, Angle:500},
 	}
 
 	var action4 = []ActionItem{
@@ -258,20 +258,20 @@ func ForwardAction() {
 		{Channel:1, Id:7, Time:-1, Angle:600},
 		{Channel:2, Id:4, Time:-1, Angle:400},
 
-		{Channel:1, Id:2, Time:150, Angle:200},
-		{Channel:1, Id:8, Time:150, Angle:200},
-		{Channel:2, Id:5, Time:150, Angle:200},
+		{Channel:1, Id:2, Time:100, Angle:200},
+		{Channel:1, Id:8, Time:100, Angle:200},
+		{Channel:2, Id:5, Time:100, Angle:200},
 	}
 
 	var action5 = []ActionItem{
 
-		{Channel:1, Id:2, Time:150, Angle:320},
-		{Channel:1, Id:8, Time:150, Angle:320},
-		{Channel:2, Id:5, Time:150, Angle:320},
+		{Channel:1, Id:2, Time:-1, Angle:320},
+		{Channel:1, Id:8, Time:-1, Angle:320},
+		{Channel:2, Id:5, Time:-1, Angle:320},
 
-		{Channel:1, Id:1, Time:150, Angle:500},
-		{Channel:1, Id:7, Time:150, Angle:500},
-		{Channel:2, Id:4, Time:150, Angle:500},
+		{Channel:1, Id:1, Time:100, Angle:500},
+		{Channel:1, Id:7, Time:100, Angle:500},
+		{Channel:2, Id:4, Time:100, Angle:500},
 	}
 
 	Servo.Action = action1
