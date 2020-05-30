@@ -6,13 +6,14 @@ import os
 import sys
 from shutil import rmtree
 from setuptools import find_packages, setup, Command
+from robomentor_client import __version__
 
-here = os.path.abspath(os.path.dirname(__file__))
+Dir = os.path.abspath(os.path.dirname(__file__))
 
-version = '1.0.2'
+version = __version__
 
 try:
-    with io.open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
+    with io.open(os.path.join(Dir, 'README.md'), encoding='utf-8') as f:
         long_description = '\n' + f.read()
 except FileNotFoundError:
     long_description = ''
@@ -36,7 +37,7 @@ class UploadCommand(Command):
     def run(self):
         try:
             self.status('Removing previous builds…')
-            rmtree(os.path.join(here, 'dist'))
+            rmtree(os.path.join(Dir, 'dist'))
         except OSError:
             pass
 
