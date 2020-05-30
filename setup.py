@@ -75,6 +75,7 @@ setup(
     install_requires=[
         'opencv-contrib-python',
         'paho-mqtt',
+        'pyserial',
     ],
     extras_require={
         'python 3.6.x needs': ['dataclasses'],

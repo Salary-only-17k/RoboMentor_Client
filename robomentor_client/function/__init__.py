@@ -6,3 +6,4 @@ RoboMentor_Client: Python library and framework for RoboMentor_Client.
 :license: MIT, see LICENSE for more details.
 """
 
+from .serial import Serial

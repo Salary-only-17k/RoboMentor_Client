@@ -9,3 +9,4 @@ RoboMentor_Client: Python library and framework for RoboMentor_Client.
 from . import framework
 from .utils import Request, Log
 from .service import Message
+from .function import Serial

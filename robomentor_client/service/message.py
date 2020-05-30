@@ -20,7 +20,7 @@ class Message:
         self.username = username
         self.password = password
         self.mqtt_client = None
-        self.timeout = 600
+        self.timeout = 60
         self.queue = Queue()
 
     def on_message(self, client, userdata, msg):
@@ -39,8 +39,8 @@ class Message:
             self.mqtt_client.username_pw_set(self.username, self.password)
             self.mqtt_client.on_message = self.on_message
             self.mqtt_client.connect(self.host, self.port, self.timeout)
-            self.mqtt_client.loop_start()
             self.subscribe("robot/" + self.client_id)
+            self.mqtt_client.loop_start()
 
     def stop(self):
         if self.mqtt_client is not None:
