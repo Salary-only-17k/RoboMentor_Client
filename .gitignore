@@ -1,3 +1,6 @@
 .idea
 .DS*
 .git
+build
+dist
+RoboMentor_Client.egg-info
