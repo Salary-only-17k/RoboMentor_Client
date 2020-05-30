@@ -6,5 +6,3 @@ RoboMentor_Client: Python library and framework for RoboMentor_Client.
 :license: MIT, see LICENSE for more details.
 """
 
-from .requests import Request
-from .log import Log

@@ -1,16 +1,25 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+RoboMentor_Client: Python library and framework for RoboMentor_Client.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+:copyright: (c) 2020 by RoboMentor.
+:license: MIT, see LICENSE for more details.
+"""
 
 import io
 import os
 import sys
 from shutil import rmtree
 from setuptools import find_packages, setup, Command
-from robomentor_client import __version__
 
 Dir = os.path.abspath(os.path.dirname(__file__))
 
-version = __version__
+about = {}
+with open(os.path.join(Dir, "robomentor_client", '__config__.py')) as f:
+    exec(f.read(), about)
+
+version = about["__version__"]
 
 try:
     with io.open(os.path.join(Dir, 'README.md'), encoding='utf-8') as f:
@@ -65,6 +74,7 @@ setup(
     packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
     install_requires=[
         'opencv-contrib-python',
+        'paho-mqtt',
     ],
     extras_require={
         'python 3.6.x needs': ['dataclasses'],

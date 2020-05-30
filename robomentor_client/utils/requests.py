@@ -10,21 +10,21 @@ import requests
 from .log import Log
 
 
-class HttpRequest:
+class Request:
 
     @staticmethod
-    def do(self, url, params, http_method):
+    def do(url, params, headers, http_method):
         res = ''
-        if http_method.upper() == 'POST':
+        if http_method.upper() == "POST":
             try:
-                res = requests.post(url, params)
-                Log.info("正在进行post请求")
+                res = requests.post(url, params, headers=headers)
+                Log.info("正在发送POST请求")
             except Exception as e:
-                Log.error("post请求出现了异常：{0}".format(e))
-        elif http_method.upper() == 'GET':
+                Log.error("POST请求出现了异常：{0}".format(e))
+        elif http_method.upper() == "GET":
             try:
-                res = requests.post(url, params)
-                Log.info("正在进行get请求")
+                res = requests.get(url, params, headers=headers)
+                Log.info("正在发送GET请求")
             except Exception as e:
-                Log.error("get请求出现了异常：{0}".format(e))
+                Log.error("GET请求出现了异常：{0}".format(e))
         return res

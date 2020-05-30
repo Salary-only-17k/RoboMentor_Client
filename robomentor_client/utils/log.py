@@ -13,21 +13,21 @@ class Log:
 
     logging.basicConfig(
         level=logging.DEBUG,
-        format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s'
+        format="%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s"
     )
 
     @staticmethod
-    def debug(self, content):
+    def debug(content):
         logging.debug(content)
 
     @staticmethod
-    def info(self, content):
+    def info(content):
         logging.debug(content)
 
     @staticmethod
-    def warning(self, content):
+    def warning(content):
         logging.debug(content)
 
     @staticmethod
-    def error(self, content):
+    def error(content):
         logging.debug(content)
